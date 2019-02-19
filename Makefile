@@ -13,7 +13,7 @@ SRCS_DIR = ./srcs
 
 LIBS = libft libftprintf
 
-SRCS = main.c
+SRCS = main.c read_farm_map.c
 OBJS = $(addprefix $(OBJS_DIR)/,$(SRCS:%.c=%.o))
 
 #FLAGS += -Wall -Wextra -Werror
