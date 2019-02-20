@@ -6,34 +6,27 @@
 /*   By: rschuppe <rschuppe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/19 16:47:35 by rschuppe          #+#    #+#             */
-/*   Updated: 2019/02/19 17:37:00 by rschuppe         ###   ########.fr       */
+/*   Updated: 2019/02/20 18:18:53 by rschuppe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lem_in.h"
 
-static int		add_edge(t_list	*rooms_head, char *parent_node_name, char *child_node_name)
+static int		add_edge(
+	t_node	**rooms, int8_t** incidence, char *parent_name, char *child_name)
 {
-	ft_printf("add_edge = %s -> %s\n", parent_node_name, child_node_name);
-	
-	t_node *parent;
-	t_node *child;
+	int parent_idx;
+	int child_idx;
 
-	//	ищем адрес ноды родителя и дочернего элемента по имени
-	//	!!! оптимизировать упорядочив список комнат по имени
-	parent = NULL;
-	child = NULL;
-	while (rooms_head && (!parent || !child))
-	{
-		if (!ft_strcmp(((t_node*)rooms_head->content)->name, parent_node_name))
-			parent = rooms_head->content;
-		else if (!ft_strcmp(((t_node*)rooms_head->content)->name, child_node_name))
-			child = rooms_head->content;
-		rooms_head = rooms_head->next;
-	}
-	if (!parent || !child)
-		return (0);
-	ft_lstadd(&parent->childs, ft_lstnew(child, sizeof(child)));
+	// ft_printf("add_edge = %s -> %s\n", parent_name, child_name);
+
+	parent_idx = find_node_index_by_name(rooms, parent_name);
+	child_idx = find_node_index_by_name(rooms, child_name);
+
+	// ft_printf("%s -> %d\n", parent_name, parent_idx);
+	// ft_printf("%s -> %d\n", child_name, child_idx);
+
+	incidence[parent_idx][child_idx] = 1;
 	return (1);
 }
 
@@ -59,7 +52,76 @@ static void		free_split_result(char **res)
 	free(res);
 }
 
-static int		read_room_line(char *line, t_farm *farm)
+t_node **create_assoc_sort_room_arr(t_list *rooms_head, int count_rooms)
+{
+	int		i;
+	int		res;
+	int		inserted;
+	t_list	*cur;
+	t_node	**rooms_arr;
+
+	rooms_arr = (t_node**)malloc((count_rooms + 1) * sizeof(t_node*));
+	i = 0;
+	while (i < count_rooms)
+		rooms_arr[i++] = NULL;
+	cur = rooms_head;
+	while (cur)
+	{
+		if (((t_node*)(cur->content))->status == ROOM_START)
+			rooms_arr[0] = (t_node*)(cur->content);
+		else if (((t_node*)(cur->content))->status == ROOM_END)
+			rooms_arr[count_rooms - 1] = (t_node*)(cur->content);
+		else
+		{
+			i = count_rooms - 2;
+			inserted = 0;
+			while (i > 0)
+			{
+				if (rooms_arr[i])
+				{
+					res = ft_strcmp(rooms_arr[i]->name, ((t_node*)(cur->content))->name);
+					if (res > 0)
+						rooms_arr[i + 1] = rooms_arr[i];
+					else
+					{
+						rooms_arr[i + 1] = (t_node*)(cur->content);
+						inserted = 1;
+						break ;
+					}
+				}
+				i--;
+			}
+			if (!inserted)
+				rooms_arr[1] = (t_node*)(cur->content);
+		}
+		cur = cur->next;
+	}
+	return (rooms_arr);
+}
+
+int8_t**	create_incidence_matrix(int count_rooms)
+{
+	int i;
+	int j;
+	int8_t	**matrix;
+
+	matrix = (int8_t**)malloc(count_rooms * sizeof(int8_t*));
+	i = 0;
+	while (i < count_rooms)
+	{
+		j = 0;
+		matrix[i] = (int8_t*)malloc(count_rooms * sizeof(int8_t));
+		while (j < count_rooms)
+		{
+			matrix[i][j] = 0;
+			j++;
+		}
+		i++;
+	}
+	return (matrix);
+}
+
+static int		read_room_line(char *line, t_list **rooms, int *count_rooms)
 {
 	static char next_room_status;
 	char		**res;
@@ -74,13 +136,12 @@ static int		read_room_line(char *line, t_farm *farm)
 		res = ft_strsplit(line, ' ');
 		if (res[0] && res[1] && res[2] && !res[3])
 		{
-			ft_printf("room %s: x = %s y = %s, status = %d\n", res[0], res[1], res[2], next_room_status);
 			room = create_room(res[0],
 				ft_atoi(res[1]), ft_atoi(res[2]), next_room_status);
-			if (next_room_status == ROOM_START)
-				farm->start = room;
-			ft_lstadd(&farm->rooms, ft_lstnew(room, sizeof(room)));
+			ft_lstadd(rooms, ft_lstnew(room, sizeof(t_node)));
+			free(room);
 			next_room_status = 0;
+			(*count_rooms)++;
 		}
 		else
 		{
@@ -92,18 +153,50 @@ static int		read_room_line(char *line, t_farm *farm)
 	return (1);
 }
 
-t_farm			*read_farm_map()
+void	show_incidence_matrix(t_node **rooms, int8_t **incidence, int size)
+{
+	int i;
+	int j;
+
+	i = -1;
+	ft_printf("       ");
+	while (++i < size)
+		ft_printf(" %5s", rooms[i]->name);
+	ft_printf("\n");
+	i = -1;
+	ft_printf("       __________________________________________________________________\n");
+	i = 0;
+	while (i < size)
+	{
+		j = 0;
+		ft_printf("%5s |", rooms[i]->name);
+		while (j < size)
+		{
+			ft_printf(" %5d", incidence[i][j]);
+			j++;
+		}
+		ft_printf("\n");
+		i++;
+	}
+	ft_printf("      |__________________________________________________________________\n");
+}
+
+t_farm			*read_farm_map(int fd)
 {
 	char	*line;
 	char	**res;
 	char	read_status;
-	int		lst_len;
+	int		count_rooms;
+
 	t_farm	*farm;
+	t_list	*rooms;
+	t_node	**rooms_arr;
 
 	farm = (t_farm*)malloc(sizeof(t_farm));
-	farm->rooms = NULL;
+	count_rooms = 0;
+	rooms = NULL;
 	read_status = 0;
-	while (get_next_line(0, &line))
+	while (get_next_line(fd, &line))
 	{
 		if (read_status == 0)
 		{
@@ -114,19 +207,27 @@ t_farm			*read_farm_map()
 		{
 			if (read_status == 1)
 			{
-				if (!read_room_line(line, farm))
+				if (!read_room_line(line, &rooms, &count_rooms))
+				{
 					read_status = 2;
-				else
-					lst_len++;
+					rooms_arr = create_assoc_sort_room_arr(rooms, count_rooms);
+					int i = 0;
+					while (i < count_rooms)
+					{
+						ft_printf("%d - %s\n", i, rooms_arr[i]->name);
+						i++;
+					}
+					farm->incidence = create_incidence_matrix(count_rooms);
+				}
 			}
 			if (read_status == 2)
 			{
 				res = ft_strsplit(line, '-');
-				add_edge(farm->rooms, res[0], res[1]);
+				add_edge(rooms_arr, farm->incidence, res[0], res[1]);
 			}
 		}
 		free(line);
 	}
-	farm->ant_nodes = (int*)malloc(farm->ants_count * sizeof(int));
+	show_incidence_matrix(rooms_arr, farm->incidence, count_rooms);
 	return (farm);
 }

@@ -13,10 +13,11 @@ SRCS_DIR = ./srcs
 
 LIBS = libft libftprintf
 
-SRCS = main.c read_farm_map.c
+SRCS = main.c read_farm_map.c find_node_by_name.c
 OBJS = $(addprefix $(OBJS_DIR)/,$(SRCS:%.c=%.o))
 
 #FLAGS += -Wall -Wextra -Werror
+FLAGS += -g
 FLAGS += -I$(INCS_DIR)
 FLAGS += $(foreach lib,$(LIBS),-I$(LIBS_DIR)/$(lib)/includes)
 
