@@ -6,7 +6,7 @@
 /*   By: rschuppe <rschuppe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/18 14:47:13 by rschuppe          #+#    #+#             */
-/*   Updated: 2019/02/20 17:51:11 by rschuppe         ###   ########.fr       */
+/*   Updated: 2019/02/20 18:57:23 by rschuppe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,9 +39,17 @@ typedef struct	s_farm {
 	int8_t**	incidence;
 }				t_farm;
 
-t_node	*find_node_by_name(t_node **rooms, char *name);
-int		find_node_index_by_name(t_node **rooms, char *name);
 
-t_farm	*read_farm_map();
+t_farm		*read_farm_map();
+
+t_node		**create_sort_room_arr(t_list *rooms_head, int count_rooms);
+
+int8_t**	create_incidence_matrix(int size);
+int			add_edge(
+	t_node **rooms, int8_t **incidence, char *parent_name, char *child_name);
+void		show_incidence_matrix(t_node **rooms, int8_t **incidence, int size);
+
+t_node		*find_node_by_name(t_node **rooms, char *name);
+int			find_node_index_by_name(t_node **rooms, char *name);
 
 #endif
