@@ -6,7 +6,7 @@
 /*   By: rschuppe <rschuppe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/18 14:47:13 by rschuppe          #+#    #+#             */
-/*   Updated: 2019/02/20 18:57:23 by rschuppe         ###   ########.fr       */
+/*   Updated: 2019/02/21 01:45:01 by rschuppe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,15 +27,12 @@ typedef struct	s_node {
 	int		x;
 	int		y;
 	char	status;
-	t_list	*childs;
 }				t_node;
 
 typedef struct	s_farm {
-	int		ants_count;
-	int		*ant_nodes;
-	t_node	*start;
-	t_node	*rooms;
-
+	int			ants_count;
+	t_node		**rooms;
+	int			count_rooms;
 	int8_t**	incidence;
 }				t_farm;
 

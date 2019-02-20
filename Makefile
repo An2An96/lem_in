@@ -42,7 +42,7 @@ $(OBJS_DIR)/%.o: $(SRCS_DIR)/%.c
 $(OBJS): | $(OBJS_DIR)
 
 $(NAME): $(LIBS) $(OBJS)
-	@gcc $(FLAGS) $(LIBS_FLAGS) $(OBJS) -o $@
+	@gcc -o $@ $(OBJS) $(FLAGS) $(LIBS_FLAGS)  
 
 clean:
 	@rm -rf $(OBJS_DIR)

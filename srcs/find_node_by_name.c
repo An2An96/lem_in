@@ -19,9 +19,9 @@ static t_node	*find_node_by_name_helper(
 	char	res;
 
 	idx = start + ((finish - start) / 2);
-	ft_printf("%d, %d | %s - %s\n", start, finish, rooms[idx]->name, name);
+	// ft_printf("%d, %d | %s - %s\n", start, finish, rooms[idx]->name, name);
 	res = ft_strcmp(rooms[idx]->name, name);
-	ft_printf("res: %d\n", res);
+	// ft_printf("res: %d\n", res);
 	if (res > 0)
 		return (find_node_by_name_helper(rooms, start, idx, name));
 	else if (res < 0)
@@ -39,7 +39,7 @@ t_node			*find_node_by_name(t_node **rooms, char *name)
 	while (rooms[i])
 		i++;
 	i--;
-	ft_printf("check %s\n", rooms[i]->name);
+	// ft_printf("check %s\n", rooms[i]->name);
 	if (!ft_strcmp(rooms[i]->name, name))
 		return (rooms[i]);
 	return (find_node_by_name_helper(rooms, 1, i - 1, name));

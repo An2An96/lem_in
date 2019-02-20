@@ -12,19 +12,10 @@
 
 #include "lem_in.h"
 
-//	Данные:
-//		ant_node[] - Массив с указателями на node'у в которой находится муравей
-
-//	Функции:
-//		find_next_node_for_path(node)
-//		set_ant_to_node(ant, node)
-
 int main(int argc, char **argv)
 {
 	t_farm	*farm;
 	int fd;
-
-	// ft_printf("%d", ft_strcmp("abs", "baz"));
 
 	if (argc == 2)
 	{
