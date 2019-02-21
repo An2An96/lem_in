@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lem_in.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rschuppe <rschuppe@student.42.fr>          +#+  +:+       +#+        */
+/*   By: wballaba <wballaba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/18 14:47:13 by rschuppe          #+#    #+#             */
-/*   Updated: 2019/02/21 01:45:01 by rschuppe         ###   ########.fr       */
+/*   Updated: 2019/02/21 13:34:16 by wballaba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,12 @@ typedef struct	s_farm {
 	int			count_rooms;
 	int8_t**	incidence;
 }				t_farm;
+
+typedef struct	s_path {
+	int			*idx;
+	int			count_node;
+}				t_path;
+
 
 
 t_farm		*read_farm_map();
