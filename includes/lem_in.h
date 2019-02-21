@@ -6,7 +6,7 @@
 /*   By: rschuppe <rschuppe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/18 14:47:13 by rschuppe          #+#    #+#             */
-/*   Updated: 2019/02/21 01:45:01 by rschuppe         ###   ########.fr       */
+/*   Updated: 2019/02/21 13:17:58 by rschuppe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,8 @@
 
 # define	ROOM_START	1
 # define	ROOM_END	2
+
+# define	MIN(a,b)	((a < b) ? (a) : (b))
 
 typedef struct	s_node {
 	char	*name;
@@ -48,5 +50,7 @@ void		show_incidence_matrix(t_node **rooms, int8_t **incidence, int size);
 
 t_node		*find_node_by_name(t_node **rooms, char *name);
 int			find_node_index_by_name(t_node **rooms, char *name);
+
+int			get_max_count_need_unique_paths(int8_t **incidence, int size);
 
 #endif
