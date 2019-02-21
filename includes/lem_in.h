@@ -6,7 +6,7 @@
 /*   By: rschuppe <rschuppe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/18 14:47:13 by rschuppe          #+#    #+#             */
-/*   Updated: 2019/02/21 13:17:58 by rschuppe         ###   ########.fr       */
+/*   Updated: 2019/02/21 17:27:19 by rschuppe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,6 @@
 
 # define	ROOM_START	1
 # define	ROOM_END	2
-
-# define	MIN(a,b)	((a < b) ? (a) : (b))
 
 typedef struct	s_node {
 	char	*name;
@@ -38,6 +36,10 @@ typedef struct	s_farm {
 	int8_t**	incidence;
 }				t_farm;
 
+typedef struct	s_path {
+	int			*idx;
+	int			count_node;
+}				t_path;
 
 t_farm		*read_farm_map();
 
@@ -52,5 +54,6 @@ t_node		*find_node_by_name(t_node **rooms, char *name);
 int			find_node_index_by_name(t_node **rooms, char *name);
 
 int			get_max_count_need_unique_paths(int8_t **incidence, int size);
+t_path		***find_unique_paths(t_farm *farm, int count);
 
 #endif

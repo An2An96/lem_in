@@ -6,7 +6,7 @@
 /*   By: rschuppe <rschuppe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/19 16:47:35 by rschuppe          #+#    #+#             */
-/*   Updated: 2019/02/21 15:14:55 by rschuppe         ###   ########.fr       */
+/*   Updated: 2019/02/21 13:27:21 by rschuppe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,7 +99,7 @@ t_farm			*read_farm_map(int fd)
 			{
 				res = ft_strsplit(line, '-');
 				if (res[0] && res[1] && !res[2])
-					if (add_edge(farm->rooms, farm->incidence, res[0], res[1]))
+					if (!add_edge(farm->rooms, farm->incidence, res[0], res[1]))
 						exit(-1);
 				free_split_result(res);
 			}

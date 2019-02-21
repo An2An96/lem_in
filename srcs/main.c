@@ -6,7 +6,7 @@
 /*   By: rschuppe <rschuppe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/18 14:17:13 by rschuppe          #+#    #+#             */
-/*   Updated: 2019/02/21 14:31:58 by rschuppe         ###   ########.fr       */
+/*   Updated: 2019/02/21 14:46:12 by rschuppe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,5 +33,9 @@ int main(int argc, char **argv)
 		i++;
 	}
 	show_incidence_matrix(farm->rooms, farm->incidence, farm->count_rooms);
+
+	int max_unique_paths = get_max_count_need_unique_paths(farm->incidence, farm->count_rooms);
+	ft_printf("max unique paths: %d\n", max_unique_paths);
+	find_unique_paths(farm, max_unique_paths);
 	return (0);
 }
