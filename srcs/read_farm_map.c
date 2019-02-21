@@ -6,7 +6,7 @@
 /*   By: rschuppe <rschuppe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/19 16:47:35 by rschuppe          #+#    #+#             */
-/*   Updated: 2019/02/21 01:56:11 by rschuppe         ###   ########.fr       */
+/*   Updated: 2019/02/21 15:14:55 by rschuppe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ static void		free_split_result(char **res)
 	free(res);
 }
 
-static int		read_room_line(char *line, t_list **rooms, int *count_rooms)
+static int		parse_room_line(char *line, t_list **rooms, int *count_rooms)
 {
 	static int8_t	next_room_status;
 	char			**res;
@@ -74,43 +74,37 @@ t_farm			*read_farm_map(int fd)
 	t_farm	*farm;
 	t_list	*rooms;
 
-	farm = (t_farm*)malloc(sizeof(t_farm));
+	if (!(farm = (t_farm*)malloc(sizeof(t_farm))))
+		exit(-1);
 	farm->count_rooms = 0;
 	rooms = NULL;
 	read_status = 0;
 	while (get_next_line(fd, &line))
 	{
-		if (read_status == 0)
-		{
+		if (read_status == 0 && ++read_status)
 			farm->ants_count = ft_atoi(line);
-			read_status++;
-		}
 		else
 		{
 			if (read_status == 1)
 			{
-				if (!read_room_line(line, &rooms, &farm->count_rooms))
+				if (!parse_room_line(line, &rooms, &farm->count_rooms))
 				{
 					read_status = 2;
 					farm->rooms = create_sort_room_arr(rooms, farm->count_rooms);
 					ft_lstdel(&rooms, NULL);
-					int i = 0;
-					while (i < farm->count_rooms)
-					{
-						ft_printf("%d - %s\n", i, farm->rooms[i]->name);
-						i++;
-					}
 					farm->incidence = create_incidence_matrix(farm->count_rooms);
 				}
 			}
 			if (read_status == 2)
 			{
 				res = ft_strsplit(line, '-');
-				add_edge(farm->rooms, farm->incidence, res[0], res[1]);
+				if (res[0] && res[1] && !res[2])
+					if (add_edge(farm->rooms, farm->incidence, res[0], res[1]))
+						exit(-1);
+				free_split_result(res);
 			}
 		}
 		free(line);
 	}
-	show_incidence_matrix(farm->rooms, farm->incidence, farm->count_rooms);
 	return (farm);
 }

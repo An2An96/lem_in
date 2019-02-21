@@ -6,7 +6,7 @@
 /*   By: rschuppe <rschuppe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/20 18:37:36 by rschuppe          #+#    #+#             */
-/*   Updated: 2019/02/20 18:55:28 by rschuppe         ###   ########.fr       */
+/*   Updated: 2019/02/21 15:09:35 by rschuppe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,8 @@ int		add_edge(
 
 	parent_idx = find_node_index_by_name(rooms, parent_name);
 	child_idx = find_node_index_by_name(rooms, child_name);
+	if (parent_idx < 0 || child_idx < 0)
+		return (0);
 	incidence[parent_idx][child_idx] = 1;
 	return (1);
 }
