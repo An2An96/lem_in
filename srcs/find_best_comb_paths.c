@@ -6,7 +6,7 @@
 /*   By: wballaba <wballaba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/20 19:21:05 by rschuppe          #+#    #+#             */
-/*   Updated: 2019/02/21 18:40:47 by wballaba         ###   ########.fr       */
+/*   Updated: 2019/02/22 13:23:30 by wballaba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ int	find_best_comb_paths(t_path ***path_combs, int ants_count)
 		while (i <= n_route)
 		{
 			count_step[n_route] = MAX(
-				path_combs[n_route][i]->count_node + floor(ants_count / (n_route + 1)),
+				path_combs[n_route][i]->count_node + (ants_count / (n_route + 1)),
 				count_step[n_route]);
 			i++;
 		}

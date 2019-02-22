@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lem_in.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rschuppe <rschuppe@student.42.fr>          +#+  +:+       +#+        */
+/*   By: wballaba <wballaba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/18 14:47:13 by rschuppe          #+#    #+#             */
-/*   Updated: 2019/02/21 17:27:19 by rschuppe         ###   ########.fr       */
+/*   Updated: 2019/02/22 13:08:24 by wballaba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,5 +55,9 @@ int			find_node_index_by_name(t_node **rooms, char *name);
 
 int			get_max_count_need_unique_paths(int8_t **incidence, int size);
 t_path		***find_unique_paths(t_farm *farm, int count);
+
+int			find_best_comb_paths(t_path ***path_combs, int ants_count);
+
+void		let_ants_to_path(t_path **paths, t_node **rooms, t_farm *farm);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: wballaba <wballaba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/18 14:17:13 by rschuppe          #+#    #+#             */
-/*   Updated: 2019/02/21 18:22:34 by wballaba         ###   ########.fr       */
+/*   Updated: 2019/02/22 13:35:53 by wballaba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,5 +83,6 @@ int main(int argc, char **argv)
 		ft_printf("\n");
 		i++;
 	}
+	let_ants_to_path(paths[idx], farm->rooms, farm);
 	return (0);
 }
