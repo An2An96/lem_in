@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   create_sort_room_arr.c                             :+:      :+:    :+:   */
+/*   l2_create_sort_room_arr.c                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rschuppe <rschuppe@student.42.fr>          +#+  +:+       +#+        */
+/*   By: wballaba <wballaba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/20 18:56:25 by rschuppe          #+#    #+#             */
-/*   Updated: 2019/02/21 02:07:38 by rschuppe         ###   ########.fr       */
+/*   Updated: 2019/02/22 20:34:36 by wballaba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,6 @@ static void	insert_item(t_node **rooms, t_node *room, int count_rooms)
 t_node		**create_sort_room_arr(t_list *rooms_head, int count_rooms)
 {
 	int		i;
-	int		res;
 	t_list	*cur;
 	t_node	**rooms;
 

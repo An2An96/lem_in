@@ -6,7 +6,7 @@
 /*   By: wballaba <wballaba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/20 19:25:43 by rschuppe          #+#    #+#             */
-/*   Updated: 2019/02/22 17:58:55 by wballaba         ###   ########.fr       */
+/*   Updated: 2019/02/22 20:27:34 by wballaba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,8 +64,7 @@ static void	choose_path_and_start(t_farm *farm, t_path **paths, int *nbr_ants)
 		{
 			i = -1;
 			sum = 0;
-			while (++i < path_idx)
-				sum += paths[path_idx]->count_node - paths[i]->count_node;
+			sum += get_paths_diff(paths, path_idx);
 			if (sum >= (farm->ants_count - *nbr_ants))
 				break ;
 		}

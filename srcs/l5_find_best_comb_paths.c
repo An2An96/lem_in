@@ -1,62 +1,64 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   find_best_comb_paths.c                             :+:      :+:    :+:   */
+/*   l5_find_best_comb_paths.c                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: wballaba <wballaba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/20 19:21:05 by rschuppe          #+#    #+#             */
-/*   Updated: 2019/02/22 13:23:30 by wballaba         ###   ########.fr       */
+/*   Updated: 2019/02/22 20:27:14 by wballaba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lem_in.h"
-#include <math.h>
+
+static int	get_steps_for_comb(
+	t_path **path_combs, int path_counts, int ants_count)
+{
+	int path_idx;
+	int steps;
+	int rest_ants;
+	int res;
+	int sum;
+
+	steps = 0;
+	rest_ants = 0;
+	path_idx = path_counts - 1;
+	while (path_idx >= 0)
+	{
+		sum = get_paths_diff(path_combs, path_idx);
+		res = ((ants_count - rest_ants) - sum) / (path_idx + 1);
+		steps += res;
+		rest_ants += res * (path_idx + 1);
+		path_idx--;
+	}
+	steps += path_combs[0]->count_node - 1;
+	return (steps);
+}
 
 /*
 **	Выбор оптимальной комбинации путей для заданного числа муравьев
 */
 
-int	find_best_comb_paths(t_path ***path_combs, int ants_count)
+int			find_best_comb_paths(t_path ***path_combs, int ants_count)
 {
-	int	*count_step;
-	int	n_route;
-	int	i;
-	int min;
-	int	ret_n_route;
-	int	len;
+	int cur_comb;
+	int cur_steps;
+	int best_comb;
+	int best_steps;
 
-	len = 0;
-	while (path_combs[len] != NULL)
-		len++;
-	count_step = ft_memalloc(len);
-	n_route = 0;
-	while (n_route < len)
+	cur_comb = 0;
+	best_steps = INT_MAX;
+	while (path_combs[cur_comb])
 	{
-		i = 0;
-		count_step[n_route] = 0;
-		while (i <= n_route)
+		cur_steps =
+			get_steps_for_comb(path_combs[cur_comb], cur_comb + 1, ants_count);
+		if (cur_steps < best_steps)
 		{
-			count_step[n_route] = MAX(
-				path_combs[n_route][i]->count_node + (ants_count / (n_route + 1)),
-				count_step[n_route]);
-			i++;
+			best_steps = cur_steps;
+			best_comb = cur_comb;
 		}
-		n_route++;
+		cur_comb++;
 	}
-	i = 0;
-	min = count_step[i];
-	ret_n_route = i;
-	while (i < n_route)
-	{
-		int k = count_step[i];
-		if (count_step[i] < min)
-		{
-			min = count_step[i];
-			ret_n_route = i;
-		}
-		i++;
-	}
-	free(count_step);
-	return (ret_n_route);
+	return (best_comb);
 }

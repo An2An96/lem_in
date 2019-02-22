@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   find_unique_paths.c                                :+:      :+:    :+:   */
+/*   l4_find_unique_paths.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rschuppe <rschuppe@student.42.fr>          +#+  +:+       +#+        */
+/*   By: wballaba <wballaba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/20 19:11:32 by rschuppe          #+#    #+#             */
-/*   Updated: 2019/02/21 17:37:23 by rschuppe         ###   ########.fr       */
+/*   Updated: 2019/02/22 20:34:49 by wballaba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,9 +75,9 @@ t_path			***find_unique_paths(t_farm *farm, int count)
 	int		i;
 	int8_t	*used;
 	t_path	**cur_paths;
-	t_path	**best_paths;
+	// t_path	**best_paths;
 	int		path_num;
-	t_list	*cur;
+	// t_list	*cur;
 
 	cur_paths = (t_path**)malloc(count * sizeof(t_path*));
 	path_num = 0;
