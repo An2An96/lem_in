@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   find_node_by_name.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rschuppe <rschuppe@student.42.fr>          +#+  +:+       +#+        */
+/*   By: wballaba <wballaba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/20 17:14:12 by rschuppe          #+#    #+#             */
-/*   Updated: 2019/02/21 15:21:01 by rschuppe         ###   ########.fr       */
+/*   Updated: 2019/02/22 18:06:57 by wballaba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lem_in.h"
 
-static int find_node_index_by_name_helper(
+static int	find_node_index_by_name_helper(
 	t_node **rooms, int start, int finish, char *name)
 {
 	int		idx;
@@ -29,7 +29,7 @@ static int find_node_index_by_name_helper(
 	return (idx);
 }
 
-t_node			*find_node_by_name(t_node **rooms, char *name)
+t_node		*find_node_by_name(t_node **rooms, char *name)
 {
 	int i;
 	int idx;
