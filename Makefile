@@ -13,9 +13,9 @@ SRCS_DIR = ./srcs
 
 LIBS = libft libftprintf
 
-SRCS =	main.c read_farm_map.c incidence_matrix.c find_node_by_name.c \
-		create_sort_room_arr.c find_unique_paths.c find_best_comb_paths.c \
-		let_ants_to_path.c
+SRCS =	main.c find_node_by_name.c \
+		l1_read_farm_map.c l2_create_sort_room_arr.c l3_incidence_matrix.c \
+		l4_find_unique_paths.c l5_find_best_comb_paths.c l6_let_ants_to_paths.c
 OBJS = $(addprefix $(OBJS_DIR)/,$(SRCS:%.c=%.o))
 
 #FLAGS += -Wall -Wextra -Werror

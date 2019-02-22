@@ -6,7 +6,7 @@
 /*   By: wballaba <wballaba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/18 14:47:13 by rschuppe          #+#    #+#             */
-/*   Updated: 2019/02/22 13:08:24 by wballaba         ###   ########.fr       */
+/*   Updated: 2019/02/22 17:11:10 by wballaba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,14 @@ typedef struct	s_path {
 	int			count_node;
 }				t_path;
 
+// typedef struct	s_array {
+// 	void		*content;
+// 	size_t		content_size;
+// 	size_t		length;
+// }				t_array;
+
+// typedef	t_array	t_path;
+
 t_farm		*read_farm_map();
 
 t_node		**create_sort_room_arr(t_list *rooms_head, int count_rooms);
@@ -58,6 +66,6 @@ t_path		***find_unique_paths(t_farm *farm, int count);
 
 int			find_best_comb_paths(t_path ***path_combs, int ants_count);
 
-void		let_ants_to_path(t_path **paths, t_node **rooms, t_farm *farm);
+void		let_ants_to_paths(t_path **paths, t_farm *farm);
 
 #endif

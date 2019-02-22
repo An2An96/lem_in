@@ -1,20 +1,22 @@
-1
+40
 ##start
 a 0 0
 ##end
-h 0 0
+k 0 0
 b 0 0
 c 0 0
 d 0 0
 e 0 0
 f 0 0
 g 0 0
+h 0 0
 a-b
 b-c
-c-h
+c-k
 b-d
 d-e
-e-h
+e-k
 a-f
 f-g
-g-c
+g-h
+h-c
