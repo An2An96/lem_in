@@ -6,7 +6,7 @@
 /*   By: wballaba <wballaba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/18 14:47:13 by rschuppe          #+#    #+#             */
-/*   Updated: 2019/02/23 19:21:11 by wballaba         ###   ########.fr       */
+/*   Updated: 2019/02/23 19:32:19 by wballaba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,5 +77,10 @@ void		make_step(t_farm *farm);
 t_node		*find_node_by_name(t_node **rooms, char *name);
 int			find_node_index_by_name(t_node **rooms, char *name);
 int			get_paths_diff(t_path **paths, int path_idx);
+
+/*
+**	Visualisation
+*/
+int			press_key_callback(int key, t_farm *farm);
 
 #endif

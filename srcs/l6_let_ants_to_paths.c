@@ -6,7 +6,7 @@
 /*   By: wballaba <wballaba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/20 19:25:43 by rschuppe          #+#    #+#             */
-/*   Updated: 2019/02/23 19:20:56 by wballaba         ###   ########.fr       */
+/*   Updated: 2019/02/23 19:32:34 by wballaba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,12 +73,6 @@ static void	choose_path_and_start(t_farm *farm, t_path **paths, int *nbr_ants)
 	}
 }
 
-int ft_close(void)
-{
-	exit(0);
-	return (0);
-}
-
 void		make_step(t_farm *farm)
 {
 	static int	nbr_ants;
@@ -94,18 +88,6 @@ void		make_step(t_farm *farm)
 	if (nbr_ants < farm->ants_count)
 		choose_path_and_start(farm, farm->best_paths, &nbr_ants);
 	ft_printf("\n");
-}
-
-int			press_key_callback(int key, t_farm *farm)
-{
-	t_params data;
-
-	if (key == KEY_SPACE)
-	{
-		if (farm->finished_ants < farm->ants_count)
-			make_step(farm);
-	}
-	return (1);
 }
 
 void		let_ants_to_paths(t_farm *farm)
