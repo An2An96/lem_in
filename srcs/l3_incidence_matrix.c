@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   incidence_matrix.c                                 :+:      :+:    :+:   */
+/*   l3_incidence_matrix.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rschuppe <rschuppe@student.42.fr>          +#+  +:+       +#+        */
+/*   By: wballaba <wballaba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/20 18:37:36 by rschuppe          #+#    #+#             */
-/*   Updated: 2019/02/21 17:35:03 by rschuppe         ###   ########.fr       */
+/*   Updated: 2019/02/23 19:15:35 by wballaba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,15 +22,19 @@ int8_t	**create_incidence_matrix(int size)
 	int		j;
 	int8_t	**matrix;
 
-	matrix = (int8_t**)malloc(size * sizeof(int8_t*));
+	// ft_printf("create matrix: %d\n", size);
+	if (!(matrix = (int8_t**)malloc(size * sizeof(int8_t*))))
+		exit(-1);
 	i = 0;
 	while (i < size)
 	{
 		j = 0;
-		matrix[i] = (int8_t*)malloc(size * sizeof(int8_t));
+		if (!(matrix[i] = (int8_t*)malloc(size * sizeof(int8_t))))
+			exit(-1);
 		while (j < size)
 		{
 			matrix[i][j] = 0;
+			// ft_printf("matrix[%d][%d] = %d\n", i, j, matrix[i][j]);
 			j++;
 		}
 		i++;
@@ -48,11 +52,13 @@ int		add_edge(
 	int parent_idx;
 	int child_idx;
 
+	// ft_printf("create edge %s -> %s\n", parent_name, child_name);
 	parent_idx = find_node_index_by_name(rooms, parent_name);
 	child_idx = find_node_index_by_name(rooms, child_name);
 	if (parent_idx < 0 || child_idx < 0)
 		return (0);
 	incidence[parent_idx][child_idx] = 1;
+	ft_printf("%d -> %d (%d)\n", parent_idx, child_idx, incidence[parent_idx][child_idx]);
 	return (1);
 }
 
@@ -79,8 +85,12 @@ void	show_incidence_matrix(t_node **rooms, int8_t **incidence, int size)
 	{
 		ft_printf("%5s |", rooms[i]->name);
 		j = -1;
-		while (++j < size)
-			ft_printf(" %5d", incidence[i][j]);
+		if (incidence && incidence[i])
+		{
+			while (++j < size)
+				ft_printf(" %5d", incidence[i][j]);
+		}
+		
 		ft_printf("\n");
 	}
 }

@@ -18,12 +18,14 @@ SRCS =	main.c find_node_by_name.c get_paths_diff.c \
 		l4_find_unique_paths.c l5_find_best_comb_paths.c l6_let_ants_to_paths.c
 OBJS = $(addprefix $(OBJS_DIR)/,$(SRCS:%.c=%.o))
 
-FLAGS += -Wall -Wextra -Werror
+#FLAGS += -Wall -Wextra -Werror
 FLAGS += -g
 FLAGS += -I$(INCS_DIR)
 FLAGS += $(foreach lib,$(LIBS),-I$(LIBS_DIR)/$(lib)/includes)
 
-LIBS_FLAGS += $(foreach lib,$(LIBS),-L$(LIBS_DIR)/$(lib) -l$(lib:lib%=%))
+BIN_FLAGS += $(FLAGS)
+BIN_FLAGS += $(foreach lib,$(LIBS),-L$(LIBS_DIR)/$(lib) -l$(lib:lib%=%))
+BIN_FLAGS += -framework OpenGL -framework AppKit
 
 ############################		  Rules 		############################
 
@@ -42,7 +44,7 @@ $(OBJS_DIR)/%.o: $(SRCS_DIR)/%.c
 $(OBJS): | $(OBJS_DIR)
 
 $(NAME): $(LIBS) $(OBJS)
-	@gcc -o $@ $(OBJS) $(FLAGS) $(LIBS_FLAGS)  
+	@gcc -o $@ $(OBJS) $(BIN_FLAGS)
 
 clean:
 	@rm -rf $(OBJS_DIR)

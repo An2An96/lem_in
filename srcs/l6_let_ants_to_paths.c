@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   l6_let_ants_to_paths.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rschuppe <rschuppe@student.42.fr>          +#+  +:+       +#+        */
+/*   By: wballaba <wballaba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/20 19:25:43 by rschuppe          #+#    #+#             */
-/*   Updated: 2019/02/23 03:02:56 by rschuppe         ###   ########.fr       */
+/*   Updated: 2019/02/23 19:20:56 by wballaba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,25 +73,52 @@ static void	choose_path_and_start(t_farm *farm, t_path **paths, int *nbr_ants)
 	}
 }
 
-void		let_ants_to_paths(t_path **paths, t_farm *farm)
+int ft_close(void)
 {
-	int	finished_ants;
-	int	nbr_ants;
-	int	nbr_path;
+	exit(0);
+	return (0);
+}
 
-	finished_ants = 0;
-	nbr_ants = 0;
+void		make_step(t_farm *farm)
+{
+	static int	nbr_ants;
+	int			nbr_path;
+
 	nbr_path = 0;
-	while (finished_ants < farm->ants_count)
+	while (farm->best_paths[nbr_path])
 	{
-		nbr_path = 0;
-		while (paths[nbr_path])
-		{
-			finished_ants += push_ants_along_path(farm, paths[nbr_path]);
-			nbr_path++;
-		}
-		if (nbr_ants < farm->ants_count)
-			choose_path_and_start(farm, paths, &nbr_ants);
-		ft_printf("\n");
+		farm->finished_ants +=
+			push_ants_along_path(farm, farm->best_paths[nbr_path]);
+		nbr_path++;
+	}
+	if (nbr_ants < farm->ants_count)
+		choose_path_and_start(farm, farm->best_paths, &nbr_ants);
+	ft_printf("\n");
+}
+
+int			press_key_callback(int key, t_farm *farm)
+{
+	t_params data;
+
+	if (key == KEY_SPACE)
+	{
+		if (farm->finished_ants < farm->ants_count)
+			make_step(farm);
+	}
+	return (1);
+}
+
+void		let_ants_to_paths(t_farm *farm)
+{
+	if (farm->visualiser)
+	{
+		mlx_hook(farm->visualiser->win_ptr, 17, 1L << 17, ft_close, NULL);
+		mlx_key_hook(farm->visualiser->win_ptr, press_key_callback, farm);
+		mlx_loop(farm->visualiser->mlx_ptr);
+	}
+	else
+	{
+		while (farm->finished_ants < farm->ants_count)
+			make_step(farm);
 	}
 }

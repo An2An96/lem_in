@@ -6,7 +6,7 @@
 /*   By: wballaba <wballaba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/18 14:17:13 by rschuppe          #+#    #+#             */
-/*   Updated: 2019/02/22 20:34:07 by wballaba         ###   ########.fr       */
+/*   Updated: 2019/02/23 19:24:10 by wballaba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ void	show_path(t_farm *farm, t_path *path)
 	ft_printf("%s", farm->rooms[i]->name);
 	while (i < path->count_node)
 	{
-		ft_printf(" -> %s", farm->rooms[ path->idx[i] ]->name);
+		ft_printf(" -> %s[%d]", farm->rooms[ path->idx[i] ]->name, path->idx[i]);
 		i++;
 	}
 	ft_printf("\n");
@@ -73,14 +73,22 @@ int main(int argc, char **argv)
 	int		i;
 	t_farm	*farm;
 
-	if (argc == 2)
+	if (argc > 1)
 	{
-		if ((fd = open(argv[1], O_RDONLY)) == -1)
+		if ((fd = open(argv[argc - 1], O_RDONLY)) == -1)
 			exit(-1);
 	}
 	else
 		fd = 0;
-	farm = read_farm_map(fd);
+	
+	if (!(farm = read_farm_map(fd)))
+		exit(-1);
+	
+	farm->finished_ants = 0;
+	if (!ft_strcmp(argv[1], "-v"))
+		farm->visualiser = ft_create_window(WIN_SIZE, WIN_SIZE, "lem-in");
+	else
+		farm->visualiser = NULL;
 	i = 0;
 	while (i < farm->count_rooms)
 	{
@@ -95,12 +103,12 @@ int main(int argc, char **argv)
 	// find_unique_paths(farm, max_unique_paths);
 	
 	int idx = find_best_comb_paths(paths_combs, farm->ants_count);
-
+	farm->best_paths = paths_combs[idx];
 	ft_printf("Best paths comb:\n");
 	i = -1;
 	while (++i <= idx)
-		show_path(farm, paths_combs[idx][i]);
+		show_path(farm, farm->best_paths[i]);
 
-	let_ants_to_paths(paths_combs[idx], farm);
+	let_ants_to_paths(farm);
 	return (0);
 }

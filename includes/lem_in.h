@@ -6,7 +6,7 @@
 /*   By: wballaba <wballaba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/18 14:47:13 by rschuppe          #+#    #+#             */
-/*   Updated: 2019/02/22 20:38:01 by wballaba         ###   ########.fr       */
+/*   Updated: 2019/02/23 19:21:11 by wballaba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,9 +18,12 @@
 
 # include "libft.h"
 # include "ft_printf.h"
+# include "draw.h"
 
 # define	ROOM_START	1
 # define	ROOM_END	2
+
+# define	WIN_SIZE	500
 
 typedef struct	s_node {
 	char	*name;
@@ -30,17 +33,20 @@ typedef struct	s_node {
 	char	status;
 }				t_node;
 
-typedef struct	s_farm {
-	int			ants_count;
-	t_node		**rooms;
-	int			count_rooms;
-	int8_t**	incidence;
-}				t_farm;
-
 typedef struct	s_path {
 	int			*idx;
 	int			count_node;
 }				t_path;
+
+typedef struct	s_farm {
+	int			ants_count;
+	int			finished_ants;
+	t_node		**rooms;
+	int			count_rooms;
+	int8_t**	incidence;
+	t_path		**best_paths;
+	t_mlx		*visualiser;
+}				t_farm;
 
 /*
 **	Read farm
@@ -62,7 +68,8 @@ void		show_incidence_matrix(t_node **rooms, int8_t **incidence, int size);
 int			get_max_count_need_unique_paths(int8_t **incidence, int size);
 t_path		***find_unique_paths(t_farm *farm, int count);
 int			find_best_comb_paths(t_path ***path_combs, int ants_count);
-void		let_ants_to_paths(t_path **paths, t_farm *farm);
+void		let_ants_to_paths(t_farm *farm);
+void		make_step(t_farm *farm);
 
 /*
 **	Utils functions
