@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   read_farm_map.c                                    :+:      :+:    :+:   */
+/*   l1_read_farm_map.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rschuppe <rschuppe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/19 16:47:35 by rschuppe          #+#    #+#             */
-/*   Updated: 2019/02/21 13:27:21 by rschuppe         ###   ########.fr       */
+/*   Updated: 2019/02/23 03:02:11 by rschuppe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ static t_node	*create_room(char *name, int x, int y, int status)
 	room->name = ft_strdup(name);
 	room->x = x;
 	room->y = y;
+	room->ant_num = 0;
 	room->status = status;
 	return (room);
 }

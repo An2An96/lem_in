@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   l6_let_ants_to_paths.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wballaba <wballaba@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rschuppe <rschuppe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/20 19:25:43 by rschuppe          #+#    #+#             */
-/*   Updated: 2019/02/22 20:27:34 by wballaba         ###   ########.fr       */
+/*   Updated: 2019/02/23 03:02:56 by rschuppe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,18 +51,14 @@ static int	push_ants_along_path(t_farm *farm, t_path *path)
 
 static void	choose_path_and_start(t_farm *farm, t_path **paths, int *nbr_ants)
 {
-	int i;
 	int sum;
 	int path_idx;
-	int rest;
 
 	path_idx = 0;
-	rest = farm->ants_count - *nbr_ants;
 	while (paths[path_idx] && *nbr_ants < farm->ants_count)
 	{
 		if (path_idx > 0)
 		{
-			i = -1;
 			sum = 0;
 			sum += get_paths_diff(paths, path_idx);
 			if (sum >= (farm->ants_count - *nbr_ants))
