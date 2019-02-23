@@ -4,3 +4,6 @@
 [submodule "libs/libftprintf"]
 	path = libs/libftprintf
 	url = git@github.com:An2An96/ft_printf.git
+[submodule "libs/libdraw"]
+	path = libs/libdraw
+	url = https://github.com/An2An96/libdraw.git

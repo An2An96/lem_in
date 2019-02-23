@@ -11,7 +11,7 @@ LIBS_DIR = ./libs
 OBJS_DIR = ./objs
 SRCS_DIR = ./srcs
 
-LIBS = libft libftprintf
+LIBS = libft libftprintf libdraw
 
 SRCS =	main.c find_node_by_name.c get_paths_diff.c \
 		l1_read_farm_map.c l2_create_sort_room_arr.c l3_incidence_matrix.c \
