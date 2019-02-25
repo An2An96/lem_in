@@ -6,7 +6,7 @@
 /*   By: rschuppe <rschuppe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/18 14:17:13 by rschuppe          #+#    #+#             */
-/*   Updated: 2019/02/25 18:16:24 by rschuppe         ###   ########.fr       */
+/*   Updated: 2019/02/25 20:01:31 by rschuppe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,23 +43,23 @@ t_path ***test()
 	paths[1][1] = ft_dlst_create();
 
 	//	[Comb 2] Path 1
-	a = 1;
+	a = 5;
 	ft_dlst_push_back(paths[1][0], ft_create_node(&a, sizeof(int)));
-	a = 3;
+	a = 6;
 	ft_dlst_push_back(paths[1][0], ft_create_node(&a, sizeof(int)));
-	a = 4;
+	a = 7;
+	ft_dlst_push_back(paths[1][0], ft_create_node(&a, sizeof(int)));
+	a = 2;
 	ft_dlst_push_back(paths[1][0], ft_create_node(&a, sizeof(int)));
 	a = 8;
 	ft_dlst_push_back(paths[1][0], ft_create_node(&a, sizeof(int)));
 
 	//	[Comb 2] Path 2
-	a = 5;
+	a = 1;
 	ft_dlst_push_back(paths[1][1], ft_create_node(&a, sizeof(int)));
-	a = 6;
+	a = 3;
 	ft_dlst_push_back(paths[1][1], ft_create_node(&a, sizeof(int)));
-	a = 7;
-	ft_dlst_push_back(paths[1][1], ft_create_node(&a, sizeof(int)));
-	a = 2;
+	a = 4;
 	ft_dlst_push_back(paths[1][1], ft_create_node(&a, sizeof(int)));
 	a = 8;
 	ft_dlst_push_back(paths[1][1], ft_create_node(&a, sizeof(int)));
@@ -117,6 +117,7 @@ int main(int argc, char **argv)
 	int		i;
 	t_farm	*farm;
 	t_args	*args;
+	t_path	***paths_combs;
 
 	args = read_args(argc, argv);
 	if (args->filename)
@@ -146,17 +147,29 @@ int main(int argc, char **argv)
 		show_incidence_matrix(farm->rooms, farm->incidence, farm->count_rooms);
 	}
 
-	t_path ***paths_combs;// = test();
-	int max_unique_paths = get_max_count_need_unique_paths(farm->incidence, farm->count_rooms);
-	if (IS_FLAG(FLAG_DEBUG))
-		ft_printf("max unique paths: %d\n", max_unique_paths);
-	paths_combs = ft_memalloc((max_unique_paths + 1) * sizeof(t_path**));
+	paths_combs = test();
+	// int max_unique_paths = get_max_count_need_unique_paths(farm->incidence, farm->count_rooms);
+	// if (IS_FLAG(FLAG_DEBUG))
+	// 	ft_printf("max unique paths: %d\n", max_unique_paths);
+	// paths_combs = ft_memalloc((max_unique_paths + 1) * sizeof(t_path**));
+	// i = 0;
+	// // while (i < max_unique_paths)
+	// // {
+	// paths_combs[i] = find_unique_paths(farm, i + 1);
+	// // 	i++;
+	// // }
 	i = 0;
-	// while (i < max_unique_paths)
-	// {
-	paths_combs[i] = find_unique_paths(farm, i + 1);
-	// 	i++;
-	// }
+	while (paths_combs[i])
+	{
+		int j = 0;
+		while (paths_combs[i][j])
+		{
+			show_path(farm, paths_combs[i][j]);
+			j++;
+		}
+		sort_paths_by_length(paths_combs[i]);
+		i++;
+	}
 	
 	int idx = find_best_comb_paths(paths_combs, farm->ants_count);
 	farm->best_paths = paths_combs[idx];

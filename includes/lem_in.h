@@ -6,7 +6,7 @@
 /*   By: rschuppe <rschuppe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/18 14:47:13 by rschuppe          #+#    #+#             */
-/*   Updated: 2019/02/25 19:48:01 by rschuppe         ###   ########.fr       */
+/*   Updated: 2019/02/25 20:02:00 by rschuppe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,7 @@ void		show_incidence_matrix(t_room **rooms, int8_t **incidence, int size);
 */
 int			get_max_count_need_unique_paths(int8_t **incidence, int size);
 t_path		**find_unique_paths(t_farm *farm, int count);
+void		sort_paths_by_length(t_path **paths);
 int			find_best_comb_paths(t_path ***path_combs, int ants_count);
 void		let_ants_to_paths(t_farm *farm);
 void		make_step(t_farm *farm);

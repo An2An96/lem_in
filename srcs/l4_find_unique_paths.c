@@ -6,7 +6,7 @@
 /*   By: rschuppe <rschuppe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/20 19:11:32 by rschuppe          #+#    #+#             */
-/*   Updated: 2019/02/25 18:21:16 by rschuppe         ###   ########.fr       */
+/*   Updated: 2019/02/25 19:57:58 by rschuppe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,34 @@ int				get_max_count_need_unique_paths(int8_t **incidence, int size)
 		i++;
 	}
 	return (MIN(counter[0], counter[1]));
+}
+
+void			sort_paths_by_length(t_path **paths)
+{
+
+	int i;
+	int j;
+	int min_idx;
+	t_path *tmp;
+
+	i = 0;
+	while (paths[i])
+	{
+		min_idx = i;
+		j = min_idx;
+		while (paths[++j])
+			if (paths[j]->size < paths[min_idx]->size)
+				min_idx = j;
+		tmp = paths[min_idx];
+		j = min_idx - i;
+		while (j)
+		{
+			paths[i + j] = paths[i + j - 1];
+			j--;
+		}
+		paths[i] = tmp;
+		i++;
+	}
 }
 
 static t_path	*ft_one_dfs(
