@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lem_in.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rschuppe <rschuppe@student.42.fr>          +#+  +:+       +#+        */
+/*   By: wballaba <wballaba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/18 14:47:13 by rschuppe          #+#    #+#             */
-/*   Updated: 2019/02/25 21:48:22 by rschuppe         ###   ########.fr       */
+/*   Updated: 2019/02/25 21:59:11 by wballaba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 
 # include "libft.h"
 # include "ft_printf.h"
-// # include "draw.h"
+# include "draw.h"
 
 # define FLAG_VISUALISE	1
 # define FLAG_DEBUG		2
@@ -27,6 +27,11 @@
 # define ROOM_END		2
 
 # define WIN_SIZE		500
+# define COLOR_NODE		0xFFFFFFF
+# define COLOR_EDGE		0xFFFFFFF
+# define COLOR_BACK		0x0000000
+# define COLOR_ANT		0x00FF000
+
 
 # define IS_FLAG(f)		(args->flags & f)
 

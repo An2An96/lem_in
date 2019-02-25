@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   l6_let_ants_to_paths.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rschuppe <rschuppe@student.42.fr>          +#+  +:+       +#+        */
+/*   By: wballaba <wballaba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/20 19:25:43 by rschuppe          #+#    #+#             */
-/*   Updated: 2019/02/25 21:41:59 by rschuppe         ###   ########.fr       */
+/*   Updated: 2019/02/25 21:59:31 by wballaba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,6 +87,12 @@ void		make_step(t_farm *farm)
 	if (nbr_ants < farm->ants_count)
 		choose_path_and_start(farm, farm->best_paths, &nbr_ants);
 	ft_printf("\n");
+}
+
+int			ft_close(void)
+{
+	exit(-1);
+	return (0);
 }
 
 void		let_ants_to_paths(t_farm *farm)
