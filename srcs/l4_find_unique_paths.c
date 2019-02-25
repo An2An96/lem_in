@@ -6,7 +6,7 @@
 /*   By: rschuppe <rschuppe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/20 19:11:32 by rschuppe          #+#    #+#             */
-/*   Updated: 2019/02/25 19:57:58 by rschuppe         ###   ########.fr       */
+/*   Updated: 2019/02/25 19:17:58 by rschuppe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,22 +16,28 @@
 **	Получает максимальное количество необходимых уникальных маршрутов
 */
 
-int				get_max_count_need_unique_paths(int8_t **incidence, int size)
-{
-	int i;
-	int counter[2];
+// int				get_max_count_need_unique_paths(t_room **rooms, int size)
+// {
+// 	// int i;
+// 	// int counter[2];
 
-	i = 0;
-	counter[0] = 0;
-	counter[1] = 0;
-	while (i < size)
-	{
-		counter[0] += incidence[0][i];
-		counter[1] += incidence[i][size - 1];
-		i++;
-	}
-	return (MIN(counter[0], counter[1]));
-}
+// 	// i = 0;
+// 	// counter[0] = 0;
+// 	// counter[1] = 0;
+
+
+// 	// counter[0] += ft_lstlen(rooms[0]->childs);
+// 	// counter[1] += ft_lstlen(rooms[size - 1]->childs);
+
+// 	// while (i < size)
+// 	// {
+// 	// 	counter[0] += rooms[0][i];
+// 	// 	counter[1] += incidence[i][size - 1];
+// 	// 	i++;
+// 	// }
+// 	// return (MIN(counter[0], counter[1]));
+// 	return (0);
+// }
 
 void			sort_paths_by_length(t_path **paths)
 {
