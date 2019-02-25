@@ -6,7 +6,7 @@
 /*   By: rschuppe <rschuppe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/18 14:17:13 by rschuppe          #+#    #+#             */
-/*   Updated: 2019/02/25 19:17:09 by rschuppe         ###   ########.fr       */
+/*   Updated: 2019/02/25 21:38:16 by rschuppe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,14 +74,12 @@ t_path ***test()
 void	show_path(t_farm *farm, t_path *path)
 {
 	t_node	*cur;
-	int		room_idx;
 
 	cur = path->head;
 	ft_printf("%s", farm->rooms[0]->name);
 	while (cur)
 	{
-		room_idx = *((int*)(cur->content));
-		ft_printf(" -> %s[%d]", farm->rooms[room_idx]->name, room_idx);
+		ft_printf(" -> %s", ((t_room*)cur->content)->name);
 		cur = cur->next;
 	}
 	ft_printf("\n");
@@ -144,7 +142,7 @@ int main(int argc, char **argv)
 		i = -1;
 		while (++i < farm->count_rooms)
 			ft_printf("[%2d] -> %s\n", i, farm->rooms[i]->name);
-		show_incidence_matrix(farm->rooms, farm->incidence, farm->count_rooms);
+		// show_incidence_matrix(farm->rooms, farm->incidence, farm->count_rooms);
 	}
 
 	// paths_combs = test();

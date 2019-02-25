@@ -6,7 +6,7 @@
 /*   By: rschuppe <rschuppe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/18 14:47:13 by rschuppe          #+#    #+#             */
-/*   Updated: 2019/02/25 19:18:14 by rschuppe         ###   ########.fr       */
+/*   Updated: 2019/02/25 21:48:22 by rschuppe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,16 +48,13 @@ typedef struct	s_room {
 typedef struct s_dlist	t_path;
 
 typedef struct	s_farm {
-	int			ants_count;
-	int			finished_ants;
 	t_room		**rooms;
 	int			count_rooms;
-	int8_t**	incidence;
 	t_path		**best_paths;
-
+	int			ants_count;
+	int			finished_ants;
 	int			start_edges;
 	int			finish_edges;
-
 
 # ifdef DRAW_H
 	t_mlx		*visualiser;
@@ -72,18 +69,9 @@ t_farm		*read_farm_map();
 t_room		**create_sort_room_arr(t_list *rooms_head, int count_rooms);
 
 /*
-**	Incidence matrix
-*/
-
-int8_t**	create_incidence_matrix(int size);
-int			add_edge(t_farm *farm, char *parent_name, char *child_name);
-void		show_incidence_matrix(t_room **rooms, int8_t **incidence, int size);
-
-/*
 **	Algorithm
 */
 
-// int			get_max_count_need_unique_paths(int8_t **incidence, int size);
 t_path		**find_unique_paths(t_farm *farm, int count);
 void		sort_paths_by_length(t_path **paths);
 int			find_best_comb_paths(t_path ***path_combs, int ants_count);
@@ -97,6 +85,7 @@ void		make_step(t_farm *farm);
 t_room		*find_node_by_name(t_room **rooms, char *name);
 int			find_node_index_by_name(t_room **rooms, char *name);
 int			get_paths_diff(t_path **paths, int path_idx);
+void		free_split_result(char **res);
 
 /*
 **	Visualisation

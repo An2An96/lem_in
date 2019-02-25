@@ -14,8 +14,8 @@ SRCS_DIR = ./srcs
 LIBS = libft libftprintf 
 #libdraw
 
-SRCS =	main.c find_node_by_name.c get_paths_diff.c \
-		l1_read_farm_map.c l2_create_sort_room_arr.c l3_incidence_matrix.c \
+SRCS =	main.c find_node_by_name.c get_paths_diff.c utils.c \
+		l1_read_farm_map.c l2_create_sort_room_arr.c \
 		l4_find_unique_paths.c l5_find_best_comb_paths.c l6_let_ants_to_paths.c
 #l7_visual_farm.c
 OBJS = $(addprefix $(OBJS_DIR)/,$(SRCS:%.c=%.o))

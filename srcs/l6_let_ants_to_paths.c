@@ -6,46 +6,39 @@
 /*   By: rschuppe <rschuppe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/20 19:25:43 by rschuppe          #+#    #+#             */
-/*   Updated: 2019/02/25 19:47:45 by rschuppe         ###   ########.fr       */
+/*   Updated: 2019/02/25 21:41:59 by rschuppe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lem_in.h"
 
-static void	show_ant_step(t_farm *farm, int room_idx)
+static void	show_ant_pos(t_room *room)
 {
-	t_room *room;
-
-	room = farm->rooms[room_idx];
 	ft_printf("L%d-%s ", room->ant_num, room->name);
 }
 
-static int	push_ants_along_path(t_farm *farm, t_path *path)
+static int	push_ants_along_path(t_path *path)
 {
 	t_node	*cur;
-	int		room_idx;
-	int		prev_room_idx;
+	t_room	*room;
+	t_room	*prev_room;
 	int		finished;
 
 	finished = 0;
 	cur = path->tail;
 	while (cur && cur->prev)
 	{
-		room_idx = *((int*)cur->content);
-		prev_room_idx = *((int*)cur->prev->content);
-		if (farm->rooms[room_idx]->ant_num == 0)
+		room = (t_room*)cur->content;
+		prev_room = (t_room*)cur->prev->content;
+		if (room->ant_num == 0 && prev_room->ant_num != 0)
 		{
-			if (farm->rooms[prev_room_idx]->ant_num != 0)
+			room->ant_num = prev_room->ant_num;
+			prev_room->ant_num = 0;
+			show_ant_pos(room);
+			if (path->tail == cur)
 			{
-				farm->rooms[room_idx]->ant_num =
-					farm->rooms[prev_room_idx]->ant_num;
-				farm->rooms[prev_room_idx]->ant_num = 0;
-				show_ant_step(farm, room_idx);
-				if (path->tail == cur)
-				{
-					farm->rooms[room_idx]->ant_num = 0;
-					finished = 1;
-				}
+				room->ant_num = 0;
+				finished = 1;
 			}
 		}
 		cur = cur->prev;
@@ -55,9 +48,9 @@ static int	push_ants_along_path(t_farm *farm, t_path *path)
 
 static void	choose_path_and_start(t_farm *farm, t_path **paths, int *nbr_ants)
 {
-	int sum;
-	int path_idx;
-	int room_idx;
+	int		sum;
+	int		path_idx;
+	t_room	*room;
 
 	path_idx = 0;
 	while (paths[path_idx] && *nbr_ants < farm->ants_count)
@@ -69,11 +62,11 @@ static void	choose_path_and_start(t_farm *farm, t_path **paths, int *nbr_ants)
 			if (sum >= (farm->ants_count - *nbr_ants))
 				break ;
 		}
-		room_idx = *((int*)(paths[path_idx]->head->content));
-		if (!farm->rooms[room_idx]->ant_num)
+		room = (t_room*)paths[path_idx]->head->content;
+		if (!room->ant_num)
 		{
-			farm->rooms[room_idx]->ant_num = ++(*nbr_ants);
-			show_ant_step(farm, room_idx);
+			room->ant_num = ++(*nbr_ants);
+			show_ant_pos(room);
 		}
 		path_idx++;
 	}
@@ -88,7 +81,7 @@ void		make_step(t_farm *farm)
 	while (farm->best_paths[nbr_path])
 	{
 		farm->finished_ants +=
-			push_ants_along_path(farm, farm->best_paths[nbr_path]);
+			push_ants_along_path(farm->best_paths[nbr_path]);
 		nbr_path++;
 	}
 	if (nbr_ants < farm->ants_count)

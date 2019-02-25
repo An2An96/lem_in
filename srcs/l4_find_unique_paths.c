@@ -6,7 +6,7 @@
 /*   By: rschuppe <rschuppe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/20 19:11:32 by rschuppe          #+#    #+#             */
-/*   Updated: 2019/02/25 19:17:58 by rschuppe         ###   ########.fr       */
+/*   Updated: 2019/02/25 21:36:14 by rschuppe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,31 +67,53 @@ void			sort_paths_by_length(t_path **paths)
 	}
 }
 
-static t_path	*ft_one_dfs(
-	t_farm *farm, int8_t *used, int node_idx, int node_count)
+static t_path	*ft_one_dfs(t_farm *farm, t_room *room)
 {
-	int		next_node_idx;
 	t_path	*res;
+	t_list	*child;
+	t_node	*node;
 
-	if (node_idx == farm->count_rooms - 1)
+	if (room == farm->rooms[farm->count_rooms - 1])
 		return (ft_dlst_create());
 	res = NULL;
-	used[node_idx] = 1;
-	next_node_idx = 0;
-	while (next_node_idx < farm->count_rooms)
+
+	if (room->childs)
 	{
-		if (farm->incidence[node_idx][next_node_idx] && !used[next_node_idx])
+		child = room->childs;
+		while (child)
 		{
-			if ((res = ft_one_dfs(farm, used, next_node_idx, ++node_count)))
+			if ((res = ft_one_dfs(farm, (t_room*)(child->content))))
 			{
-				ft_dlst_push_front(res,
-					ft_create_node(&next_node_idx, sizeof(next_node_idx)));
-				return (res);
+				if ((node = ft_memalloc(sizeof(t_node))))
+				{
+					node->content = child->content;
+					node->content_size = sizeof(child->content);
+					ft_dlst_push_front(res, node);
+				}
+				// ft_dlst_push_front(res,
+				// 	ft_create_node((void*)(&child->content), sizeof(t_room*)));
+				break ;
 			}
+			child = child->next;
 		}
-		next_node_idx++;
 	}
-	used[node_idx] = 0;
+
+	// used[node_idx] = 1;
+	// next_node_idx = 0;
+	// while (next_node_idx < farm->count_rooms)
+	// {
+	// 	if (farm->incidence[node_idx][next_node_idx] && !used[next_node_idx])
+	// 	{
+	// 		if ((res = ft_one_dfs(farm, used, next_node_idx, ++node_count)))
+	// 		{
+	// 			ft_dlst_push_front(res,
+	// 				ft_create_node(&next_node_idx, sizeof(next_node_idx)));
+	// 			return (res);
+	// 		}
+	// 	}
+	// 	next_node_idx++;
+	// }
+	// used[node_idx] = 0;
 	return (res);
 }
 
@@ -101,7 +123,7 @@ static t_path	*ft_one_dfs(
 
 t_path			**find_unique_paths(t_farm *farm, int count)
 {
-	int8_t	*used;
+	// int8_t	*used;
 	t_path	**cur_paths;
 	// t_path	**best_paths;
 	int		path_num;
@@ -109,9 +131,10 @@ t_path			**find_unique_paths(t_farm *farm, int count)
 
 	cur_paths = (t_path**)ft_memalloc((count + 1) * sizeof(t_path*));
 	path_num = 0;
-	if (!(used = (int8_t*)ft_memalloc(farm->count_rooms * sizeof(int8_t))))
-		exit(-1);
-	cur_paths[path_num] = ft_one_dfs(farm, used, 0, 0);
+	// if (!(used = (int8_t*)ft_memalloc(farm->count_rooms * sizeof(int8_t))))
+	// 	exit(-1);
+
+	cur_paths[path_num] = ft_one_dfs(farm, farm->rooms[0]);
 	return (cur_paths);
 
 	// i = 0;

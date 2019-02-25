@@ -6,7 +6,7 @@
 /*   By: rschuppe <rschuppe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/20 17:14:12 by rschuppe          #+#    #+#             */
-/*   Updated: 2019/02/25 17:00:32 by rschuppe         ###   ########.fr       */
+/*   Updated: 2019/02/25 19:38:05 by rschuppe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ t_room		*find_node_by_name(t_room **rooms, char *name)
 	if (!ft_strcmp(rooms[0]->name, name))
 		return (rooms[0]);
 	i = 0;
-	while (rooms[i])
+	while (rooms[i])	//	ОПТИМИЗИРОВАТЬ
 		i++;
 	i--;
 	if (!ft_strcmp(rooms[i]->name, name))

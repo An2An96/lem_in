@@ -6,7 +6,7 @@
 /*   By: rschuppe <rschuppe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/19 16:47:35 by rschuppe          #+#    #+#             */
-/*   Updated: 2019/02/25 19:17:26 by rschuppe         ###   ########.fr       */
+/*   Updated: 2019/02/25 21:56:12 by rschuppe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,14 +26,30 @@ static t_room	*create_room(char *name, int x, int y, int type)
 	return (room);
 }
 
-static void		free_split_result(char **res)
-{
-	int i;
+/*
+**	Делает смежными два узла
+*/
 
-	i = 0;
-	while (res[i])
-		free(res[i++]);
-	free(res);
+static int		add_edge(t_farm *farm, char *parent_name, char *child_name)
+{
+	t_room	*parent;
+	t_room	*child;
+	t_list	*res;
+
+	parent = find_node_by_name(farm->rooms, parent_name);
+	child = find_node_by_name(farm->rooms, child_name);
+	if (!parent || !child)
+		return (0);
+	if (parent == farm->rooms[0])
+		farm->start_edges++;
+	if (child == farm->rooms[farm->count_rooms - 1])
+		farm->finish_edges++;
+	if (!(res = ft_memalloc(sizeof(t_list))))
+		return (0);
+	res->content = child;
+	res->content_size = sizeof(child);
+	ft_lstpush(&parent->childs, res);
+	return (1);
 }
 
 static int		parse_room_line(char *line, t_list **rooms, int *count_rooms)
@@ -76,9 +92,8 @@ t_farm			*read_farm_map(int fd)
 	t_farm	*farm;
 	t_list	*rooms;
 
-	if (!(farm = (t_farm*)malloc(sizeof(t_farm))))
+	if (!(farm = (t_farm*)ft_memalloc(sizeof(t_farm))))
 		exit(-1);
-	farm->count_rooms = 0;
 	rooms = NULL;
 	read_status = 0;
 	while (get_next_line(fd, &line))
@@ -92,9 +107,9 @@ t_farm			*read_farm_map(int fd)
 				if (!parse_room_line(line, &rooms, &farm->count_rooms))
 				{
 					read_status = 2;
-					farm->rooms = create_sort_room_arr(rooms, farm->count_rooms);
+					farm->rooms =
+						create_sort_room_arr(rooms, farm->count_rooms);
 					ft_lstdel(&rooms, NULL);
-					// farm->incidence = create_incidence_matrix(farm->count_rooms);
 				}
 			}
 			if (read_status == 2)
