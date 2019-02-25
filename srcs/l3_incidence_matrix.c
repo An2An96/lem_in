@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   l3_incidence_matrix.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wballaba <wballaba@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rschuppe <rschuppe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/20 18:37:36 by rschuppe          #+#    #+#             */
-/*   Updated: 2019/02/23 19:15:35 by wballaba         ###   ########.fr       */
+/*   Updated: 2019/02/25 18:15:47 by rschuppe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ int8_t	**create_incidence_matrix(int size)
 */
 
 int		add_edge(
-	t_node **rooms, int8_t **incidence, char *parent_name, char *child_name)
+	t_room **rooms, int8_t **incidence, char *parent_name, char *child_name)
 {
 	int parent_idx;
 	int child_idx;
@@ -58,7 +58,7 @@ int		add_edge(
 	if (parent_idx < 0 || child_idx < 0)
 		return (0);
 	incidence[parent_idx][child_idx] = 1;
-	ft_printf("%d -> %d (%d)\n", parent_idx, child_idx, incidence[parent_idx][child_idx]);
+	// ft_printf("%d -> %d (%d)\n", parent_idx, child_idx, incidence[parent_idx][child_idx]);
 	return (1);
 }
 
@@ -66,7 +66,7 @@ int		add_edge(
 **	Выводит матрицу инцидентности заменяя индексы вершин их именами
 */
 
-void	show_incidence_matrix(t_node **rooms, int8_t **incidence, int size)
+void	show_incidence_matrix(t_room **rooms, int8_t **incidence, int size)
 {
 	int i;
 	int j;

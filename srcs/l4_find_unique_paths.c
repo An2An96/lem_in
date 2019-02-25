@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   l4_find_unique_paths.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wballaba <wballaba@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rschuppe <rschuppe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/20 19:11:32 by rschuppe          #+#    #+#             */
-/*   Updated: 2019/02/22 20:34:49 by wballaba         ###   ########.fr       */
+/*   Updated: 2019/02/25 18:21:16 by rschuppe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,12 +40,7 @@ static t_path	*ft_one_dfs(
 	t_path	*res;
 
 	if (node_idx == farm->count_rooms - 1)
-	{
-		res = (t_path*)malloc(sizeof(t_path));
-		res->idx = malloc(node_count * sizeof(int));
-		res->count_node = 0;
-		return (res);
-	}
+		return (ft_dlst_create());
 	res = NULL;
 	used[node_idx] = 1;
 	next_node_idx = 0;
@@ -55,8 +50,8 @@ static t_path	*ft_one_dfs(
 		{
 			if ((res = ft_one_dfs(farm, used, next_node_idx, ++node_count)))
 			{
-				res->idx[node_count - 1] = next_node_idx;
-				res->count_node++;
+				ft_dlst_push_front(res,
+					ft_create_node(&next_node_idx, sizeof(next_node_idx)));
 				return (res);
 			}
 		}
@@ -70,49 +65,47 @@ static t_path	*ft_one_dfs(
 **	Находит комбинации уникальных (не пересекающихся) маршрутов
 */
 
-t_path			***find_unique_paths(t_farm *farm, int count)
+t_path			**find_unique_paths(t_farm *farm, int count)
 {
-	int		i;
 	int8_t	*used;
 	t_path	**cur_paths;
 	// t_path	**best_paths;
 	int		path_num;
 	// t_list	*cur;
 
-	cur_paths = (t_path**)malloc(count * sizeof(t_path*));
+	cur_paths = (t_path**)ft_memalloc((count + 1) * sizeof(t_path*));
 	path_num = 0;
-	if (!(used = (int8_t*)malloc(farm->count_rooms * sizeof(int8_t))))
+	if (!(used = (int8_t*)ft_memalloc(farm->count_rooms * sizeof(int8_t))))
 		exit(-1);
-	i = 0;
-	while (i < farm->count_rooms)
-		used[i++] = 0;
+	cur_paths[path_num] = ft_one_dfs(farm, used, 0, 0);
+	return (cur_paths);
 
-	i = 0;
-	while (i < count)
-	{
-		if ((cur_paths[path_num] = ft_one_dfs(farm, used, 0, 0)))
-			path_num++;
-		else
-			break ;
-		i++;
-	}
-	if (path_num == count)
-	{
-		i = 0;
-		while (i < path_num)
-		{
-			int j = 0;
-			ft_printf("%s", farm->rooms[0]->name);
-			while (j < cur_paths[i]->count_node)
-			{
-				ft_printf(" -> %s", farm->rooms[cur_paths[i]->idx[j]]->name);
-				j++;
-			}
-			ft_printf("\n");
-			i++;
-		}
-	}
-	else
-		ft_printf("Paths not found\n");
+	// i = 0;
+	// while (i < count)
+	// {
+	// 	if ((cur_paths[path_num] = ft_one_dfs(farm, used, 0, 0)))
+	// 		path_num++;
+	// 	else
+	// 		break ;
+	// 	i++;
+	// }
+	// if (path_num == count)
+	// {
+	// 	i = 0;
+	// 	while (i < path_num)
+	// 	{
+	// 		int j = 0;
+	// 		ft_printf("%s", farm->rooms[0]->name);
+	// 		while (j < cur_paths[i]->count_node)
+	// 		{
+	// 			ft_printf(" -> %s", farm->rooms[cur_paths[i]->idx[j]]->name);
+	// 			j++;
+	// 		}
+	// 		ft_printf("\n");
+	// 		i++;
+	// 	}
+	// }
+	// else
+	// 	ft_printf("Paths not found\n");
 	return (NULL);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   l5_find_best_comb_paths.c                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wballaba <wballaba@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rschuppe <rschuppe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/20 19:21:05 by rschuppe          #+#    #+#             */
-/*   Updated: 2019/02/22 20:27:14 by wballaba         ###   ########.fr       */
+/*   Updated: 2019/02/25 17:10:38 by rschuppe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ static int	get_steps_for_comb(
 		rest_ants += res * (path_idx + 1);
 		path_idx--;
 	}
-	steps += path_combs[0]->count_node - 1;
+	steps += path_combs[0]->size - 1;
 	return (steps);
 }
 

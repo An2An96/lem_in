@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_paths_diff.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wballaba <wballaba@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rschuppe <rschuppe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/22 20:24:56 by wballaba          #+#    #+#             */
-/*   Updated: 2019/02/22 20:25:13 by wballaba         ###   ########.fr       */
+/*   Updated: 2019/02/25 17:10:01 by rschuppe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ int	get_paths_diff(t_path **paths, int path_idx)
 	sum = 0;
 	while (i < path_idx)
 	{
-		sum += paths[path_idx]->count_node - paths[i]->count_node;
+		sum += paths[path_idx]->size - paths[i]->size;
 		i++;
 	}
 	return (sum);

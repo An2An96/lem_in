@@ -6,17 +6,17 @@
 /*   By: rschuppe <rschuppe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/19 16:47:35 by rschuppe          #+#    #+#             */
-/*   Updated: 2019/02/23 03:02:11 by rschuppe         ###   ########.fr       */
+/*   Updated: 2019/02/25 17:01:00 by rschuppe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lem_in.h"
 
-static t_node	*create_room(char *name, int x, int y, int status)
+static t_room	*create_room(char *name, int x, int y, int status)
 {
-	t_node	*room;
+	t_room	*room;
 
-	room = (t_node*)malloc(sizeof(t_node));
+	room = (t_room*)malloc(sizeof(t_room));
 	room->name = ft_strdup(name);
 	room->x = x;
 	room->y = y;
@@ -39,7 +39,7 @@ static int		parse_room_line(char *line, t_list **rooms, int *count_rooms)
 {
 	static int8_t	next_room_status;
 	char			**res;
-	t_node			*room;
+	t_room			*room;
 
 	if (!ft_strcmp(line, "##start"))
 		next_room_status = ROOM_START;
@@ -52,7 +52,7 @@ static int		parse_room_line(char *line, t_list **rooms, int *count_rooms)
 		{
 			room = create_room(res[0],
 				ft_atoi(res[1]), ft_atoi(res[2]), next_room_status);
-			ft_lstadd(rooms, ft_lstnew(room, sizeof(t_node)));
+			ft_lstadd(rooms, ft_lstnew(room, sizeof(t_room)));
 			free(room);
 			next_room_status = 0;
 			(*count_rooms)++;
