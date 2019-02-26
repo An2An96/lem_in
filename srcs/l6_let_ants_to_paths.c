@@ -6,7 +6,7 @@
 /*   By: wballaba <wballaba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/20 19:25:43 by rschuppe          #+#    #+#             */
-/*   Updated: 2019/02/25 21:59:31 by wballaba         ###   ########.fr       */
+/*   Updated: 2019/02/26 19:32:54 by wballaba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 static void	show_ant_pos(t_room *room)
 {
 	ft_printf("L%d-%s ", room->ant_num, room->name);
+	// ft_printf("P%d-%s ", room->previous_ant, room->name);
 }
 
 static int	push_ants_along_path(t_path *path)
@@ -33,6 +34,7 @@ static int	push_ants_along_path(t_path *path)
 		if (room->ant_num == 0 && prev_room->ant_num != 0)
 		{
 			room->ant_num = prev_room->ant_num;
+			prev_room->previous_ant = prev_room->ant_num;
 			prev_room->ant_num = 0;
 			show_ant_pos(room);
 			if (path->tail == cur)
@@ -100,6 +102,7 @@ void		let_ants_to_paths(t_farm *farm)
 #ifdef DRAW_H
 	if (farm->visualiser)
 	{
+		draw_farm(farm);
 		mlx_hook(farm->visualiser->win_ptr, 17, 1L << 17, ft_close, NULL);
 		mlx_key_hook(farm->visualiser->win_ptr, press_key_callback, farm);
 		mlx_loop(farm->visualiser->mlx_ptr);

@@ -6,7 +6,7 @@
 /*   By: wballaba <wballaba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/18 14:47:13 by rschuppe          #+#    #+#             */
-/*   Updated: 2019/02/25 21:59:11 by wballaba         ###   ########.fr       */
+/*   Updated: 2019/02/26 19:36:29 by wballaba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,7 @@ typedef struct	s_args {
 typedef struct	s_room {
 	char	*name;
 	int		ant_num;
+	int		previous_ant;
 	int		visited;
 	int		x;
 	int		y;
@@ -63,6 +64,7 @@ typedef struct	s_farm {
 
 # ifdef DRAW_H
 	t_mlx		*visualiser;
+	t_img		*image;
 # endif
 }				t_farm;
 
@@ -97,5 +99,6 @@ void		free_split_result(char **res);
 */
 
 int			press_key_callback(int key, t_farm *farm);
+void		draw_farm(t_farm *farm);
 
 #endif
