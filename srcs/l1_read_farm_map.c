@@ -6,7 +6,7 @@
 /*   By: rschuppe <rschuppe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/19 16:47:35 by rschuppe          #+#    #+#             */
-/*   Updated: 2019/02/25 21:56:12 by rschuppe         ###   ########.fr       */
+/*   Updated: 2019/02/26 15:14:24 by rschuppe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,6 @@ static int		add_edge(t_farm *farm, char *parent_name, char *child_name)
 {
 	t_room	*parent;
 	t_room	*child;
-	t_list	*res;
 
 	parent = find_node_by_name(farm->rooms, parent_name);
 	child = find_node_by_name(farm->rooms, child_name);
@@ -44,11 +43,8 @@ static int		add_edge(t_farm *farm, char *parent_name, char *child_name)
 		farm->start_edges++;
 	if (child == farm->rooms[farm->count_rooms - 1])
 		farm->finish_edges++;
-	if (!(res = ft_memalloc(sizeof(t_list))))
-		return (0);
-	res->content = child;
-	res->content_size = sizeof(child);
-	ft_lstpush(&parent->childs, res);
+	t_list *t = ft_lstnew_ptr((void*)child);
+	ft_lstpush(&parent->childs, t);
 	return (1);
 }
 

@@ -6,7 +6,7 @@
 /*   By: rschuppe <rschuppe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/18 14:17:13 by rschuppe          #+#    #+#             */
-/*   Updated: 2019/02/25 21:38:16 by rschuppe         ###   ########.fr       */
+/*   Updated: 2019/02/26 15:52:16 by rschuppe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,20 +71,6 @@ t_path ***test()
 	return (paths);
 }
 
-void	show_path(t_farm *farm, t_path *path)
-{
-	t_node	*cur;
-
-	cur = path->head;
-	ft_printf("%s", farm->rooms[0]->name);
-	while (cur)
-	{
-		ft_printf(" -> %s", ((t_room*)cur->content)->name);
-		cur = cur->next;
-	}
-	ft_printf("\n");
-}
-
 t_args	*read_args(int argc, char **argv)
 {
 	int		i;
@@ -146,16 +132,19 @@ int main(int argc, char **argv)
 	}
 
 	// paths_combs = test();
-	int max_unique_paths = MIN(farm->start_edges, farm->finish_edges); //get_max_count_need_unique_paths(farm->rooms, farm->count_rooms);
+	int max_unique_paths = MIN(farm->start_edges, farm->finish_edges);
 	if (IS_FLAG(FLAG_DEBUG))
 		ft_printf("max unique paths: %d\n", max_unique_paths);
 	paths_combs = ft_memalloc((max_unique_paths + 1) * sizeof(t_path**));
 	i = 0;
-	// while (i < max_unique_paths)
-	// {
-	paths_combs[i] = find_unique_paths(farm, i + 1);
-	// 	i++;
-	// }
+	while (i < max_unique_paths)
+	{
+		if (!(paths_combs[i] = find_unique_paths(farm, i + 1)))
+		{
+			break ;
+		}
+		i++;
+	}
 	i = 0;
 	while (paths_combs[i])
 	{

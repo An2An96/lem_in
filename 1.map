@@ -1,4 +1,4 @@
-30
+2
 ##start
 a 250 450
 ##end
@@ -11,11 +11,11 @@ f 100 350
 g 100 250
 h 100 150
 a-b
-b-c
-c-k
 b-d
 d-e
 e-k
+b-c
+c-k
 a-f
 f-g
 g-h

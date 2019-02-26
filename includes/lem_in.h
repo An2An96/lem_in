@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lem_in.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wballaba <wballaba@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rschuppe <rschuppe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/18 14:47:13 by rschuppe          #+#    #+#             */
-/*   Updated: 2019/02/26 19:36:29 by wballaba         ###   ########.fr       */
+/*   Updated: 2019/02/26 19:41:51 by rschuppe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,15 @@
 
 # define IS_FLAG(f)		(args->flags & f)
 
+typedef char bool;
+enum
+{
+	false,
+	true
+};
+
+typedef struct s_dlist	t_path;
+
 typedef struct	s_args {
 	int		flags;
 	char	*filename;
@@ -50,8 +59,6 @@ typedef struct	s_room {
 	char	type;
 	t_list	*childs;
 }				t_room;
-
-typedef struct s_dlist	t_path;
 
 typedef struct	s_farm {
 	t_room		**rooms;
@@ -93,6 +100,7 @@ t_room		*find_node_by_name(t_room **rooms, char *name);
 int			find_node_index_by_name(t_room **rooms, char *name);
 int			get_paths_diff(t_path **paths, int path_idx);
 void		free_split_result(char **res);
+void		show_path(t_farm *farm, t_path *path);
 
 /*
 **	Visualisation
