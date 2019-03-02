@@ -3,22 +3,25 @@
 /*                                                        :::      ::::::::   */
 /*   l6_let_ants_to_paths.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wballaba <wballaba@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rschuppe <rschuppe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/20 19:25:43 by rschuppe          #+#    #+#             */
-/*   Updated: 2019/02/26 19:32:54 by wballaba         ###   ########.fr       */
+/*   Updated: 2019/03/02 21:48:09 by rschuppe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lem_in.h"
 
-static void	show_ant_pos(t_room *room)
+inline static void	show_ant_pos(t_room *room)
 {
-	ft_printf("L%d-%s ", room->ant_num, room->name);
-	// ft_printf("P%d-%s ", room->previous_ant, room->name);
+	write(1, "L", 1);
+	ft_putnbr(room->ant_num);
+	write(1, "-", 1);
+	ft_putstr(room->name);
+	write(1, " ", 1);
 }
 
-static int	push_ants_along_path(t_path *path)
+static int			push_ants_along_path(t_path *path)
 {
 	t_node	*cur;
 	t_room	*room;
@@ -48,7 +51,8 @@ static int	push_ants_along_path(t_path *path)
 	return (finished);
 }
 
-static void	choose_path_and_start(t_farm *farm, t_path **paths, int *nbr_ants)
+static void			choose_path_and_start(
+	t_farm *farm, t_path **paths, int *nbr_ants)
 {
 	int		sum;
 	int		path_idx;
@@ -74,7 +78,7 @@ static void	choose_path_and_start(t_farm *farm, t_path **paths, int *nbr_ants)
 	}
 }
 
-void		make_step(t_farm *farm)
+void				make_step(t_farm *farm)
 {
 	static int	nbr_ants;
 	int			nbr_path;
@@ -91,29 +95,23 @@ void		make_step(t_farm *farm)
 	ft_printf("\n");
 }
 
-int			ft_close(void)
+void				let_ants_to_paths(t_farm *farm)
 {
-	exit(-1);
-	return (0);
-}
+	int	nbr_ants;
+	int	nbr_path;
 
-void		let_ants_to_paths(t_farm *farm)
-{
-#ifdef DRAW_H
-	if (farm->visualiser)
-	{
-		draw_farm(farm);
-		mlx_hook(farm->visualiser->win_ptr, 17, 1L << 17, ft_close, NULL);
-		mlx_key_hook(farm->visualiser->win_ptr, press_key_callback, farm);
-		mlx_loop(farm->visualiser->mlx_ptr);
-	}
-	else
-	{
-		while (farm->finished_ants < farm->ants_count)
-			make_step(farm);
-	}
-#else
+	nbr_ants = 0;
 	while (farm->finished_ants < farm->ants_count)
-		make_step(farm);
-#endif
+	{
+		nbr_path = 0;
+		while (farm->best_paths[nbr_path])
+		{
+			farm->finished_ants +=
+				push_ants_along_path(farm->best_paths[nbr_path]);
+			nbr_path++;
+		}
+		if (nbr_ants < farm->ants_count)
+			choose_path_and_start(farm, farm->best_paths, &nbr_ants);
+		ft_printf("\n");
+	}
 }

@@ -6,7 +6,7 @@
 /*   By: rschuppe <rschuppe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/18 14:47:13 by rschuppe          #+#    #+#             */
-/*   Updated: 2019/03/02 18:08:29 by rschuppe         ###   ########.fr       */
+/*   Updated: 2019/03/02 21:39:09 by rschuppe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,7 @@
 # include <limits.h>
 
 # include "libft.h"
-
 # include "ft_printf.h"
-# include "draw.h"
 
 # define FLAG_VISUALISE		1
 # define FLAG_DEBUG			2
@@ -36,13 +34,6 @@
 # define LIST(el, type)		((type)el->content)
 
 # define IS_FLAG(f)			(args->flags & f)
-
-typedef char bool;
-enum
-{
-	false,
-	true
-};
 
 typedef struct s_dlist	t_path;
 
@@ -72,11 +63,6 @@ typedef struct	s_farm {
 	int			finished_ants;
 	int			start_edges;
 	int			finish_edges;
-
-# ifdef DRAW_H
-	t_mlx		*visualiser;
-	t_img		*image;
-# endif
 }				t_farm;
 
 /*
@@ -106,12 +92,5 @@ int			find_node_index_by_name(t_room **rooms, char *name);
 int			get_paths_diff(t_path **paths, int path_idx);
 void		free_split_result(char **res);
 void		show_path(t_farm *farm, t_path *path);
-
-/*
-**	Visualisation
-*/
-
-int			press_key_callback(int key, t_farm *farm);
-void		draw_farm(t_farm *farm);
 
 #endif
