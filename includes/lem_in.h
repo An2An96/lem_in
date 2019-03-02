@@ -6,7 +6,7 @@
 /*   By: wballaba <wballaba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/18 14:47:13 by rschuppe          #+#    #+#             */
-/*   Updated: 2019/03/02 18:02:22 by wballaba         ###   ########.fr       */
+/*   Updated: 2019/03/02 22:02:31 by wballaba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,8 @@
 # define ROOM_START			1
 # define ROOM_END			2
 
-# define WIN_SIZE			500
+# define WIN_SIZE			1250
+# define VISUAL_SIZE		1100
 # define COLOR_NODE			0xFFFFFFF
 # define COLOR_EDGE			0xFFFFFFF
 # define COLOR_BACK			0x0000000
@@ -36,6 +37,8 @@
 # define LIST(el, type)		((type)el->content)
 
 # define IS_FLAG(f)			(args->flags & f)
+
+int	g_fd;
 
 typedef char bool;
 enum
@@ -79,6 +82,7 @@ typedef struct	s_visual_farm
 	t_mlx		*visual;
 	t_img		*image;
 	t_farm		*farm;
+	int			abs_val;
 }				t_visual_farm;
 
 /*
@@ -87,6 +91,7 @@ typedef struct	s_visual_farm
 
 t_farm		*read_farm_map();
 t_room		**create_sort_room_arr(t_list *rooms_head, int count_rooms);
+t_args		*read_args(int argc, char **argv);
 
 /*
 **	Algorithm

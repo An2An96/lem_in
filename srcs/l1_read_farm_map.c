@@ -6,11 +6,35 @@
 /*   By: wballaba <wballaba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/19 16:47:35 by rschuppe          #+#    #+#             */
-/*   Updated: 2019/03/02 18:03:10 by wballaba         ###   ########.fr       */
+/*   Updated: 2019/03/02 20:19:44 by wballaba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lem_in.h"
+
+t_args	*read_args(int argc, char **argv)
+{
+	int		i;
+	t_args *args;
+
+	if (!(args = (t_args*)ft_memalloc(sizeof(t_args))))
+		return (NULL);
+	i = 1;
+	while (i < argc)
+	{
+		if (!ft_strcmp(argv[i], "-v"))
+			args->flags |= FLAG_VISUALISE;
+		else if (!ft_strcmp(argv[i], "-d"))
+			args->flags |= FLAG_DEBUG;
+		else if (!ft_strcmp(argv[i], "-f") && i + 1 < argc)
+		{
+			args->filename = argv[i + 1];
+			i++;
+		}
+		i++;
+	}
+	return (args);
+}
 
 static t_room	*create_room(char *name, int x, int y, int type)
 {
