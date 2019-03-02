@@ -6,7 +6,7 @@
 /*   By: rschuppe <rschuppe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/01 21:05:56 by rschuppe          #+#    #+#             */
-/*   Updated: 2019/03/02 15:42:07 by rschuppe         ###   ########.fr       */
+/*   Updated: 2019/03/02 18:09:05 by rschuppe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,15 +27,15 @@ void		dijkstra_algo(t_farm *farm)
 	if (!(stack = ft_stack_new(farm->count_rooms)))
 		exit(-1);
 	farm->rooms[farm->count_rooms - 1]->weight = 0;
-	stack_push(stack, farm->count_rooms - 1);
-	while (stack_pop(stack, &cur_room))
+	ft_stack_push(stack, farm->count_rooms - 1);
+	while (ft_stack_pop(stack, &cur_room))
 	{
 		parent = farm->rooms[cur_room]->neighbors;
 		while (parent)
 		{
 			room = farm->rooms[*(int*)parent->content];
 			if (room->weight == -1)
-				stack_push(stack, *(int*)parent->content);
+				ft_stack_push(stack, *(int*)parent->content);
 			if (room->weight == -1
 				|| room->weight > farm->rooms[cur_room]->weight + 1)
 				room->weight = (farm->rooms[cur_room]->weight + 1);
