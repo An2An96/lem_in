@@ -6,7 +6,7 @@
 /*   By: wballaba <wballaba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/20 19:25:43 by rschuppe          #+#    #+#             */
-/*   Updated: 2019/02/26 19:32:54 by wballaba         ###   ########.fr       */
+/*   Updated: 2019/03/02 18:03:20 by wballaba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,21 +99,21 @@ int			ft_close(void)
 
 void		let_ants_to_paths(t_farm *farm)
 {
-#ifdef DRAW_H
-	if (farm->visualiser)
-	{
-		draw_farm(farm);
-		mlx_hook(farm->visualiser->win_ptr, 17, 1L << 17, ft_close, NULL);
-		mlx_key_hook(farm->visualiser->win_ptr, press_key_callback, farm);
-		mlx_loop(farm->visualiser->mlx_ptr);
-	}
-	else
-	{
-		while (farm->finished_ants < farm->ants_count)
-			make_step(farm);
-	}
-#else
+// #ifdef DRAW_H
+// 	if (farm->visualiser)
+// 	{
+// 		draw_farm(farm);
+// 		mlx_hook(farm->visualiser->win_ptr, 17, 1L << 17, ft_close, NULL);
+// 		mlx_key_hook(farm->visualiser->win_ptr, press_key_callback, farm);
+// 		mlx_loop(farm->visualiser->mlx_ptr);
+// 	}
+// 	else
+// 	{
+// 		while (farm->finished_ants < farm->ants_count)
+// 			make_step(farm);
+// 	}
+// #else
 	while (farm->finished_ants < farm->ants_count)
 		make_step(farm);
-#endif
+// #endif
 }

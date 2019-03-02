@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   l1_read_farm_map.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rschuppe <rschuppe@student.42.fr>          +#+  +:+       +#+        */
+/*   By: wballaba <wballaba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/19 16:47:35 by rschuppe          #+#    #+#             */
-/*   Updated: 2019/03/02 15:38:18 by rschuppe         ###   ########.fr       */
+/*   Updated: 2019/03/02 18:03:10 by wballaba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,6 +98,8 @@ t_farm			*read_farm_map(int fd)
 	read_status = 0;
 	while (get_next_line(fd, &line))
 	{
+		if (!ft_strlen(line))
+			break ;
 		if (read_status == 0 && ++read_status)
 			farm->ants_count = ft_atoi(line);
 		else

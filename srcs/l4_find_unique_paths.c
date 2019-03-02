@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   l4_find_unique_paths.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rschuppe <rschuppe@student.42.fr>          +#+  +:+       +#+        */
+/*   By: wballaba <wballaba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/20 19:11:32 by rschuppe          #+#    #+#             */
-/*   Updated: 2019/03/02 15:28:56 by rschuppe         ###   ########.fr       */
+/*   Updated: 2019/03/02 18:02:47 by wballaba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -150,6 +150,15 @@ void	copy_paths_comb(t_path **dst, t_path **src)
 /*
 **	Находит комбинации уникальных (не пересекающихся) маршрутов
 */
+
+
+void			get_weight_room(t_farm *farm)
+{
+
+}
+
+
+
 
 t_path			**find_unique_paths(t_farm *farm, int count)
 {

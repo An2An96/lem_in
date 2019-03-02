@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   l7_visual_farm.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rschuppe <rschuppe@student.42.fr>          +#+  +:+       +#+        */
+/*   By: wballaba <wballaba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/23 19:27:35 by wballaba          #+#    #+#             */
-/*   Updated: 2019/03/02 15:28:56 by rschuppe         ###   ########.fr       */
+/*   Updated: 2019/03/02 18:00:49 by wballaba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ static void	draw_run_ant(t_params *data, t_farm *farm, int nbr_path)
 			round(data->x + length * cos_a), round(data->y + length * sin_a),
 			COLOR_ANT, ft_itoa(farm->rooms[nbr_path]->ant_num));
 		length--;
+		// Вставить сюда отрисовку фона
 	}
 }
 

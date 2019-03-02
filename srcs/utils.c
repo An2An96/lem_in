@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rschuppe <rschuppe@student.42.fr>          +#+  +:+       +#+        */
+/*   By: wballaba <wballaba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/25 21:47:32 by rschuppe          #+#    #+#             */
-/*   Updated: 2019/02/26 17:50:52 by rschuppe         ###   ########.fr       */
+/*   Updated: 2019/02/28 18:40:34 by wballaba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ void	show_path(t_farm *farm, t_path *path)
 	t_node	*cur;
 
 	cur = path->head;
-	// ft_printf("%s", farm->rooms[0]->name);
+	ft_printf("%s", farm->rooms[0]->name);
 	while (cur)
 	{
 		ft_printf("%s%s", cur != path->head ? " -> " : "",  ((t_room*)cur->content)->name);

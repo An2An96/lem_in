@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rschuppe <rschuppe@student.42.fr>          +#+  +:+       +#+        */
+/*   By: wballaba <wballaba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/18 14:17:13 by rschuppe          #+#    #+#             */
-/*   Updated: 2019/03/02 15:28:56 by rschuppe         ###   ########.fr       */
+/*   Updated: 2019/03/02 18:02:39 by wballaba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,12 +132,12 @@ int main(int argc, char **argv)
 	// }
 
 	farm->finished_ants = 0;
-#ifdef DRAW_H
-	if (IS_FLAG(FLAG_VISUALISE))
-		farm->visualiser = ft_create_window(WIN_SIZE, WIN_SIZE, "lem-in");
-	else
-		farm->visualiser = NULL;
-#endif
+// #ifdef DRAW_H
+	// if (IS_FLAG(FLAG_VISUALISE))
+	// 	farm->visualiser = ft_create_window(WIN_SIZE, WIN_SIZE, "lem-in");
+	// else
+	// 	farm->visualiser = NULL;
+// #endif
 	i = 0;
 	if (IS_FLAG(FLAG_DEBUG))
 	{

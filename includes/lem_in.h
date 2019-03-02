@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lem_in.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rschuppe <rschuppe@student.42.fr>          +#+  +:+       +#+        */
+/*   By: wballaba <wballaba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/18 14:47:13 by rschuppe          #+#    #+#             */
-/*   Updated: 2019/03/02 15:29:54 by rschuppe         ###   ########.fr       */
+/*   Updated: 2019/03/02 18:02:22 by wballaba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@
 # include <limits.h>
 
 # include "libft.h"
-# include "stack.h"
 
 # include "ft_printf.h"
 # include "draw.h"
@@ -73,12 +72,14 @@ typedef struct	s_farm {
 	int			finished_ants;
 	int			start_edges;
 	int			finish_edges;
-
-# ifdef DRAW_H
-	t_mlx		*visualiser;
-	t_img		*image;
-# endif
 }				t_farm;
+
+typedef struct	s_visual_farm
+{
+	t_mlx		*visual;
+	t_img		*image;
+	t_farm		*farm;
+}				t_visual_farm;
 
 /*
 **	Read farm
