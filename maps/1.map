@@ -1,20 +1,22 @@
-3
+30
 ##start
-a 1 0
-b 5 0
-baz 0 0
-c 9 0
-d 13 0
+a 250 450
 ##end
-foo 0 0
-bar 0 0
-hello 0 0
-f123 0 0
-55 0 0
-HU 0 0
+k 250 50
+b 250 350
+c 250 150
+d 400 350
+e 400 50
+f 100 350
+g 100 250
+h 100 150
 a-b
-baz-c
-d-foo
-bar-hello
-f123-55
-HU-baz
+b-d
+d-e
+e-k
+b-c
+c-k
+a-f
+f-g
+g-h
+h-c

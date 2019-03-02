@@ -6,7 +6,7 @@
 /*   By: rschuppe <rschuppe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/18 14:47:13 by rschuppe          #+#    #+#             */
-/*   Updated: 2019/02/26 19:41:51 by rschuppe         ###   ########.fr       */
+/*   Updated: 2019/03/02 15:29:54 by rschuppe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,23 +17,26 @@
 # include <limits.h>
 
 # include "libft.h"
+# include "stack.h"
+
 # include "ft_printf.h"
 # include "draw.h"
 
-# define FLAG_VISUALISE	1
-# define FLAG_DEBUG		2
+# define FLAG_VISUALISE		1
+# define FLAG_DEBUG			2
 
-# define ROOM_START		1
-# define ROOM_END		2
+# define ROOM_START			1
+# define ROOM_END			2
 
-# define WIN_SIZE		500
-# define COLOR_NODE		0xFFFFFFF
-# define COLOR_EDGE		0xFFFFFFF
-# define COLOR_BACK		0x0000000
-# define COLOR_ANT		0x00FF000
+# define WIN_SIZE			500
+# define COLOR_NODE			0xFFFFFFF
+# define COLOR_EDGE			0xFFFFFFF
+# define COLOR_BACK			0x0000000
+# define COLOR_ANT			0x00FF000
 
+# define LIST(el, type)		((type)el->content)
 
-# define IS_FLAG(f)		(args->flags & f)
+# define IS_FLAG(f)			(args->flags & f)
 
 typedef char bool;
 enum
@@ -57,7 +60,9 @@ typedef struct	s_room {
 	int		x;
 	int		y;
 	char	type;
-	t_list	*childs;
+	int		weight;
+	t_list	*neighbors;
+	t_path	*path;
 }				t_room;
 
 typedef struct	s_farm {
@@ -86,6 +91,7 @@ t_room		**create_sort_room_arr(t_list *rooms_head, int count_rooms);
 **	Algorithm
 */
 
+void		dijkstra_algo(t_farm *farm);
 t_path		**find_unique_paths(t_farm *farm, int count);
 void		sort_paths_by_length(t_path **paths);
 int			find_best_comb_paths(t_path ***path_combs, int ants_count);

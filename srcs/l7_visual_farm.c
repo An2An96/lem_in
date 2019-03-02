@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   l7_visual_farm.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wballaba <wballaba@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rschuppe <rschuppe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/23 19:27:35 by wballaba          #+#    #+#             */
-/*   Updated: 2019/02/26 19:39:40 by wballaba         ###   ########.fr       */
+/*   Updated: 2019/03/02 15:28:56 by rschuppe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ static void	draw_edge(t_farm *farm, t_img *img, int nbr_room)
 
 	data = (t_params*)ft_memalloc(sizeof(t_params));
 
-	t_list *child = farm->rooms[nbr_room]->childs;
+	t_list *child = farm->rooms[nbr_room]->neighbors;
 	t_room *room;
 
 	data->x = farm->rooms[nbr_room]->x;

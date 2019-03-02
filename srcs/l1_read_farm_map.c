@@ -6,7 +6,7 @@
 /*   By: rschuppe <rschuppe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/19 16:47:35 by rschuppe          #+#    #+#             */
-/*   Updated: 2019/02/26 15:14:24 by rschuppe         ###   ########.fr       */
+/*   Updated: 2019/03/02 15:38:18 by rschuppe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ static t_room	*create_room(char *name, int x, int y, int type)
 		room->x = x;
 		room->y = y;
 		room->type = type;
+		room->weight = -1;
 	}
 	return (room);
 }
@@ -32,19 +33,22 @@ static t_room	*create_room(char *name, int x, int y, int type)
 
 static int		add_edge(t_farm *farm, char *parent_name, char *child_name)
 {
-	t_room	*parent;
-	t_room	*child;
+	int		parent;
+	int		child;
+	t_list	*el;
 
-	parent = find_node_by_name(farm->rooms, parent_name);
-	child = find_node_by_name(farm->rooms, child_name);
-	if (!parent || !child)
+	parent = find_node_index_by_name(farm->rooms, parent_name);
+	child = find_node_index_by_name(farm->rooms, child_name);
+	if (parent == -1 || child == -1)
 		return (0);
-	if (parent == farm->rooms[0])
+	if (parent == 0 || child == 0)
 		farm->start_edges++;
-	if (child == farm->rooms[farm->count_rooms - 1])
+	if (parent == farm->count_rooms - 1 || child == farm->count_rooms - 1)
 		farm->finish_edges++;
-	t_list *t = ft_lstnew_ptr((void*)child);
-	ft_lstpush(&parent->childs, t);
+	el = ft_lstnew((void*)&child, sizeof(child));
+	ft_lstpush(&farm->rooms[parent]->neighbors, el);
+	el = ft_lstnew((void*)&parent, sizeof(child));
+	ft_lstpush(&farm->rooms[child]->neighbors, el);
 	return (1);
 }
 

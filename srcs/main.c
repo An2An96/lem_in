@@ -6,7 +6,7 @@
 /*   By: rschuppe <rschuppe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/18 14:17:13 by rschuppe          #+#    #+#             */
-/*   Updated: 2019/02/26 15:52:16 by rschuppe         ###   ########.fr       */
+/*   Updated: 2019/03/02 15:28:56 by rschuppe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,6 +115,22 @@ int main(int argc, char **argv)
 	if (!(farm = read_farm_map(fd)))
 		exit(-1);
 
+	// t_list *el = farm->rooms[0]->neighbors;
+	// ft_printf("Start childs:\n");
+	// while (el)
+	// {
+	// 	ft_printf("%s\n", LIST(el, t_room*)->name);
+	// 	el = el->next;
+	// }
+
+	// el = farm->rooms[farm->count_rooms - 1]->neighbors;
+	// ft_printf("Finish childs:\n");
+	// while (el)
+	// {
+	// 	ft_printf("%s\n", LIST(el, t_room*)->name);
+	// 	el = el->next;
+	// }
+
 	farm->finished_ants = 0;
 #ifdef DRAW_H
 	if (IS_FLAG(FLAG_VISUALISE))
@@ -131,43 +147,51 @@ int main(int argc, char **argv)
 		// show_incidence_matrix(farm->rooms, farm->incidence, farm->count_rooms);
 	}
 
+	dijkstra_algo(farm);
+	if (IS_FLAG(FLAG_DEBUG))
+	{
+		for (int i = 0; i < farm->count_rooms; i++)
+			ft_printf("room %s (%d) weight: %d\n", farm->rooms[i]->name, i, farm->rooms[i]->weight);
+	}
+
+
 	// paths_combs = test();
 	int max_unique_paths = MIN(farm->start_edges, farm->finish_edges);
 	if (IS_FLAG(FLAG_DEBUG))
 		ft_printf("max unique paths: %d\n", max_unique_paths);
-	paths_combs = ft_memalloc((max_unique_paths + 1) * sizeof(t_path**));
-	i = 0;
-	while (i < max_unique_paths)
-	{
-		if (!(paths_combs[i] = find_unique_paths(farm, i + 1)))
-		{
-			break ;
-		}
-		i++;
-	}
-	i = 0;
-	while (paths_combs[i])
-	{
-		int j = 0;
-		while (paths_combs[i][j])
-		{
-			show_path(farm, paths_combs[i][j]);
-			j++;
-		}
-		sort_paths_by_length(paths_combs[i]);
-		i++;
-	}
+	// paths_combs = ft_memalloc((max_unique_paths + 1) * sizeof(t_path**));
+	// i = 0;
+	// while (i < max_unique_paths)
+	// {
+	// 	if (!(paths_combs[i] = find_unique_paths(farm, i + 1)))
+	// 	{
+	// 		break ;
+	// 	}
+	// 	i++;
+	// }
+	// i = 0;
+	// while (paths_combs[i])
+	// {
+	// 	int j = 0;
+	// 	while (paths_combs[i][j])
+	// 	{
+	// 		show_path(farm, paths_combs[i][j]);
+	// 		j++;
+	// 	}
+	// 	sort_paths_by_length(paths_combs[i]);
+	// 	i++;
+	// }
 	
-	int idx = find_best_comb_paths(paths_combs, farm->ants_count);
-	farm->best_paths = paths_combs[idx];
-	if (IS_FLAG(FLAG_DEBUG))
-	{
-		ft_printf("Best paths comb:\n");
-		i = -1;
-		while (++i <= idx)
-			show_path(farm, farm->best_paths[i]);
-	}
+	// int idx = find_best_comb_paths(paths_combs, farm->ants_count);
+	// farm->best_paths = paths_combs[idx];
+	// if (IS_FLAG(FLAG_DEBUG))
+	// {
+	// 	ft_printf("Best paths comb:\n");
+	// 	i = -1;
+	// 	while (++i <= idx)
+	// 		show_path(farm, farm->best_paths[i]);
+	// }
 	
-	let_ants_to_paths(farm);
+	// let_ants_to_paths(farm);
 	return (0);
 }

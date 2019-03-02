@@ -6,7 +6,7 @@
 /*   By: rschuppe <rschuppe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/20 19:11:32 by rschuppe          #+#    #+#             */
-/*   Updated: 2019/02/26 18:16:17 by rschuppe         ###   ########.fr       */
+/*   Updated: 2019/03/02 15:28:56 by rschuppe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,9 +24,9 @@ static t_path	*ft_one_dfs(t_farm *farm, t_room *room)
 		return (res);
 	}
 	res = NULL;
-	if (room->childs)
+	if (room->neighbors)
 	{
-		child = room->childs;
+		child = room->neighbors;
 		while (child)
 		{
 			if (((t_room*)child->content)->visited == false
@@ -224,12 +224,12 @@ t_path			**find_unique_paths(t_farm *farm, int count)
 				while (cur)
 				{
 					// ft_printf("room %s\n", ((t_room*)cur->content)->name);
-					// ft_printf("childs %d\n", ft_lstlen(((t_room*)cur->content)->childs));
+					// ft_printf("childs %d\n", ft_lstlen(((t_room*)cur->content)->neighbors));
 					((t_room*)cur->content)->visited = false;
-					if (ft_lstlen(((t_room*)cur->content)->childs) > 1)
+					if (ft_lstlen(((t_room*)cur->content)->neighbors) > 1)
 					{
 						//	ищем ноду левее той с которой мы пришли
-						child = ((t_room*)cur->content)->childs;
+						child = ((t_room*)cur->content)->neighbors;
 						while (child)
 						{
 							if ((t_room*)child->content == (t_room*)cur->next->content)
