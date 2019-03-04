@@ -6,7 +6,7 @@
 /*   By: wballaba <wballaba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/18 14:47:13 by rschuppe          #+#    #+#             */
-/*   Updated: 2019/03/02 22:02:31 by wballaba         ###   ########.fr       */
+/*   Updated: 2019/03/04 14:30:34 by wballaba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,5 +120,8 @@ void		show_path(t_farm *farm, t_path *path);
 
 int			press_key_callback(int key, t_farm *farm);
 void		draw_farm(t_farm *farm);
+void		visual_farm(t_visual_farm	*vfarm);
+void		create_farm_image(t_visual_farm *vfarm);
+
 
 #endif
