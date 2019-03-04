@@ -6,7 +6,7 @@
 /*   By: rschuppe <rschuppe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/18 14:47:13 by rschuppe          #+#    #+#             */
-/*   Updated: 2019/03/02 21:39:09 by rschuppe         ###   ########.fr       */
+/*   Updated: 2019/03/04 17:46:08 by rschuppe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,12 +37,14 @@
 
 typedef struct s_dlist	t_path;
 
-typedef struct	s_args {
+typedef struct	s_args
+{
 	int		flags;
 	char	*filename;
 }				t_args;
 
-typedef struct	s_room {
+typedef struct	s_room
+{
 	char	*name;
 	int		ant_num;
 	int		previous_ant;
@@ -52,10 +54,12 @@ typedef struct	s_room {
 	char	type;
 	int		weight;
 	t_list	*neighbors;
-	t_path	*path;
+	t_list	*paths;
+	bool	processed_paths[100];
 }				t_room;
 
-typedef struct	s_farm {
+typedef struct	s_farm
+{
 	t_room		**rooms;
 	int			count_rooms;
 	t_path		**best_paths;

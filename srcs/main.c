@@ -6,7 +6,7 @@
 /*   By: rschuppe <rschuppe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/18 14:17:13 by rschuppe          #+#    #+#             */
-/*   Updated: 2019/03/02 21:16:54 by rschuppe         ###   ########.fr       */
+/*   Updated: 2019/03/04 17:49:10 by rschuppe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,18 +107,18 @@ int main(int argc, char **argv)
 			ft_printf("[%2d] -> %s\n", i, farm->rooms[i]->name);
 	}
 
-	dijkstra_algo(farm);
+	// dijkstra_algo(farm);
 	if (IS_FLAG(FLAG_DEBUG))
 	{
 		for (int i = 0; i < farm->count_rooms; i++)
 			ft_printf("room %s (%d) weight: %d\n", farm->rooms[i]->name, i, farm->rooms[i]->weight);
 	}
 
-	paths_combs = test(farm->rooms);
+	// paths_combs = test(farm->rooms);
 	int max_unique_paths = MIN(farm->start_edges, farm->finish_edges);
 	if (IS_FLAG(FLAG_DEBUG))
 		ft_printf("max unique paths: %d\n", max_unique_paths);
-	// find_unique_paths(farm, max_unique_paths);
+	find_unique_paths(farm, max_unique_paths);
 	// paths_combs = ft_memalloc((max_unique_paths + 1) * sizeof(t_path**));
 	// i = 0;
 	// while (i < max_unique_paths)
@@ -142,16 +142,16 @@ int main(int argc, char **argv)
 	// 	i++;
 	// }
 	
-	int idx = find_best_comb_paths(paths_combs, farm->ants_count);
-	farm->best_paths = paths_combs[idx];
-	if (IS_FLAG(FLAG_DEBUG))
-	{
-		ft_printf("Best paths comb:\n");
-		i = -1;
-		while (++i <= idx)
-			show_path(farm, farm->best_paths[i]);
-	}
+	// int idx = find_best_comb_paths(paths_combs, farm->ants_count);
+	// farm->best_paths = paths_combs[idx];
+	// if (IS_FLAG(FLAG_DEBUG))
+	// {
+	// 	ft_printf("Best paths comb:\n");
+	// 	i = -1;
+	// 	while (++i <= idx)
+	// 		show_path(farm, farm->best_paths[i]);
+	// }
 	
-	let_ants_to_paths(farm);
+	// let_ants_to_paths(farm);
 	return (0);
 }

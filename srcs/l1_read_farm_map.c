@@ -6,7 +6,7 @@
 /*   By: rschuppe <rschuppe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/19 16:47:35 by rschuppe          #+#    #+#             */
-/*   Updated: 2019/03/02 15:38:18 by rschuppe         ###   ########.fr       */
+/*   Updated: 2019/03/04 18:04:54 by rschuppe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 
 static t_room	*create_room(char *name, int x, int y, int type)
 {
+	int		i;
 	t_room	*room;
 
 	if ((room = (t_room*)ft_memalloc(sizeof(t_room))))
@@ -22,7 +23,14 @@ static t_room	*create_room(char *name, int x, int y, int type)
 		room->x = x;
 		room->y = y;
 		room->type = type;
-		room->weight = -1;
+		room->weight = 1; //-1;
+
+		i = 0;
+		while (i < 100)
+		{
+			room->processed_paths[i] = 0;
+			i++;
+		}
 	}
 	return (room);
 }
