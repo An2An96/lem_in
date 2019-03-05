@@ -6,7 +6,7 @@
 /*   By: wballaba <wballaba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/02 17:22:46 by wballaba          #+#    #+#             */
-/*   Updated: 2019/03/05 13:57:57 by wballaba         ###   ########.fr       */
+/*   Updated: 2019/03/05 21:06:12 by wballaba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,54 +18,6 @@ int			ft_close(void)
 	return (0);
 }
 
-// static void	draw_run_ant(t_params *data, t_visual_farm	*vfarm, int nbr_path)
-// {
-// 	double	length;
-// 	double	side[3];
-// 	double	sin_a;
-// 	double	cos_a;
-
-// 	side[1] = data->y2 - data->y;
-// 	side[2] = data->x2 - data->x;
-// 	side[0] = sqrt(pow(side[1], 2) + pow(side[2], 2));
-// 	sin_a = side[1] / side[0];
-// 	cos_a = side[2] / side[0];
-// 	length = side[0];
-// 	while ((int)length > 0)
-// 	{
-// 		mlx_string_put(vfarm->visual->mlx_ptr, vfarm->visual->win_ptr, 
-// 			round(data->x + length * cos_a), round(data->y + length * sin_a),
-// 			COLOR_ANT, ft_itoa(vfarm->farm->rooms[nbr_path]->ant_num));
-// 		length--;
-// 		// Вставить сюда отрисовку фона
-
-// 	}
-// }
-
-// static void	visual_step_ant(t_visual_farm *vfarm, int nbr_room)
-// {
-// 	t_params data;
-
-// 	t_list *child = vfarm->farm->rooms[nbr_room]->neighbors;
-// 	t_room *room;
-
-// 	data.x = vfarm->farm->rooms[nbr_room]->x * vfarm->abs_val;
-// 	data.y = vfarm->farm->rooms[nbr_room]->y * vfarm->abs_val;
-// 	while (child)
-// 	{
-// 		room = vfarm->farm->rooms[*(int*)child->content];
-// 		data.x2 = room->x * vfarm->abs_val;
-// 		data.y2 = room->y * vfarm->abs_val;
-// 		data.line_width = 1;
-// 		data.img = vfarm->image;
-// 		draw_run_ant(&data, vfarm, nbr_room);
-// 				// mlx_clear_window(vfarm->visual->mlx_ptr, vfarm->visual->win_ptr);
-// 		// mlx_put_image_to_window(vfarm->visual->mlx_ptr, vfarm->visual->win_ptr, vfarm->image->img_ptr, 0, 0);
-// 		child = child->next;
-// 	}
-// }
-
-
 int				read_step(t_visual_farm	*vfarm, char *line)
 {
 	int		i;
@@ -74,6 +26,7 @@ int				read_step(t_visual_farm	*vfarm, char *line)
 	char	*room_name;
 	int		ant_nbr;
 	t_room	*room;
+	
 
 	i = -1;
 	while (++i < vfarm->farm->count_rooms)
@@ -90,6 +43,8 @@ int				read_step(t_visual_farm	*vfarm, char *line)
 		room_name = ft_strdup(res[i] + j);
 		room = find_node_by_name(vfarm->farm->rooms, room_name);
 		room->ant_num = ant_nbr;
+		ft_printf("room name = %s	ant num = %d	\n", room_name, room->ant_num);
+		move_ant(vfarm->ant[ant_nbr - 1], room->x, room->y);
 		free(room_name);
 		i++;
 	}
@@ -99,7 +54,7 @@ int				read_step(t_visual_farm	*vfarm, char *line)
 int				lem_in_draw(int key, t_visual_farm	*vfarm)
 {
 	char	*line;
-
+	
 	if (key == KEY_SPACE)
 	{
 		if (get_next_line(g_fd, &line) == 1)
@@ -114,6 +69,7 @@ int				lem_in_draw(int key, t_visual_farm	*vfarm)
 			if (line)
 				free(line);
 			visual_farm(vfarm);
+			draw_run_ant(vfarm);
 		}
 	}
 	return (0);
@@ -167,6 +123,7 @@ int	start_visual(t_farm	*farm)
 	get_abs_val(farm, vfarm);
 	vfarm->visual = ft_create_window(WIN_SIZE, WIN_SIZE, "KK");
 	vfarm->farm = farm;
+	arr_ant(vfarm);
 	create_farm_image(vfarm);
 	visual_farm(vfarm);
 	mlx_hook(vfarm->visual->win_ptr, 17, 1L << 17, ft_close, NULL);

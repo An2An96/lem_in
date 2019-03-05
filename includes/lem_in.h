@@ -6,7 +6,7 @@
 /*   By: wballaba <wballaba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/18 14:47:13 by rschuppe          #+#    #+#             */
-/*   Updated: 2019/03/05 13:55:36 by wballaba         ###   ########.fr       */
+/*   Updated: 2019/03/05 20:51:19 by wballaba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ typedef struct	s_args {
 typedef struct	s_room {
 	char	*name;
 	int		ant_num;
-	int		previous_ant;
+	int		prev_ant;
 	int		visited;
 	int		x;
 	int		y;
@@ -77,16 +77,29 @@ typedef struct	s_farm {
 	int			finish_edges;
 }				t_farm;
 
+typedef struct	s_ant {
+	int		x;
+	int		y;
+	int		x2;
+	int		y2;
+	int		step;
+}				t_ant;
+
 typedef struct	s_visual_farm
 {
 	t_mlx		*visual;
 	t_img		*image;
 	t_farm		*farm;
+	t_ant		**ant;
 	double		abs_val_x;
 	double		abs_val_y;
 	double		indent_x;
 	double		indent_y;
+	int			step;
+	int			count_func;
 }				t_visual_farm;
+
+
 
 /*
 **	Read farm
@@ -126,5 +139,10 @@ void		draw_farm(t_farm *farm);
 void		visual_farm(t_visual_farm	*vfarm);
 void		create_farm_image(t_visual_farm *vfarm);
 
+void		find_path_ant(t_visual_farm *vfarm);
+void		arr_ant(t_visual_farm *vfarm);
+void		move_ant(t_ant	*ant, int x, int y);
+int		draw_ant(t_visual_farm *vfarm);
+void	draw_run_ant(t_visual_farm *vfarm);
 
 #endif

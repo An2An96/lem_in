@@ -6,32 +6,32 @@
 /*   By: wballaba <wballaba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/04 14:27:33 by wballaba          #+#    #+#             */
-/*   Updated: 2019/03/04 16:29:47 by wballaba         ###   ########.fr       */
+/*   Updated: 2019/03/05 20:20:11 by wballaba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lem_in.h"
 
-void	draw_ant(t_visual_farm	*vfarm)
-{ 
-	t_params data;
-	int nbr_room;
+// void	draw_ant(t_visual_farm	*vfarm)
+// { 
+// 	t_params data;
+// 	int nbr_room;
 
-	nbr_room = 0;
-	while (vfarm->farm->rooms[nbr_room])
-	{
-		data.x = vfarm->farm->rooms[nbr_room]->x * vfarm->abs_val_x + vfarm->indent_x;
-		data.y = vfarm->farm->rooms[nbr_room]->y * vfarm->abs_val_y + vfarm->indent_y;
-		// visual_step_ant(vfarm, nbr_room);
-		// draw_run_ant(&data, vfarm, nbr_room);
-		if (vfarm->farm->rooms[nbr_room]->ant_num)
-		{
-			mlx_string_put(vfarm->visual->mlx_ptr, vfarm->visual->win_ptr,
-			data.x - 10, data.y - 10, COLOR_NODE, ft_itoa(vfarm->farm->rooms[nbr_room]->ant_num));
-		}
-		nbr_room++;
-	}
-}
+// 	nbr_room = 0;
+// 	while (vfarm->farm->rooms[nbr_room])
+// 	{
+// 		data.x = vfarm->farm->rooms[nbr_room]->x * vfarm->abs_val_x + vfarm->indent_x;
+// 		data.y = vfarm->farm->rooms[nbr_room]->y * vfarm->abs_val_y + vfarm->indent_y;
+// 		// visual_step_ant(vfarm, nbr_room);
+// 		// draw_run_ant(&data, vfarm, nbr_room);
+// 		if (vfarm->farm->rooms[nbr_room]->ant_num)
+// 		{
+// 			mlx_string_put(vfarm->visual->mlx_ptr, vfarm->visual->win_ptr,
+// 			data.x - 10, data.y - 10, COLOR_NODE, ft_itoa(vfarm->farm->rooms[nbr_room]->ant_num));
+// 		}
+// 		nbr_room++;
+// 	}
+// }
 
 static void	draw_edge(t_visual_farm *vfarm, int nbr_room)
 {
@@ -86,7 +86,6 @@ void			visual_farm(t_visual_farm	*vfarm)
 	int nbr_room;
 
 	nbr_room = 0;
-	mlx_clear_window(vfarm->visual->mlx_ptr, vfarm->visual->win_ptr);
 	mlx_put_image_to_window(vfarm->visual->mlx_ptr, vfarm->visual->win_ptr, vfarm->image->img_ptr, 0, 0);
 	while (nbr_room < vfarm->farm->count_rooms)
 	{
@@ -96,6 +95,4 @@ void			visual_farm(t_visual_farm	*vfarm)
 			COLOR_NODE, vfarm->farm->rooms[nbr_room]->name);
 		nbr_room++;
 	}
-	if (vfarm->farm->finished_ants < vfarm->farm->ants_count)
-		draw_ant(vfarm);
 }
