@@ -6,7 +6,7 @@
 /*   By: wballaba <wballaba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/02 17:22:46 by wballaba          #+#    #+#             */
-/*   Updated: 2019/03/04 14:33:57 by wballaba         ###   ########.fr       */
+/*   Updated: 2019/03/05 13:57:57 by wballaba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,12 +75,9 @@ int				read_step(t_visual_farm	*vfarm, char *line)
 	int		ant_nbr;
 	t_room	*room;
 
-	i = 0;
-	while (i < vfarm->farm->count_rooms)
-	{
+	i = -1;
+	while (++i < vfarm->farm->count_rooms)
 		vfarm->farm->rooms[i]->ant_num = 0;
-		i++;
-	}
 	res = ft_strsplit(line, ' ');
 	i = 0;
 	while (res[i])
@@ -122,13 +119,13 @@ int				lem_in_draw(int key, t_visual_farm	*vfarm)
 	return (0);
 }
 
-int get_abs_val(t_farm	*farm)//, t_visual_farm	*vfarm)
+void get_abs_val(t_farm	*farm, t_visual_farm	*vfarm)
 {
 	int	nbr_room;
-	int	max_x;
-	int	max_y;
-	int	min_x;
-	int	min_y;
+	double	max_x;
+	double	max_y;
+	double	min_x;
+	double	min_y;
 
 	nbr_room = 0;
 	max_x = farm->rooms[nbr_room]->x;
@@ -143,7 +140,22 @@ int get_abs_val(t_farm	*farm)//, t_visual_farm	*vfarm)
 		min_y = MIN(min_y, farm->rooms[nbr_room]->y);
 		nbr_room++;
 	}
-	return (VISUAL_SIZE / MAX((max_x - min_x), (max_y - min_y)));
+	if ((max_x - min_x))
+		vfarm->abs_val_x = VISUAL_SIZE / (max_x - min_x);
+	else
+		vfarm->abs_val_x = 1;
+	if ((max_y - min_y))
+		vfarm->abs_val_y = VISUAL_SIZE / (max_y - min_y);
+	else
+		vfarm->abs_val_y = 1;
+	if (min_x != max_x)
+		vfarm->indent_x = -min_x * vfarm->abs_val_x + ((WIN_SIZE - (max_x - min_x) * vfarm->abs_val_x)  / 2);
+	else
+		vfarm->indent_x = WIN_SIZE / 2;
+	if (min_y != max_y)
+		vfarm->indent_y = -min_y * vfarm->abs_val_y + ((WIN_SIZE - (max_y - min_y) * vfarm->abs_val_y) / 2);
+	else
+		vfarm->indent_y = WIN_SIZE / 2;
 }
 
 int	start_visual(t_farm	*farm)
@@ -152,7 +164,7 @@ int	start_visual(t_farm	*farm)
 
 	if (!(vfarm = (t_visual_farm *)ft_memalloc(sizeof(t_visual_farm))))
 		return (0);
-	vfarm->abs_val = get_abs_val(farm);
+	get_abs_val(farm, vfarm);
 	vfarm->visual = ft_create_window(WIN_SIZE, WIN_SIZE, "KK");
 	vfarm->farm = farm;
 	create_farm_image(vfarm);
@@ -162,8 +174,6 @@ int	start_visual(t_farm	*farm)
 	mlx_loop(vfarm->visual->mlx_ptr);
 	return (0);
 }
-
-
 
 int	main(int argc, char **argv)
 {

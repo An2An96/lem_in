@@ -6,7 +6,7 @@
 /*   By: wballaba <wballaba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/18 14:47:13 by rschuppe          #+#    #+#             */
-/*   Updated: 2019/03/04 14:30:34 by wballaba         ###   ########.fr       */
+/*   Updated: 2019/03/05 13:55:36 by wballaba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,8 @@
 # define ROOM_START			1
 # define ROOM_END			2
 
-# define WIN_SIZE			1250
-# define VISUAL_SIZE		1100
+# define WIN_SIZE			1250.0
+# define VISUAL_SIZE		1100.0
 # define COLOR_NODE			0xFFFFFFF
 # define COLOR_EDGE			0xFFFFFFF
 # define COLOR_BACK			0x0000000
@@ -82,7 +82,10 @@ typedef struct	s_visual_farm
 	t_mlx		*visual;
 	t_img		*image;
 	t_farm		*farm;
-	int			abs_val;
+	double		abs_val_x;
+	double		abs_val_y;
+	double		indent_x;
+	double		indent_y;
 }				t_visual_farm;
 
 /*
