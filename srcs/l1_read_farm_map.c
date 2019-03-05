@@ -6,7 +6,7 @@
 /*   By: rschuppe <rschuppe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/19 16:47:35 by rschuppe          #+#    #+#             */
-/*   Updated: 2019/03/05 12:17:37 by rschuppe         ###   ########.fr       */
+/*   Updated: 2019/03/05 20:03:14 by rschuppe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ static t_room	*create_room(char *name, int x, int y, int type)
 		room->y = y;
 		room->type = type;
 		room->weight = -1;
-
+		room->paths = ft_dlst_create();
 		i = 0;
 		while (i < 100)
 		{

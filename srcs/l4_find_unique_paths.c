@@ -6,52 +6,42 @@
 /*   By: rschuppe <rschuppe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/20 19:11:32 by rschuppe          #+#    #+#             */
-/*   Updated: 2019/03/05 13:37:34 by rschuppe         ###   ########.fr       */
+/*   Updated: 2019/03/05 19:39:37 by rschuppe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lem_in.h"
 
-void	show_path_(t_path *path)
-{
-	t_node	*cur;
-
-	if (path)
-	{
-		cur = path->head;
-		while (cur)
-		{
-			ft_printf("%s ", ((t_room*)cur->content)->name);
-			cur = cur->next;
-		}
-		ft_printf("\n");
-	}
-}
-
 int			find_cycle(t_path *path, t_room *room)
 {
 	t_node	*cur;
 
-	// ft_printf("\n[find_cycle]\nroom: %s\npath: ", room->name);
 	cur = path->head;
-	// while (cur)
-	// {
-	// 	ft_printf("%s -> ", ((t_room*)cur->content)->name);
-	// 	cur = cur->next;
-	// }
-	// ft_printf("\n");
 	if (path)
 	{
 		cur = path->head;
 		while (cur)
 		{
-
-			if ((t_room*)cur->content == room)
+			if (LIST(cur, t_room*) == room)
 				return (true);
 			cur = cur->next;
 		}
 	}
 	return (false);
+}
+
+t_list	*copy_paths(t_list *paths)
+{
+	t_list *cur;
+	t_list *new;
+
+	cur = paths;
+	while (cur)
+	{
+		ft_lstpush(&new, ft_lstnew_ptr(cur->content));
+		cur = cur->next;
+	}
+	return (new);
 }
 
 t_path		*path_copy(t_path *path)
@@ -73,9 +63,88 @@ t_path		*path_copy(t_path *path)
 	return (new);
 }
 
-void		path_selection(t_farm *farm, t_room *room, int old_priority, t_pqueue *pqueue)
+t_path_comb	*allocate_mem_for_paths_combs(int count)
 {
-	t_list	*path_lst;
+	int			i;
+	t_path_comb	*paths_combs;
+
+	i = 0;
+	paths_combs = (t_path_comb*)ft_memalloc((count + 1) * sizeof(t_path_comb));
+	while (i < count)
+	{
+		// paths_combs[i] = (t_path_comb*)ft_memalloc((i + 1) * sizeof(t_path_comb));
+		paths_combs[i].paths = (t_path**)ft_memalloc((i + 1 + 1) * sizeof(t_path*));
+		paths_combs[i].count = i + 1;
+		i++;
+	}
+	return (paths_combs);
+}
+
+static bool	find_intersection(t_path *first, t_path *second)
+{
+	t_node *fst_node;
+	t_node *snd_node;
+
+	// ft_printf("find_intersection\n\nfirst path:\n");
+	// show_path(first);
+	// ft_printf("second path:\n");
+	// show_path(second);
+
+	if (!first || !second)
+		return (false);
+	if (first == second)
+		return (true);
+	fst_node = first->head;
+	while (fst_node)
+	{
+		snd_node = second->head;
+		while (snd_node && snd_node->next)
+		{
+			if (fst_node->content == snd_node->content)
+				return (true);
+			snd_node = snd_node->next;
+		}
+		fst_node = fst_node->next;
+	}
+	// ft_printf("no intersection!!\n");
+	return (false);
+}
+
+static bool	find_comb(
+	t_dlist *paths, t_path_comb *result, int cur_path, int need_path)
+{
+	int		i;
+	bool	intercept;
+	t_node	*cur_path_node;
+
+	cur_path_node = paths->head;
+	while (cur_path_node)
+	{
+		i = 0;
+		intercept = false;
+		while (i < cur_path && !intercept)
+		{
+			intercept = find_intersection(
+				result->paths[i], LIST(cur_path_node, t_path*));
+			i++;
+		}
+		if (!intercept)
+		{
+			result->paths[cur_path] = (t_path*)cur_path_node->content;
+			if (cur_path + 1 >= need_path
+				|| find_comb(paths, result, cur_path + 1, need_path))
+				return (true);
+			result->paths[cur_path] = NULL;
+		}
+		cur_path_node = cur_path_node->next;
+	}
+	return (false);
+}
+
+static void	path_selection(
+	t_farm *farm, t_room *room, int old_priority, t_pqueue *pqueue)
+{
+	t_node	*path_lst;
 	t_list	*neighbor_lst;
 	t_path	*path;
 	t_room	*neighbor;
@@ -83,38 +152,42 @@ void		path_selection(t_farm *farm, t_room *room, int old_priority, t_pqueue *pqu
 	int		i;
 
 	i = 0;
-	path_lst = room->paths;
+	path_lst = room->paths->head;
 	while (path_lst)
 	{
 		original_path_lst_usage = false;
-		path = (t_path*)path_lst->content;
+		path = LIST(path_lst, t_path*);
 		// ft_printf("\x1b[1;31mCheck path %d\x1b[0m\n", i);
-		show_path_(path);
+		// show_path(path);
 		if (!room->processed_paths[i])
 		{
 			// ft_printf("\x1b[32;01mNot processed\x1b[0m\n");
-			ft_dlst_push_back(path, ft_create_node_ptr(room));
+			if (room->type != ROOM_START)
+				ft_dlst_push_back(path, ft_create_node_ptr(room));
 			neighbor_lst = room->neighbors;
 			while (neighbor_lst)
 			{
-				neighbor = farm->rooms[*(int*)neighbor_lst->content];
-				if (!find_cycle(path, neighbor))
+				neighbor = farm->rooms[*LIST(neighbor_lst, int*)];
+				if (neighbor->type != ROOM_START && !find_cycle(path, neighbor))
 				{
 					if (!original_path_lst_usage)
 					{
 						// ft_printf("throw path to %s\n", neighbor->name);
-						// show_path_(path);
-						ft_lstpush(&neighbor->paths, ft_lstnew_ptr(path));
+						// show_path(path);
+						ft_dlst_push_back(neighbor->paths, ft_create_node_ptr(path));
 						original_path_lst_usage = true;
 					}
 					else
 					{
 						// ft_printf("copy and throw path to %s\n", neighbor->name);
-						// show_path_(path);
-						ft_lstpush(&neighbor->paths, ft_lstnew_ptr(path_copy(path)));
+						// show_path(path);
+						ft_dlst_push_back(neighbor->paths, ft_create_node_ptr(path_copy(path)));
 					}
 					if (neighbor->type == ROOM_END)
+					{
+						ft_dlst_push_back(LIST(neighbor->paths->tail, t_path*), ft_create_node_ptr(neighbor));
 						pq_insert(pqueue, neighbor, 0);
+					}
 					else
 						pq_insert(pqueue, neighbor, old_priority + neighbor->weight);
 				}
@@ -128,101 +201,44 @@ void		path_selection(t_farm *farm, t_room *room, int old_priority, t_pqueue *pqu
 	// ft_printf("\n\n");
 }
 
-t_path		***allocate_mem_for_paths_combs(int count)
-{
-	int		i;
-	t_path	***paths_combs;
-
-	i = 0;
-	paths_combs = (t_path***)ft_memalloc(sizeof(t_path**));
-	while (i < count)
-	{
-		paths_combs[i] = (t_path**)ft_memalloc((i + 1) * sizeof(t_path*));
-		i++;
-	}
-	return (paths_combs);
-}
-
-/*
-**	Хранение списков заменить на двусвязный список для более быстрого добалвения
-**	В конец
-*/
-
-t_path		**find_unique_paths(t_farm *farm, int count)
+t_path_comb		*find_unique_paths(t_farm *farm, int count)
 {
 	t_pqueue	*pqueue;
 	t_room		*room;
 	t_path		*path;
-	// t_list		*path_lst;
 	int			priority;
-	t_path		***paths_combs;
+	t_path_comb	*paths_combs;
 	t_path		**result;
 
 	paths_combs = allocate_mem_for_paths_combs(count);
-
-	if (!(pqueue = pq_init(farm->count_rooms, true)))
+	if (!(pqueue = pq_init(farm->count_rooms * 10, true)))
 		exit(-1);
 	if (!(path = ft_dlst_create()))
 		exit(-1);
-	ft_lstadd(&farm->rooms[0]->paths, ft_lstnew_ptr(path));
+	ft_dlst_push_front(farm->rooms[0]->paths, ft_create_node_ptr(path));
 	pq_insert(pqueue, farm->rooms[0], 0);
 	while ((room = (t_room*)pq_extract_ex(pqueue, &priority)))
 	{
-		ft_printf("\x1b[0;33mextract room %s [%d], weight: %d\x1b[0m\n", room->name, priority, room->weight);
+		// ft_printf("\x1b[0;33mextract room %s [%d], weight: %d\x1b[0m\n", room->name, priority, room->weight);
 		if (room == farm->rooms[farm->count_rooms - 1])
 		{
-			// t_list *path_lst = room->paths;
-			// while (path_lst)
-			// {
-			// 	// ft_dlst_push_back((t_dlist*)path_lst->content, ft_create_node_ptr(room));
-			// 	show_path_((t_path*)path_lst->content);
-			// 	path_lst = path_lst->next;
-			// }
-			if ((result = find_best_combination(room->paths, paths_combs, count)))
-				return (result);
+			// ft_dlst_push_back(LIST(room->paths->tail, t_path*), ft_create_node_ptr(room));
+			// ft_printf("FIND NEW PATH:\n");
+			// show_path(LIST(room->paths->tail, t_path*));
+			// ft_printf("++++++++++++++\n");
+
+			if (find_comb(room->paths, &paths_combs[farm->cur_comb], 0, farm->cur_comb + 1))
+			{
+				paths_combs[farm->cur_comb].steps = get_steps_for_comb(
+					&paths_combs[farm->cur_comb], farm->ants_count);
+				// ft_printf("steps for %d comb: %d\n", farm->cur_comb, paths_combs[farm->cur_comb]->steps);
+				if ((farm->cur_comb > 0 && paths_combs[farm->cur_comb - 1].steps < paths_combs[farm->cur_comb].steps)
+					|| ++farm->cur_comb == count)
+					return (paths_combs);
+			}
 		}
 		else
 			path_selection(farm, room, priority, pqueue);
 	}
-	return (NULL);
-}
-
-t_list	*copy_paths(t_list *paths)
-{
-	t_list *cur;
-	t_list *new;
-
-	cur = paths;
-	while (cur)
-	{
-		ft_lstpush(&new, ft_lstnew_ptr(cur->content));
-		cur = cur->next;
-	}
-	return (new);
-}
-
-t_path	**find_best_combination(t_list *paths, t_path ***paths_combs, int count)
-{
-	int		i;
-	t_list	*new;
-	t_list	*path_lst;
-	t_list	*result;
-	t_path	*path;
-
-	i = 0;
-	while (paths_combs[i][0] && i < count)
-		i++;
-	if (i < count)
-	{
-		new = copy_paths(paths);
-
-		path_lst = new;
-		while (path_lst)
-		{	
-			path = (t_path*)path_lst->content;
-
-
-			path_lst = path_lst->next;
-		}
-	}
+	return (paths_combs);
 }

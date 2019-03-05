@@ -6,7 +6,7 @@
 /*   By: rschuppe <rschuppe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/18 14:17:13 by rschuppe          #+#    #+#             */
-/*   Updated: 2019/03/05 12:57:36 by rschuppe         ###   ########.fr       */
+/*   Updated: 2019/03/05 20:22:58 by rschuppe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,13 +78,53 @@ t_args	*read_args(int argc, char **argv)
 	return (args);
 }
 
+void	show_map_params(t_farm *farm)
+{
+	int i;
+	t_list *neighbor_lst;
+	int		neighbor_idx;
+
+	ft_putnbr(farm->ants_count);
+	write(1, "\n", 1);
+	i = 0;
+	while (i < farm->count_rooms)
+	{
+		if (i == 0)
+			write(1, "##start\n", 8);
+		else if (i == farm->count_rooms - 1)
+			write(1, "##end\n", 6);
+		ft_putstr(farm->rooms[i]->name);
+		write(1, "\n", 1);
+		i++;
+	}
+	i = 0;
+	while (i < farm->count_rooms)
+	{
+		neighbor_lst = farm->rooms[i]->neighbors;
+		while (neighbor_lst)
+		{
+			neighbor_idx = *LIST(neighbor_lst, int*);
+			if (neighbor_idx > i)
+			{
+				ft_putstr(farm->rooms[i]->name);
+				write(1, "-", 1);
+				ft_putstr(farm->rooms[neighbor_idx]->name);
+				write(1, "\n", 1);
+			}
+			neighbor_lst = neighbor_lst->next;
+		}
+		i++;
+	}
+	write(1, "\n", 1);
+}
+
 int main(int argc, char **argv)
 {
-	int		fd;
-	int		i;
-	t_farm	*farm;
-	t_args	*args;
-	t_path	***paths_combs;
+	int			fd;
+	int			i;
+	t_farm		*farm;
+	t_args		*args;
+	t_path_comb	*paths_combs;
 
 	args = read_args(argc, argv);
 	if (args->filename)
@@ -115,33 +155,34 @@ int main(int argc, char **argv)
 	}
 
 	// paths_combs = test(farm->rooms);
+	paths_combs = find_unique_paths(farm, MIN(farm->start_edges, farm->finish_edges));
 
-	
-
-	find_unique_paths(farm, MIN(farm->start_edges, farm->finish_edges));
-	// i = 0;
-	// while (paths_combs[i])
-	// {
-	// 	int j = 0;
-	// 	while (paths_combs[i][j])
-	// 	{
-	// 		show_path(farm, paths_combs[i][j]);
-	// 		j++;
-	// 	}
-	// 	sort_paths_by_length(paths_combs[i]);
-	// 	i++;
-	// }
-	
-	// int idx = find_best_comb_paths(paths_combs, farm->ants_count);
+	if (IS_FLAG(FLAG_DEBUG))
+	{
+		i = 0;
+		
+		while (paths_combs[i].count)
+		{
+			ft_printf("%d comb (%d steps):\n", i, paths_combs[i].steps);
+			int j = 0;
+			while (paths_combs[i].paths[j])
+			{
+				show_path(paths_combs[i].paths[j]);
+				j++;
+			}
+			i++;
+		}
+	}
 	// farm->best_paths = paths_combs[idx];
 	// if (IS_FLAG(FLAG_DEBUG))
 	// {
 	// 	ft_printf("Best paths comb:\n");
 	// 	i = -1;
-	// 	while (++i <= idx)
-	// 		show_path(farm, farm->best_paths[i]);
+	// 	while (best_comb->paths[++i])
+	// 		show_path(best_comb->paths[i]);
 	// }
-	
-	// let_ants_to_paths(farm);
+
+	show_map_params(farm);
+	let_ants_to_paths(farm, choose_best_comb_paths(paths_combs, farm->ants_count));
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: rschuppe <rschuppe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/20 19:25:43 by rschuppe          #+#    #+#             */
-/*   Updated: 2019/03/02 21:48:09 by rschuppe         ###   ########.fr       */
+/*   Updated: 2019/03/05 20:41:45 by rschuppe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,6 @@ static int			push_ants_along_path(t_path *path)
 		if (room->ant_num == 0 && prev_room->ant_num != 0)
 		{
 			room->ant_num = prev_room->ant_num;
-			prev_room->previous_ant = prev_room->ant_num;
 			prev_room->ant_num = 0;
 			show_ant_pos(room);
 			if (path->tail == cur)
@@ -52,66 +51,63 @@ static int			push_ants_along_path(t_path *path)
 }
 
 static void			choose_path_and_start(
-	t_farm *farm, t_path **paths, int *nbr_ants)
+	t_farm *farm, t_path_comb *path_comb, int *nbr_ants)
 {
 	int		sum;
 	int		path_idx;
 	t_room	*room;
 
 	path_idx = 0;
-	while (paths[path_idx] && *nbr_ants < farm->ants_count)
+	while (path_comb->paths[path_idx] && *nbr_ants < farm->ants_count)
 	{
 		if (path_idx > 0)
 		{
 			sum = 0;
-			sum += get_paths_diff(paths, path_idx);
+			sum += get_paths_diff(path_comb, path_idx);
 			if (sum >= (farm->ants_count - *nbr_ants))
 				break ;
 		}
-		room = (t_room*)paths[path_idx]->head->content;
-		if (!room->ant_num)
-		{
-			room->ant_num = ++(*nbr_ants);
-			show_ant_pos(room);
-		}
+		room = LIST(path_comb->paths[path_idx]->head, t_room*);
+		// if (!room->ant_num)
+		// {
+		if (room->type == ROOM_END)
+			farm->finished_ants++;
+		room->ant_num = ++(*nbr_ants);
+		show_ant_pos(room);
+		// }
 		path_idx++;
 	}
 }
 
-void				make_step(t_farm *farm)
-{
-	static int	nbr_ants;
-	int			nbr_path;
-
-	nbr_path = 0;
-	while (farm->best_paths[nbr_path])
-	{
-		farm->finished_ants +=
-			push_ants_along_path(farm->best_paths[nbr_path]);
-		nbr_path++;
-	}
-	if (nbr_ants < farm->ants_count)
-		choose_path_and_start(farm, farm->best_paths, &nbr_ants);
-	ft_printf("\n");
-}
-
-void				let_ants_to_paths(t_farm *farm)
+void				let_ants_to_paths(t_farm *farm, t_path_comb *path_comb)
 {
 	int	nbr_ants;
 	int	nbr_path;
+
+	if (!path_comb)
+	{
+		write(1, "Error: no way to the finish\n", 28);
+		return ;
+	}
+
+	ft_printf("Best paths comb:\n");
+	int i = -1;
+	while (path_comb->paths[++i])
+		show_path(path_comb->paths[i]);
+	ft_printf("\n");
 
 	nbr_ants = 0;
 	while (farm->finished_ants < farm->ants_count)
 	{
 		nbr_path = 0;
-		while (farm->best_paths[nbr_path])
+		while (path_comb->paths[nbr_path])
 		{
 			farm->finished_ants +=
-				push_ants_along_path(farm->best_paths[nbr_path]);
+				push_ants_along_path(path_comb->paths[nbr_path]);
 			nbr_path++;
 		}
 		if (nbr_ants < farm->ants_count)
-			choose_path_and_start(farm, farm->best_paths, &nbr_ants);
-		ft_printf("\n");
+			choose_path_and_start(farm, path_comb, &nbr_ants);
+		write(1, "\n", 1);
 	}
 }
