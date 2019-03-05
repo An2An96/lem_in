@@ -6,7 +6,7 @@
 /*   By: rschuppe <rschuppe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/18 14:47:13 by rschuppe          #+#    #+#             */
-/*   Updated: 2019/03/04 17:46:08 by rschuppe         ###   ########.fr       */
+/*   Updated: 2019/03/05 12:56:58 by rschuppe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,11 +62,13 @@ typedef struct	s_farm
 {
 	t_room		**rooms;
 	int			count_rooms;
-	t_path		**best_paths;
 	int			ants_count;
 	int			finished_ants;
 	int			start_edges;
 	int			finish_edges;
+
+	t_path		***best_paths;
+	int			find_path_combs;
 }				t_farm;
 
 /*
