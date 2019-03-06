@@ -6,7 +6,7 @@
 /*   By: wballaba <wballaba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/05 15:15:25 by wballaba          #+#    #+#             */
-/*   Updated: 2019/03/06 19:28:55 by wballaba         ###   ########.fr       */
+/*   Updated: 2019/03/06 20:00:44 by wballaba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,58 +62,7 @@ void		move_ant(t_ant *ant, int x, int y, int type_room)
 **	отрисовка движения одного муравья
 */
 
-static int	draw_one_ant(t_vfarm *vfarm, t_ant *ant, int ant_nbr, int step)
-{
-	if (ant->drawing == STOP_DRAW)
-		return (0);
-	if (step >= ant->length)
-	{
-		if (ant->drawing == LAST_DRAW)
-			ant->drawing = STOP_DRAW;
-		step = ant->length;
-	}
-	mlx_string_put(vfarm->visual->mlx_ptr, vfarm->visual->win_ptr,
-		round(ant->x - 4 + step * ant->cos_a) * vfarm->abs_x + vfarm->indent_x,
-		round(ant->y - 9 + step * ant->sin_a) * vfarm->abs_y + vfarm->indent_y,
-		COLOR_ANT, "\\o/");
-	mlx_string_put(vfarm->visual->mlx_ptr, vfarm->visual->win_ptr,
-		round(ant->x - 4 + step * ant->cos_a) * vfarm->abs_x + vfarm->indent_x,
-		round(ant->y - 4 + step * ant->sin_a) * vfarm->abs_y + vfarm->indent_y,
-		COLOR_ANT, "-0-");// ft_itoa(ant_nbr));
-	mlx_string_put(vfarm->visual->mlx_ptr, vfarm->visual->win_ptr,
-		round(ant->x - 4 + step * ant->cos_a) * vfarm->abs_x + vfarm->indent_x,
-		round(ant->y + 1 + step * ant->sin_a) * vfarm->abs_y + vfarm->indent_y,
-		COLOR_ANT, "/'\\ ");
-	return (step < ant->length);
-}
-
-/*
-**	вызов функции отрисовки муравья для каждого
-*/
-
-static int	draw_ants(t_vfarm *vfarm)
-{
-	int ant_nbr;
-	int	step;
-
-	if ((vfarm->farm->finished_ants <= vfarm->farm->ants_count)
-		&& vfarm->count_func)
-	{
-		vfarm->count_func = 0;
-		visual_farm(vfarm);
-		ant_nbr = 1;
-		while (ant_nbr <= vfarm->farm->ants_count)
-		{
-			vfarm->count_func += draw_one_ant(vfarm, vfarm->ant[ant_nbr - 1],
-				ant_nbr, vfarm->step);
-			ant_nbr++;
-		}
-		vfarm->step++;
-	}
-	return (0);
-}
-
-int			end_ant_path(int key, t_vfarm *vfarm)
+static	int	end_ant_path(int key, t_vfarm *vfarm)
 {
 	int	i;
 

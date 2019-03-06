@@ -6,7 +6,7 @@
 /*   By: wballaba <wballaba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/06 14:05:53 by wballaba          #+#    #+#             */
-/*   Updated: 2019/03/06 19:31:19 by wballaba         ###   ########.fr       */
+/*   Updated: 2019/03/06 20:02:16 by wballaba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,9 +76,9 @@ void			create_farm_image(t_vfarm *vfarm);
 void			find_path_ant(t_vfarm *vfarm);
 void			get_arr_ant(t_vfarm *vfarm);
 void			move_ant(t_ant	*ant, int x, int y, int type_room);
-int				draw_ant(t_vfarm *vfarm);
 void			draw_run_ant(t_vfarm *vfarm);
 void			get_abs_val(t_farm *farm, t_vfarm *vfarm);
+int				draw_ants(t_vfarm *vfarm);
 
 int				ft_close(void);
 int				ft_key_press_esc_close(int key, void *param);

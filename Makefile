@@ -20,7 +20,7 @@ SRC_MAIN =		main.c dijkstra_algo.c \
 				l4_find_unique_paths.c l5_find_best_comb_paths.c l6_let_ants_to_paths.c
 
 SRC_VISUAL =	visualiser.c l1_read_farm_map.c l2_create_sort_room_arr.c find_node_by_name.c \
-				utils.c draw_farm.c draw_ant.c
+				utils.c draw_farm.c draw_ant.c animation_ant.c 
 
 OBJS_MAIN = $(addprefix $(OBJS_DIR)/,$(SRC_MAIN:%.c=%.o))
 OBJS_VISUAL = $(addprefix $(OBJS_DIR)/,$(SRC_VISUAL:%.c=%.o))
