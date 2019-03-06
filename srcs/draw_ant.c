@@ -6,7 +6,7 @@
 /*   By: wballaba <wballaba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/05 15:15:25 by wballaba          #+#    #+#             */
-/*   Updated: 2019/03/06 15:27:41 by wballaba         ###   ########.fr       */
+/*   Updated: 2019/03/06 19:28:55 by wballaba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ void		get_arr_ant(t_vfarm *vfarm)
 		vfarm->ant[i]->y = vfarm->farm->rooms[0]->y;
 		vfarm->ant[i]->x2 = vfarm->farm->rooms[0]->x;
 		vfarm->ant[i]->y2 = vfarm->farm->rooms[0]->y;
-		vfarm->ant[i]->drawing = 0;
+		vfarm->ant[i]->drawing = STOP_DRAW;
 		i++;
 	}
 }
@@ -73,9 +73,17 @@ static int	draw_one_ant(t_vfarm *vfarm, t_ant *ant, int ant_nbr, int step)
 		step = ant->length;
 	}
 	mlx_string_put(vfarm->visual->mlx_ptr, vfarm->visual->win_ptr,
-		round(ant->x + step * ant->cos_a) * vfarm->abs_x + vfarm->indent_x,
-		round(ant->y + step * ant->sin_a) * vfarm->abs_y + vfarm->indent_y,
-		COLOR_ANT, ft_itoa(ant_nbr));
+		round(ant->x - 4 + step * ant->cos_a) * vfarm->abs_x + vfarm->indent_x,
+		round(ant->y - 9 + step * ant->sin_a) * vfarm->abs_y + vfarm->indent_y,
+		COLOR_ANT, "\\o/");
+	mlx_string_put(vfarm->visual->mlx_ptr, vfarm->visual->win_ptr,
+		round(ant->x - 4 + step * ant->cos_a) * vfarm->abs_x + vfarm->indent_x,
+		round(ant->y - 4 + step * ant->sin_a) * vfarm->abs_y + vfarm->indent_y,
+		COLOR_ANT, "-0-");// ft_itoa(ant_nbr));
+	mlx_string_put(vfarm->visual->mlx_ptr, vfarm->visual->win_ptr,
+		round(ant->x - 4 + step * ant->cos_a) * vfarm->abs_x + vfarm->indent_x,
+		round(ant->y + 1 + step * ant->sin_a) * vfarm->abs_y + vfarm->indent_y,
+		COLOR_ANT, "/'\\ ");
 	return (step < ant->length);
 }
 
@@ -105,6 +113,25 @@ static int	draw_ants(t_vfarm *vfarm)
 	return (0);
 }
 
+int			end_ant_path(int key, t_vfarm *vfarm)
+{
+	int	i;
+
+	i = 0;
+	if (key == KEY_SPACE)
+	{
+		while (i < vfarm->farm->ants_count)
+		{
+			if (vfarm->ant[i]->drawing == LAST_DRAW)
+				vfarm->ant[i]->drawing = STOP_DRAW;
+			i++;
+		}
+	}
+	if (key == KEY_ESC)
+		ft_close();
+	return (0);
+}
+
 /*
 **	loop для отрисовки муравьев
 */
@@ -113,6 +140,7 @@ void		draw_run_ant(t_vfarm *vfarm)
 {
 	vfarm->step = 0;
 	vfarm->count_func = 1;
+	mlx_hook(vfarm->visual->win_ptr, 2, 1L << 17, end_ant_path, vfarm);
 	mlx_loop_hook(vfarm->visual->mlx_ptr, draw_ants, vfarm);
 	mlx_loop(vfarm->visual->mlx_ptr);
 }

@@ -6,12 +6,14 @@
 /*   By: wballaba <wballaba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/06 14:05:53 by wballaba          #+#    #+#             */
-/*   Updated: 2019/03/06 16:16:46 by wballaba         ###   ########.fr       */
+/*   Updated: 2019/03/06 19:31:19 by wballaba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef VISUALISER_H
 # define VISUALISER_H
+
+# include "lem_in.h"
 
 # define STOP_DRAW			0
 # define DRAWING			1
@@ -26,8 +28,6 @@
 # define COLOR_EDGE			0xD0006E
 # define COLOR_NODE			COLOR_EDGE
 # define COLOR_ANT			0xFFFFFF
-
-# include "lem_in.h"
 
 typedef struct	s_ant
 {
@@ -78,7 +78,9 @@ void			get_arr_ant(t_vfarm *vfarm);
 void			move_ant(t_ant	*ant, int x, int y, int type_room);
 int				draw_ant(t_vfarm *vfarm);
 void			draw_run_ant(t_vfarm *vfarm);
-int				ft_close(void);
 void			get_abs_val(t_farm *farm, t_vfarm *vfarm);
+
+int				ft_close(void);
+int				ft_key_press_esc_close(int key, void *param);
 
 #endif

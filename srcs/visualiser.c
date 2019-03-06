@@ -6,7 +6,7 @@
 /*   By: wballaba <wballaba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/02 17:22:46 by wballaba          #+#    #+#             */
-/*   Updated: 2019/03/06 16:13:41 by wballaba         ###   ########.fr       */
+/*   Updated: 2019/03/06 19:09:07 by wballaba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,6 +99,7 @@ static int	start_visual(t_farm *farm)
 	get_arr_ant(vfarm);
 	create_farm_image(vfarm);
 	visual_farm(vfarm);
+	mlx_hook(vfarm->visual->win_ptr, 2, 1L << 17, ft_key_press_esc_close, NULL);
 	mlx_hook(vfarm->visual->win_ptr, 17, 1L << 17, ft_close, NULL);
 	mlx_key_hook(vfarm->visual->win_ptr, lem_in_draw, vfarm);
 	mlx_loop(vfarm->visual->mlx_ptr);

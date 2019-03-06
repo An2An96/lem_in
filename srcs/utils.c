@@ -6,7 +6,7 @@
 /*   By: wballaba <wballaba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/25 21:47:32 by rschuppe          #+#    #+#             */
-/*   Updated: 2019/03/06 15:29:39 by wballaba         ###   ########.fr       */
+/*   Updated: 2019/03/06 17:57:18 by wballaba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,13 @@
 int		ft_close(void)
 {
 	exit(-1);
+	return (0);
+}
+
+int ft_key_press_esc_close(int key, void *param)
+{
+	if (key == KEY_ESC)
+		ft_close();
 	return (0);
 }
 
