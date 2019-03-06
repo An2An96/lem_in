@@ -6,7 +6,7 @@
 /*   By: rschuppe <rschuppe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/18 14:47:13 by rschuppe          #+#    #+#             */
-/*   Updated: 2019/03/06 16:17:07 by rschuppe         ###   ########.fr       */
+/*   Updated: 2019/03/06 20:26:20 by rschuppe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,8 +79,8 @@ typedef struct	s_farm
 	int			finished_ants;
 	int			start_edges;
 	int			finish_edges;
-	t_path_comb	*best_paths;
 	int			cur_comb;
+	t_list		*ways;
 }				t_farm;
 
 /*
@@ -101,8 +101,11 @@ t_room		**create_sort_room_arr(t_list *rooms_head, int count_rooms);
 */
 
 void		dijkstra_algo(t_farm *farm);
+
 t_path_comb	*find_unique_paths(t_farm *farm, int count);
-void		sort_paths_by_length(t_path **paths);
+
+bool		find_comb(
+	t_dlist *paths, t_path_comb *result, int cur_path, int need_path);
 int			find_best_comb_paths(t_path_comb **path_combs, int ants_count);
 void		let_ants_to_paths(t_farm *farm, t_path_comb *path_comb);
 void		make_step(t_farm *farm);
@@ -111,6 +114,8 @@ int			get_steps_for_comb(t_path_comb *path_combs, int ants_count);
 t_path_comb	*choose_best_comb_paths(t_path_comb *path_combs, int ants_count);
 
 void		show_map_config(t_farm *farm);
+int			find_cycle(t_path *path, t_room *room);
+t_path		*make_path_copy(t_path *path);
 
 /*
 **	Utils functions
@@ -119,9 +124,18 @@ void		show_map_config(t_farm *farm);
 t_room		*find_node_by_name(t_room **rooms, int count_rooms, char *name);
 int			find_node_index_by_name(t_room **rooms, int count_rooms, char *name);
 int			get_paths_diff(t_path_comb *path_comb, int path_idx);
+void		free_lst(void *content, size_t content_size);
 void		free_split_result(char **res);
 int			show_path(t_path *path);
 int			show_comb(t_path_comb *path_comb);
 int			min_atoi(const char *str);
+
+/*
+**	Debug functions
+*/
+
+int			debug_show_rooms(t_farm *farm);
+int			debug_show_weights(t_farm *farm);
+int			debug_show_paths(t_path_comb *paths_combs);
 
 #endif

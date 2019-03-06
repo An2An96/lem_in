@@ -6,7 +6,7 @@
 /*   By: rschuppe <rschuppe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/20 18:56:25 by rschuppe          #+#    #+#             */
-/*   Updated: 2019/03/06 16:09:58 by rschuppe         ###   ########.fr       */
+/*   Updated: 2019/03/06 17:32:10 by rschuppe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,8 @@ t_room				**create_sort_room_arr(t_list *rooms_head, int count_rooms)
 	bool	find_end;
 	int		room_types;
 
+	find_start = false;
+	find_end = false;
 	SECURE_MALLOC(rooms =
 		(t_room**)ft_memalloc((count_rooms + 1) * sizeof(t_room*)));
 	cur = rooms_head;

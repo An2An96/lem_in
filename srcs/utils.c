@@ -6,11 +6,17 @@
 /*   By: rschuppe <rschuppe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/25 21:47:32 by rschuppe          #+#    #+#             */
-/*   Updated: 2019/03/06 16:16:52 by rschuppe         ###   ########.fr       */
+/*   Updated: 2019/03/06 20:14:09 by rschuppe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lem_in.h"
+
+void	free_lst(void *content, size_t content_size)
+{
+	free(content);
+	content_size = 0;
+}
 
 void	free_split_result(char **res)
 {
