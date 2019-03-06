@@ -6,16 +6,30 @@
 /*   By: rschuppe <rschuppe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/25 21:47:32 by rschuppe          #+#    #+#             */
-/*   Updated: 2019/03/06 20:14:09 by rschuppe         ###   ########.fr       */
+/*   Updated: 2019/03/06 21:09:32 by rschuppe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lem_in.h"
+#define KEY_ESC	53
 
 void	free_lst(void *content, size_t content_size)
 {
 	free(content);
 	content_size = 0;
+}
+
+int		ft_close(void)
+{
+	exit(-1);
+	return (0);
+}
+
+int ft_key_press_esc_close(int key, void *param)
+{
+	if (key == KEY_ESC)
+		ft_close();
+	return (0);
 }
 
 void	free_split_result(char **res)

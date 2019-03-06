@@ -6,44 +6,11 @@
 /*   By: rschuppe <rschuppe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/18 14:17:13 by rschuppe          #+#    #+#             */
-/*   Updated: 2019/03/06 20:55:21 by rschuppe         ###   ########.fr       */
+/*   Updated: 2019/03/06 21:17:53 by rschuppe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lem_in.h"
-
-int			throw_error(const char *title, const char *err)
-{
-	if (title)
-		ft_putstr_fd(title, 2);
-	ft_putstr_fd(err, 2);
-	write(2, "\n", 1);
-	exit(EXIT_FAILURE);
-	return (1);
-}
-
-static char	*read_args(int argc, char **argv, int *flags)
-{
-	int		i;
-	char	*filename;
-
-	i = 1;
-	filename = NULL;
-	while (i < argc)
-	{
-		if (!ft_strcmp(argv[i], "-v"))
-			*flags |= FLAG_VISUALISE;
-		else if (!ft_strcmp(argv[i], "-d"))
-			*flags |= FLAG_DEBUG;
-		else if (!ft_strcmp(argv[i], "-f") && i + 1 < argc)
-		{
-			filename = argv[i + 1];
-			i++;
-		}
-		i++;
-	}
-	return (filename);
-}
 
 void		clear_paths_comb(t_path_comb *paths_combs)
 {

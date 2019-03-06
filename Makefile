@@ -4,21 +4,29 @@ DANGER_COLOR=\x1b[1;31m
 YELLOW_COLOR=\x1b[0;33m
 NO_COLOR=\x1b[0m
 
-NAME = lem-in
+LEMIN = lem-in
+VISUAL = visualiser
 
 INCS_DIR = ./includes
 LIBS_DIR = ./libs
 OBJS_DIR = ./objs
 SRCS_DIR = ./srcs
 
-LIBS = libft libftprintf
+LIBS = libft libftprintf libdraw
 
-SRCS =	main.c dijkstra_algo.c show_map_config.c find_comb.c paths_utils.c \
-		find_node_by_name.c get_paths_diff.c utils.c \
-		l1_read_farm_map.c l2_create_sort_room_arr.c \
-		l4_find_unique_paths.c l5_find_best_comb_paths.c l6_let_ants_to_paths.c \
-		debug.c
-OBJS = $(addprefix $(OBJS_DIR)/,$(SRCS:%.c=%.o))
+SRC_MAIN =	main.c read_args.c dijkstra_algo.c show_map_config.c find_comb.c \
+			paths_utils.c throw_error.c \
+			find_node_by_name.c get_paths_diff.c utils.c \
+			l1_read_farm_map.c l2_create_sort_room_arr.c \
+			l4_find_unique_paths.c l5_find_best_comb_paths.c l6_let_ants_to_paths.c \
+			debug.c
+
+SRC_VISUAL =	visualiser.c read_args.c throw_error.c l1_read_farm_map.c \
+				l2_create_sort_room_arr.c find_node_by_name.c \
+				utils.c draw_farm.c draw_ant.c animation_ant.c 
+
+OBJS_MAIN = $(addprefix $(OBJS_DIR)/,$(SRC_MAIN:%.c=%.o))
+OBJS_VISUAL = $(addprefix $(OBJS_DIR)/,$(SRC_VISUAL:%.c=%.o))
 
 # FLAGS += -Wall -Wextra -Werror
 FLAGS += -g
@@ -27,11 +35,12 @@ FLAGS += $(foreach lib,$(LIBS),-I$(LIBS_DIR)/$(lib)/includes)
 
 BIN_FLAGS += $(FLAGS)
 BIN_FLAGS += $(foreach lib,$(LIBS),-L$(LIBS_DIR)/$(lib) -l$(lib:lib%=%))
-BIN_FLAGS += -framework OpenGL -framework AppKit
+
+VISUAL_FLAGS += -framework OpenGL -framework AppKit
 
 ############################		  Rules 		############################
 
-all: $(NAME)
+all: $(LIBS) $(LEMIN) $(VISUAL)
 
 $(LIBS):
 #@echo "$(YELLOW_COLOR)Make $@...$(NO_COLOR)"
@@ -40,14 +49,16 @@ $(LIBS):
 $(OBJS_DIR):
 	@mkdir -p $@
 
-$(OBJS_DIR)/%.o: $(SRCS_DIR)/%.c
+$(OBJS_DIR)/%.o: $(SRCS_DIR)/%.c | $(OBJS_DIR)
 	@gcc $(FLAGS) -c $< -o $@
 
-$(OBJS): | $(OBJS_DIR)
+$(LEMIN): $(OBJS_MAIN)
+	@gcc -o $@ $^ $(BIN_FLAGS)
+	@echo "$(OK_COLOR)Build $@ complete$(NO_COLOR)"
 
-$(NAME): $(LIBS) $(OBJS)
-	@gcc -o $@ $(OBJS) $(BIN_FLAGS)
-	@echo "$(OK_COLOR)Build complete$(NO_COLOR)"
+$(VISUAL): $(OBJS_VISUAL)
+	@gcc -o $@ $^ $(BIN_FLAGS) $(VISUAL_FLAGS)
+	@echo "$(OK_COLOR)Build $@ complete$(NO_COLOR)"
 
 clean:
 	@rm -rf $(OBJS_DIR)

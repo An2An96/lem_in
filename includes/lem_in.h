@@ -6,7 +6,7 @@
 /*   By: rschuppe <rschuppe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/18 14:47:13 by rschuppe          #+#    #+#             */
-/*   Updated: 2019/03/06 20:26:20 by rschuppe         ###   ########.fr       */
+/*   Updated: 2019/03/06 21:08:28 by rschuppe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,6 +88,7 @@ typedef struct	s_farm
 */
 
 int			throw_error(const char *title, const char *err);
+char		*read_args(int argc, char **argv, int *flags);
 
 /*
 **	Read farm

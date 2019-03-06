@@ -6,7 +6,7 @@
 /*   By: rschuppe <rschuppe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/19 16:47:35 by rschuppe          #+#    #+#             */
-/*   Updated: 2019/03/06 15:47:02 by rschuppe         ###   ########.fr       */
+/*   Updated: 2019/03/06 21:24:35 by rschuppe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,6 +103,8 @@ t_farm			*read_farm_map(int fd, t_farm *farm)
 	read_status = 0;
 	while (get_next_line(fd, &line))
 	{
+		if (!ft_strlen(line))
+			break ;
 		if (line[0] == '#' && line[1] != '#')
 		{
 			free(line);
@@ -131,7 +133,8 @@ t_farm			*read_farm_map(int fd, t_farm *farm)
 			{
 				res = ft_strsplit(line, '-');
 				if (res[0] && res[1] && !res[2])
-					!add_edge(farm, res[0], res[1]) && throw_error(STR_ERROR_VALID, "Attempt to create edge for a non-existent room");
+					add_edge(farm, res[0], res[1]);
+					// !add_edge(farm, res[0], res[1]) && throw_error(STR_ERROR_VALID, "Attempt to create edge for a non-existent room");
 				free_split_result(res);
 			}
 		}
