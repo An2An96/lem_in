@@ -6,7 +6,7 @@
 /*   By: rschuppe <rschuppe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/18 14:17:13 by rschuppe          #+#    #+#             */
-/*   Updated: 2019/03/06 21:17:53 by rschuppe         ###   ########.fr       */
+/*   Updated: 2019/03/06 22:18:05 by rschuppe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,10 +77,9 @@ int			main(int argc, char **argv)
 		paths_combs = find_unique_paths(farm,
 			MIN(farm->start_edges, farm->finish_edges));
 		IS_FLAG(FLAG_DEBUG) && debug_show_paths(paths_combs);
-		let_ants_to_paths(farm,
-			choose_best_comb_paths(paths_combs, farm->ants_count));
+		let_ants_to_paths(farm, choose_best_comb_paths(paths_combs));
+		clear_paths_comb(paths_combs);
 	}
 	clear_farm(farm);
-	clear_paths_comb(paths_combs);
 	return (EXIT_SUCCESS);
 }

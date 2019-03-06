@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   animation_ant.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wballaba <wballaba@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rschuppe <rschuppe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/06 19:56:19 by wballaba          #+#    #+#             */
-/*   Updated: 2019/03/06 20:08:14 by wballaba         ###   ########.fr       */
+/*   Updated: 2019/03/06 22:15:17 by rschuppe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,32 +15,32 @@
 static void	animation1(t_vfarm *vfarm, t_ant *ant, int step)
 {
 	mlx_string_put(vfarm->visual->mlx_ptr, vfarm->visual->win_ptr,
-		round(ant->x - 4 + step * ant->cos_a) * vfarm->abs_x + vfarm->indent_x,
-		round(ant->y - 9 + step * ant->sin_a) * vfarm->abs_y + vfarm->indent_y,
+		round(ant->x + step * ant->cos_a) * vfarm->abs_x + vfarm->indent_x - 14,
+		round(ant->y + step * ant->sin_a) * vfarm->abs_y + vfarm->indent_y - 23,
 		COLOR_ANT, "\\o/");
 	mlx_string_put(vfarm->visual->mlx_ptr, vfarm->visual->win_ptr,
-		round(ant->x - 4 + step * ant->cos_a) * vfarm->abs_x + vfarm->indent_x,
-		round(ant->y - 4 + step * ant->sin_a) * vfarm->abs_y + vfarm->indent_y,
+		round(ant->x + step * ant->cos_a) * vfarm->abs_x + vfarm->indent_x - 14,
+		round(ant->y + step * ant->sin_a) * vfarm->abs_y + vfarm->indent_y - 11,
 		COLOR_ANT, "-0-");
 	mlx_string_put(vfarm->visual->mlx_ptr, vfarm->visual->win_ptr,
-		round(ant->x - 4 + step * ant->cos_a) * vfarm->abs_x + vfarm->indent_x,
-		round(ant->y + 1 + step * ant->sin_a) * vfarm->abs_y + vfarm->indent_y,
+		round(ant->x + step * ant->cos_a) * vfarm->abs_x + vfarm->indent_x - 14,
+		round(ant->y + step * ant->sin_a) * vfarm->abs_y + vfarm->indent_y,
 		COLOR_ANT, "/'\\ ");
 }
 
 static void	animation2(t_vfarm *vfarm, t_ant *ant, int step)
 {
 	mlx_string_put(vfarm->visual->mlx_ptr, vfarm->visual->win_ptr,
-		round(ant->x - 4 + step * ant->cos_a) * vfarm->abs_x + vfarm->indent_x,
-		round(ant->y - 9 + step * ant->sin_a) * vfarm->abs_y + vfarm->indent_y,
+		round(ant->x + step * ant->cos_a) * vfarm->abs_x + vfarm->indent_x - 14,
+		round(ant->y + step * ant->sin_a) * vfarm->abs_y + vfarm->indent_y - 23,
 		COLOR_ANT, "_o_");
 	mlx_string_put(vfarm->visual->mlx_ptr, vfarm->visual->win_ptr,
-		round(ant->x - 4 + step * ant->cos_a) * vfarm->abs_x + vfarm->indent_x,
-		round(ant->y - 4 + step * ant->sin_a) * vfarm->abs_y + vfarm->indent_y,
+		round(ant->x + step * ant->cos_a) * vfarm->abs_x + vfarm->indent_x - 14,
+		round(ant->y + step * ant->sin_a) * vfarm->abs_y + vfarm->indent_y - 11,
 		COLOR_ANT, ">0<");
 	mlx_string_put(vfarm->visual->mlx_ptr, vfarm->visual->win_ptr,
-		round(ant->x - 4 + step * ant->cos_a) * vfarm->abs_x + vfarm->indent_x,
-		round(ant->y + 1 + step * ant->sin_a) * vfarm->abs_y + vfarm->indent_y,
+		round(ant->x + step * ant->cos_a) * vfarm->abs_x + vfarm->indent_x - 14,
+		round(ant->y + step * ant->sin_a) * vfarm->abs_y + vfarm->indent_y,
 		COLOR_ANT, " ' ");
 }
 
@@ -76,7 +76,6 @@ static int	draw_one_ant(t_vfarm *vfarm, t_ant *ant, int step)
 int			draw_ants(t_vfarm *vfarm)
 {
 	int ant_nbr;
-	int	step;
 
 	if ((vfarm->farm->finished_ants <= vfarm->farm->ants_count)
 		&& vfarm->count_func)

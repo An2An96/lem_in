@@ -6,7 +6,7 @@
 /*   By: rschuppe <rschuppe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/20 19:21:05 by rschuppe          #+#    #+#             */
-/*   Updated: 2019/03/06 15:16:54 by rschuppe         ###   ########.fr       */
+/*   Updated: 2019/03/06 22:18:26 by rschuppe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ int			get_steps_for_comb(t_path_comb *path_combs, int ants_count)
 **	Выбор оптимальной комбинации путей для заданного числа муравьев
 */
 
-t_path_comb	*choose_best_comb_paths(t_path_comb *path_combs, int ants_count)
+t_path_comb	*choose_best_comb_paths(t_path_comb *path_combs)
 {
 	int cur_comb;
 	int best_comb;

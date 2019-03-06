@@ -6,7 +6,7 @@
 /*   By: rschuppe <rschuppe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/20 19:11:32 by rschuppe          #+#    #+#             */
-/*   Updated: 2019/03/06 21:04:00 by rschuppe         ###   ########.fr       */
+/*   Updated: 2019/03/06 22:10:31 by rschuppe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,7 +127,6 @@ t_path_comb	*find_unique_paths(t_farm *farm, int count)
 
 	paths_combs = allocate_mem_for_paths_combs(count);
 	SECURE_MALLOC(pqueue = pq_init(farm->count_rooms * 10, true));
-	// SECURE_MALLOC(path = ft_dlst_create());
 	path = create_way(farm, NULL);
 	ft_dlst_push_front(farm->rooms[0]->paths, ft_create_node_ptr(path));
 	pq_insert(pqueue, farm->rooms[0], 0);

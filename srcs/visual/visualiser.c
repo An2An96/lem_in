@@ -6,7 +6,7 @@
 /*   By: rschuppe <rschuppe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/02 17:22:46 by wballaba          #+#    #+#             */
-/*   Updated: 2019/03/06 21:14:04 by rschuppe         ###   ########.fr       */
+/*   Updated: 2019/03/06 22:19:35 by rschuppe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,15 +21,13 @@ static void	read_step_ant(t_vfarm *vfarm, char *res)
 
 	i = 1;
 	if ((ant_nbr = ft_atoi(res + i)) > vfarm->farm->ants_count)
-	{
-		ft_printf("Error: число муравьев больше заявленного\n");
-		ft_close();
-	}
+		throw_error(STR_ERROR_VALID, "The number ants is greater than stated");
 	while (ft_isdigit(res[i]))
 		i++;
 	i++;
 	room_name = ft_strdup(res + i);
-	room = find_node_by_name(vfarm->farm->rooms, vfarm->farm->count_rooms, room_name);
+	room = find_node_by_name(
+		vfarm->farm->rooms, vfarm->farm->count_rooms, room_name);
 	room->ant_num = ant_nbr;
 	if (room->types & ROOM_END)
 	{
@@ -44,7 +42,6 @@ static void	read_step_ant(t_vfarm *vfarm, char *res)
 static int	read_line(t_vfarm *vfarm, char *line)
 {
 	int		i;
-	int		j;
 	char	**res;
 
 	i = -1;

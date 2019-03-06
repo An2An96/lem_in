@@ -6,7 +6,7 @@
 /*   By: rschuppe <rschuppe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/18 14:47:13 by rschuppe          #+#    #+#             */
-/*   Updated: 2019/03/06 21:08:28 by rschuppe         ###   ########.fr       */
+/*   Updated: 2019/03/06 22:18:36 by rschuppe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,7 +112,7 @@ void		let_ants_to_paths(t_farm *farm, t_path_comb *path_comb);
 void		make_step(t_farm *farm);
 
 int			get_steps_for_comb(t_path_comb *path_combs, int ants_count);
-t_path_comb	*choose_best_comb_paths(t_path_comb *path_combs, int ants_count);
+t_path_comb	*choose_best_comb_paths(t_path_comb *path_combs);
 
 void		show_map_config(t_farm *farm);
 int			find_cycle(t_path *path, t_room *room);

@@ -6,7 +6,7 @@
 /*   By: rschuppe <rschuppe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/25 21:47:32 by rschuppe          #+#    #+#             */
-/*   Updated: 2019/03/06 21:09:32 by rschuppe         ###   ########.fr       */
+/*   Updated: 2019/03/06 22:19:42 by rschuppe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ int		ft_close(void)
 	return (0);
 }
 
-int ft_key_press_esc_close(int key, void *param)
+int	ft_key_press_esc_close(int key)
 {
 	if (key == KEY_ESC)
 		ft_close();

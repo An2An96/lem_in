@@ -6,7 +6,7 @@
 /*   By: rschuppe <rschuppe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/06 18:50:53 by rschuppe          #+#    #+#             */
-/*   Updated: 2019/03/06 19:47:55 by rschuppe         ###   ########.fr       */
+/*   Updated: 2019/03/06 22:17:32 by rschuppe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ t_path		*make_path_copy(t_path *path)
 	t_path	*new;
 	t_node	*cur;
 
+	new = NULL;
 	if (path)
 	{
 		SECURE_MALLOC(new = ft_dlst_create());

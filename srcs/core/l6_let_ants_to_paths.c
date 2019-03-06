@@ -6,7 +6,7 @@
 /*   By: rschuppe <rschuppe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/20 19:25:43 by rschuppe          #+#    #+#             */
-/*   Updated: 2019/03/06 21:04:24 by rschuppe         ###   ########.fr       */
+/*   Updated: 2019/03/06 22:18:44 by rschuppe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,6 @@ static void			choose_path_and_start(
 
 void				let_ants_to_paths(t_farm *farm, t_path_comb *path_comb)
 {
-	int i;
 	int	nbr_ants;
 	int	nbr_path;
 

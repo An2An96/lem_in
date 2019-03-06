@@ -6,7 +6,7 @@
 /*   By: rschuppe <rschuppe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/06 14:05:53 by wballaba          #+#    #+#             */
-/*   Updated: 2019/03/06 21:14:31 by rschuppe         ###   ########.fr       */
+/*   Updated: 2019/03/06 22:19:14 by rschuppe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,6 +84,6 @@ void			get_abs_val(t_farm *farm, t_vfarm *vfarm);
 int				draw_ants(t_vfarm *vfarm);
 
 int				ft_close(void);
-int				ft_key_press_esc_close(int key, void *param);
+int				ft_key_press_esc_close(int key);
 
 #endif
