@@ -6,7 +6,7 @@
 /*   By: wballaba <wballaba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/04 14:27:33 by wballaba          #+#    #+#             */
-/*   Updated: 2019/03/06 15:56:47 by wballaba         ###   ########.fr       */
+/*   Updated: 2019/03/06 16:17:23 by wballaba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,11 +130,11 @@ void		visual_farm(t_vfarm *vfarm)
 	n_room = -1;
 	mlx_put_image_to_window(vfarm->visual->mlx_ptr, vfarm->visual->win_ptr,
 		vfarm->image->img_ptr, 0, 0);
-	mlx_string_put(vfarm->visual->mlx_ptr, vfarm->visual->win_ptr, 10, 10,
+	mlx_string_put(vfarm->visual->mlx_ptr, vfarm->visual->win_ptr, 10, 5,
 		COLOR_ANT, s_antcount);
-	mlx_string_put(vfarm->visual->mlx_ptr, vfarm->visual->win_ptr, 10, 30,
+	mlx_string_put(vfarm->visual->mlx_ptr, vfarm->visual->win_ptr, 10, 25,
 		COLOR_ANT, s_finant);
-	mlx_string_put(vfarm->visual->mlx_ptr, vfarm->visual->win_ptr, 10, 50,
+	mlx_string_put(vfarm->visual->mlx_ptr, vfarm->visual->win_ptr, 10, 45,
 		COLOR_ANT, s_step);
 	while (++n_room < vfarm->farm->count_rooms)
 		mlx_string_put(vfarm->visual->mlx_ptr, vfarm->visual->win_ptr,

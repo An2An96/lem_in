@@ -6,7 +6,7 @@
 /*   By: wballaba <wballaba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/06 14:05:53 by wballaba          #+#    #+#             */
-/*   Updated: 2019/03/06 15:53:11 by wballaba         ###   ########.fr       */
+/*   Updated: 2019/03/06 16:16:46 by wballaba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 # define LAST_DRAW			2
 
 # define WIN_SIZE			1250.0
-# define VISUAL_SIZE		1100.0
+# define VISUAL_SIZE		1070.0
 # define NODE_RADIUS		17
 
 # define COLOR_BG1			0x111237
