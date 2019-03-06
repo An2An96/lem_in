@@ -6,11 +6,17 @@
 /*   By: wballaba <wballaba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/25 21:47:32 by rschuppe          #+#    #+#             */
-/*   Updated: 2019/02/28 18:40:34 by wballaba         ###   ########.fr       */
+/*   Updated: 2019/03/06 15:29:39 by wballaba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lem_in.h"
+
+int		ft_close(void)
+{
+	exit(-1);
+	return (0);
+}
 
 void	free_split_result(char **res)
 {

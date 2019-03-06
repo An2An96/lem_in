@@ -6,47 +6,78 @@
 /*   By: wballaba <wballaba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/04 14:27:33 by wballaba          #+#    #+#             */
-/*   Updated: 2019/03/05 20:20:11 by wballaba         ###   ########.fr       */
+/*   Updated: 2019/03/06 15:56:47 by wballaba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "lem_in.h"
+#include "visualiser.h"
 
-// void	draw_ant(t_visual_farm	*vfarm)
-// { 
-// 	t_params data;
-// 	int nbr_room;
+/*
+**	2 функции ниже высчитывают значения нужные для правильного расположения
+**  фермы в окне
+*/
 
-// 	nbr_room = 0;
-// 	while (vfarm->farm->rooms[nbr_room])
-// 	{
-// 		data.x = vfarm->farm->rooms[nbr_room]->x * vfarm->abs_val_x + vfarm->indent_x;
-// 		data.y = vfarm->farm->rooms[nbr_room]->y * vfarm->abs_val_y + vfarm->indent_y;
-// 		// visual_step_ant(vfarm, nbr_room);
-// 		// draw_run_ant(&data, vfarm, nbr_room);
-// 		if (vfarm->farm->rooms[nbr_room]->ant_num)
-// 		{
-// 			mlx_string_put(vfarm->visual->mlx_ptr, vfarm->visual->win_ptr,
-// 			data.x - 10, data.y - 10, COLOR_NODE, ft_itoa(vfarm->farm->rooms[nbr_room]->ant_num));
-// 		}
-// 		nbr_room++;
-// 	}
-// }
-
-static void	draw_edge(t_visual_farm *vfarm, int nbr_room)
+static void	assignment_val(t_vfarm *vfarm, t_val *val)
 {
-	t_params data;
+	if ((val->max_x - val->min_x))
+		vfarm->abs_x = VISUAL_SIZE / (val->max_x - val->min_x);
+	else
+		vfarm->abs_x = 1;
+	if ((val->max_y - val->min_y))
+		vfarm->abs_y = VISUAL_SIZE / (val->max_y - val->min_y);
+	else
+		vfarm->abs_y = 1;
+	if (val->min_x != val->max_x)
+		vfarm->indent_x = -val->min_x * vfarm->abs_x +
+			((WIN_SIZE - (val->max_x - val->min_x) * vfarm->abs_x) / 2);
+	else
+		vfarm->indent_x = WIN_SIZE / 2;
+	if (val->min_y != val->max_y)
+		vfarm->indent_y = -val->min_y * vfarm->abs_y +
+			((WIN_SIZE - (val->max_y - val->min_y) * vfarm->abs_y) / 2);
+	else
+		vfarm->indent_y = WIN_SIZE / 2;
+}
 
-	t_list *child = vfarm->farm->rooms[nbr_room]->neighbors;
-	t_room *room;
+void		get_abs_val(t_farm *farm, t_vfarm *vfarm)
+{
+	int		n_room;
+	t_val	val;
 
-	data.x = vfarm->farm->rooms[nbr_room]->x * vfarm->abs_val_x  + vfarm->indent_x;
-	data.y = vfarm->farm->rooms[nbr_room]->y * vfarm->abs_val_y  + vfarm->indent_y;
+	n_room = 0;
+	val.max_x = farm->rooms[n_room]->x;
+	val.max_y = farm->rooms[n_room]->y;
+	val.min_x = val.max_x;
+	val.min_y = val.max_y;
+	while (farm->rooms[n_room])
+	{
+		val.max_x = MAX(val.max_x, farm->rooms[n_room]->x);
+		val.min_x = MIN(val.min_x, farm->rooms[n_room]->x);
+		val.max_y = MAX(val.max_y, farm->rooms[n_room]->y);
+		val.min_y = MIN(val.min_y, farm->rooms[n_room]->y);
+		n_room++;
+	}
+	assignment_val(vfarm, &val);
+}
+
+/*
+**	отрисовка ребер
+*/
+
+static void	draw_edge(t_vfarm *vfarm, int n_room)
+{
+	t_params	data;
+	t_list		*child;
+	t_room		*room;
+
+	child = vfarm->farm->rooms[n_room]->neighbors;
+	data.x = vfarm->farm->rooms[n_room]->x * vfarm->abs_x + vfarm->indent_x;
+	data.y = vfarm->farm->rooms[n_room]->y * vfarm->abs_y + vfarm->indent_y;
 	while (child)
 	{
 		room = vfarm->farm->rooms[*(int*)child->content];
-		data.x2 = room->x * vfarm->abs_val_x + vfarm->indent_x;
-		data.y2 = room->y * vfarm->abs_val_y + vfarm->indent_y;
+		data.x2 = room->x * vfarm->abs_x + vfarm->indent_x;
+		data.y2 = room->y * vfarm->abs_y + vfarm->indent_y;
 		data.line_width = 1;
 		data.img = vfarm->image;
 		ft_draw_line(vfarm->visual, &data, COLOR_EDGE);
@@ -54,45 +85,63 @@ static void	draw_edge(t_visual_farm *vfarm, int nbr_room)
 	}
 }
 
-void	create_farm_image(t_visual_farm *vfarm)
+/*
+**	создание изображения фермы из фона градиента, ребер и кругов нод
+*/
+
+void		create_farm_image(t_vfarm *vfarm)
 {
-	t_params data;
-	int nbr_room;
+	t_params	data;
+	int			n_room;
 
-	nbr_room = 0;
-
+	n_room = 0;
 	vfarm->image = ft_create_image(vfarm->visual, WIN_SIZE, WIN_SIZE);
-
 	data.width = WIN_SIZE;
 	data.height = WIN_SIZE;
 	data.img = vfarm->image;
-	ft_draw_bg_gradient(vfarm->visual, &data, 0x00FF000, 0xFF00000);
-	while (vfarm->farm->rooms[nbr_room])
+	ft_draw_bg_gradient(vfarm->visual, &data, COLOR_BG1, COLOR_BG2);
+	while (vfarm->farm->rooms[n_room])
 	{
 		data.img = vfarm->image;
-		data.x = vfarm->farm->rooms[nbr_room]->x * vfarm->abs_val_x + vfarm->indent_x;
-		data.y = vfarm->farm->rooms[nbr_room]->y * vfarm->abs_val_y + vfarm->indent_y;
+		data.x = vfarm->farm->rooms[n_room]->x * vfarm->abs_x + vfarm->indent_x;
+		data.y = vfarm->farm->rooms[n_room]->y * vfarm->abs_y + vfarm->indent_y;
 		data.line_width = 1;
-		data.radius = 17;
+		data.radius = NODE_RADIUS;
 		ft_draw_circle(vfarm->visual, &data, COLOR_NODE);
-		draw_edge(vfarm, nbr_room);
-		nbr_room++;
+		draw_edge(vfarm, n_room);
+		n_room++;
 	}
 }
 
+/*
+**	отрисовка фермы
+*/
 
-void			visual_farm(t_visual_farm	*vfarm)
+void		visual_farm(t_vfarm *vfarm)
 {
-	int nbr_room;
+	int		n_room;
+	char	*s_antcount;
+	char	*s_finant;
+	char	*s_step;
 
-	nbr_room = 0;
-	mlx_put_image_to_window(vfarm->visual->mlx_ptr, vfarm->visual->win_ptr, vfarm->image->img_ptr, 0, 0);
-	while (nbr_room < vfarm->farm->count_rooms)
-	{
+	s_antcount = ft_strjoin("count ant  = ", ft_itoa(vfarm->farm->ants_count));
+	s_finant = ft_strjoin("finish ant = ", ft_itoa(vfarm->farm->finished_ants));
+	s_step = ft_strjoin("count step = ", ft_itoa(vfarm->count_line));
+	n_room = -1;
+	mlx_put_image_to_window(vfarm->visual->mlx_ptr, vfarm->visual->win_ptr,
+		vfarm->image->img_ptr, 0, 0);
+	mlx_string_put(vfarm->visual->mlx_ptr, vfarm->visual->win_ptr, 10, 10,
+		COLOR_ANT, s_antcount);
+	mlx_string_put(vfarm->visual->mlx_ptr, vfarm->visual->win_ptr, 10, 30,
+		COLOR_ANT, s_finant);
+	mlx_string_put(vfarm->visual->mlx_ptr, vfarm->visual->win_ptr, 10, 50,
+		COLOR_ANT, s_step);
+	while (++n_room < vfarm->farm->count_rooms)
 		mlx_string_put(vfarm->visual->mlx_ptr, vfarm->visual->win_ptr,
-			vfarm->farm->rooms[nbr_room]->x * vfarm->abs_val_x + 10  + vfarm->indent_x,
-			vfarm->farm->rooms[nbr_room]->y * vfarm->abs_val_y + 10 + vfarm->indent_y,
-			COLOR_NODE, vfarm->farm->rooms[nbr_room]->name);
-		nbr_room++;
-	}
+			vfarm->farm->rooms[n_room]->x * vfarm->abs_x + 10 + vfarm->indent_x,
+			vfarm->farm->rooms[n_room]->y * vfarm->abs_y + 10 + vfarm->indent_y,
+			COLOR_NODE, vfarm->farm->rooms[n_room]->name);
+	free(s_antcount);
+	free(s_finant);
+	free(s_step);
 }

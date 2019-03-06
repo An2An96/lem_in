@@ -6,7 +6,7 @@
 /*   By: wballaba <wballaba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/20 19:25:43 by rschuppe          #+#    #+#             */
-/*   Updated: 2019/03/02 18:03:20 by wballaba         ###   ########.fr       */
+/*   Updated: 2019/03/06 15:34:48 by wballaba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ static int	push_ants_along_path(t_path *path)
 		if (room->ant_num == 0 && prev_room->ant_num != 0)
 		{
 			room->ant_num = prev_room->ant_num;
-			prev_room->previous_ant = prev_room->ant_num;
+			prev_room->prev_ant = prev_room->ant_num;
 			prev_room->ant_num = 0;
 			show_ant_pos(room);
 			if (path->tail == cur)
@@ -89,12 +89,6 @@ void		make_step(t_farm *farm)
 	if (nbr_ants < farm->ants_count)
 		choose_path_and_start(farm, farm->best_paths, &nbr_ants);
 	ft_printf("\n");
-}
-
-int			ft_close(void)
-{
-	exit(-1);
-	return (0);
 }
 
 void		let_ants_to_paths(t_farm *farm)

@@ -6,7 +6,7 @@
 /*   By: wballaba <wballaba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/18 14:47:13 by rschuppe          #+#    #+#             */
-/*   Updated: 2019/03/05 20:51:19 by wballaba         ###   ########.fr       */
+/*   Updated: 2019/03/06 14:09:26 by wballaba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,15 +24,12 @@
 # define FLAG_VISUALISE		1
 # define FLAG_DEBUG			2
 
+# define ROOM_MID			0
 # define ROOM_START			1
 # define ROOM_END			2
 
-# define WIN_SIZE			1250.0
-# define VISUAL_SIZE		1100.0
-# define COLOR_NODE			0xFFFFFFF
-# define COLOR_EDGE			0xFFFFFFF
-# define COLOR_BACK			0x0000000
-# define COLOR_ANT			0x00FF000
+
+
 
 # define LIST(el, type)		((type)el->content)
 
@@ -77,30 +74,6 @@ typedef struct	s_farm {
 	int			finish_edges;
 }				t_farm;
 
-typedef struct	s_ant {
-	int		x;
-	int		y;
-	int		x2;
-	int		y2;
-	int		step;
-}				t_ant;
-
-typedef struct	s_visual_farm
-{
-	t_mlx		*visual;
-	t_img		*image;
-	t_farm		*farm;
-	t_ant		**ant;
-	double		abs_val_x;
-	double		abs_val_y;
-	double		indent_x;
-	double		indent_y;
-	int			step;
-	int			count_func;
-}				t_visual_farm;
-
-
-
 /*
 **	Read farm
 */
@@ -129,20 +102,5 @@ int			find_node_index_by_name(t_room **rooms, char *name);
 int			get_paths_diff(t_path **paths, int path_idx);
 void		free_split_result(char **res);
 void		show_path(t_farm *farm, t_path *path);
-
-/*
-**	Visualisation
-*/
-
-int			press_key_callback(int key, t_farm *farm);
-void		draw_farm(t_farm *farm);
-void		visual_farm(t_visual_farm	*vfarm);
-void		create_farm_image(t_visual_farm *vfarm);
-
-void		find_path_ant(t_visual_farm *vfarm);
-void		arr_ant(t_visual_farm *vfarm);
-void		move_ant(t_ant	*ant, int x, int y);
-int		draw_ant(t_visual_farm *vfarm);
-void	draw_run_ant(t_visual_farm *vfarm);
 
 #endif
