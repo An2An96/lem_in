@@ -6,7 +6,7 @@
 /*   By: rschuppe <rschuppe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/20 19:21:05 by rschuppe          #+#    #+#             */
-/*   Updated: 2019/03/05 20:40:22 by rschuppe         ###   ########.fr       */
+/*   Updated: 2019/03/06 15:16:54 by rschuppe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,9 +48,9 @@ t_path_comb	*choose_best_comb_paths(t_path_comb *path_combs, int ants_count)
 	best_comb = -1;
 	cur_comb = 0;
 	SET_MAX(best_steps);
-	if (!path_combs[cur_comb].count)
+	if (!path_combs[cur_comb].steps)
 		return (NULL);
-	while (path_combs[cur_comb].count)
+	while (path_combs[cur_comb].steps)
 	{
 		if (path_combs[cur_comb].steps < best_steps)
 		{

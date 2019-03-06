@@ -6,7 +6,7 @@
 /*   By: rschuppe <rschuppe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/20 19:25:43 by rschuppe          #+#    #+#             */
-/*   Updated: 2019/03/05 20:41:45 by rschuppe         ###   ########.fr       */
+/*   Updated: 2019/03/06 16:16:05 by rschuppe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,34 +68,23 @@ static void			choose_path_and_start(
 				break ;
 		}
 		room = LIST(path_comb->paths[path_idx]->head, t_room*);
-		// if (!room->ant_num)
-		// {
-		if (room->type == ROOM_END)
+		if (room->types & ROOM_END)
 			farm->finished_ants++;
 		room->ant_num = ++(*nbr_ants);
 		show_ant_pos(room);
-		// }
 		path_idx++;
 	}
 }
 
 void				let_ants_to_paths(t_farm *farm, t_path_comb *path_comb)
 {
+	int i;
 	int	nbr_ants;
 	int	nbr_path;
 
-	if (!path_comb)
-	{
-		write(1, "Error: no way to the finish\n", 28);
-		return ;
-	}
-
-	ft_printf("Best paths comb:\n");
-	int i = -1;
-	while (path_comb->paths[++i])
-		show_path(path_comb->paths[i]);
-	ft_printf("\n");
-
+	!path_comb && throw_error(STR_ERROR_PATH, "No way to the finish");
+	IS_FLAG(FLAG_DEBUG) && show_comb(path_comb);
+	show_map_config(farm);
 	nbr_ants = 0;
 	while (farm->finished_ants < farm->ants_count)
 	{

@@ -6,7 +6,7 @@
 /*   By: rschuppe <rschuppe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/25 21:47:32 by rschuppe          #+#    #+#             */
-/*   Updated: 2019/03/05 15:40:19 by rschuppe         ###   ########.fr       */
+/*   Updated: 2019/03/06 16:16:52 by rschuppe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,15 +22,55 @@ void	free_split_result(char **res)
 	free(res);
 }
 
-void	show_path(t_path *path)
+int		show_path(t_path *path)
 {
 	t_node	*cur;
 
 	cur = path->head;
 	while (cur)
 	{
-		ft_printf("%s%s", cur != path->head ? " -> " : "",  ((t_room*)cur->content)->name);
+		ft_printf("%s%s",
+			cur != path->head ? " -> " : "", ((t_room*)cur->content)->name);
 		cur = cur->next;
 	}
 	ft_printf("\n");
+	return (1);
+}
+
+int		show_comb(t_path_comb *path_comb)
+{
+	int i;
+
+	write(1, "Best paths comb:\n", 17);
+	i = -1;
+	while (path_comb->paths[++i])
+		show_path(path_comb->paths[i]);
+	return (1);
+}
+
+int		min_atoi(const char *str)
+{
+	char	negative;
+	int		result;
+	int		i;
+
+	i = 0;
+	if (str[i] == '-' || str[i] == '+')
+	{
+		negative = 1 - (2 * (str[i] == '-'));
+		i++;
+	}
+	else
+		negative = 1;
+	result = 0;
+	while (str[i])
+	{
+		if (!ft_isdigit(str[i]))
+			throw_error(STR_ERROR_VALID, "Invalid coordinates of the room");
+		result = (result * 10) + (str[i] - '0');
+		if (result < 0)
+			throw_error(STR_ERROR_VALID, "Coordinates out of range type int");
+		i++;
+	}
+	return ((int)result * negative);
 }
