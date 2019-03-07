@@ -6,7 +6,7 @@
 /*   By: rschuppe <rschuppe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/19 16:47:35 by rschuppe          #+#    #+#             */
-/*   Updated: 2019/03/06 21:24:35 by rschuppe         ###   ########.fr       */
+/*   Updated: 2019/03/07 19:10:20 by rschuppe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 
 static t_room	*create_room(char *name, int x, int y, int8_t type)
 {
-	int		i;
 	t_room	*room;
 
 	if (name[0] == 'L' || ft_strstr(name, "-"))
@@ -26,12 +25,6 @@ static t_room	*create_room(char *name, int x, int y, int8_t type)
 	room->types = type;
 	room->weight = -1;
 	room->paths = ft_dlst_create();
-	i = 0;
-	while (i < 100)		//	FIX IT!!!
-	{
-		room->processed_paths[i] = 0;
-		i++;
-	}
 	return (room);
 }
 
@@ -133,7 +126,7 @@ t_farm			*read_farm_map(int fd, t_farm *farm)
 			{
 				res = ft_strsplit(line, '-');
 				if (res[0] && res[1] && !res[2])
-					add_edge(farm, res[0], res[1]);
+					add_edge(farm, res[0], res[1]);	///?????
 					// !add_edge(farm, res[0], res[1]) && throw_error(STR_ERROR_VALID, "Attempt to create edge for a non-existent room");
 				free_split_result(res);
 			}

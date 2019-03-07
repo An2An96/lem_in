@@ -6,7 +6,7 @@
 /*   By: rschuppe <rschuppe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/01 21:05:56 by rschuppe          #+#    #+#             */
-/*   Updated: 2019/03/06 21:06:28 by rschuppe         ###   ########.fr       */
+/*   Updated: 2019/03/07 19:10:34 by rschuppe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,11 +33,12 @@ void		dijkstra_algo(t_farm *farm)
 		while (parent)
 		{
 			room = farm->rooms[*(int*)parent->content];
-			if (room->weight == -1)
-				ft_stack_push(stack, *(int*)parent->content);
 			if (room->weight == -1
 				|| room->weight > farm->rooms[cur_room]->weight + 1)
+			{
 				room->weight = (farm->rooms[cur_room]->weight + 1);
+				ft_stack_push(stack, *(int*)parent->content);
+			}
 			parent = parent->next;
 		}
 	}

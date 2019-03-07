@@ -6,7 +6,7 @@
 /*   By: rschuppe <rschuppe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/18 14:47:13 by rschuppe          #+#    #+#             */
-/*   Updated: 2019/03/06 22:18:36 by rschuppe         ###   ########.fr       */
+/*   Updated: 2019/03/07 19:10:13 by rschuppe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,12 +17,14 @@
 # include <limits.h>
 # include <string.h>
 # include <errno.h>
+# include <time.h>
 
 # include "libft.h"
 # include "ft_printf.h"
 
 # define FLAG_VISUALISE		1
 # define FLAG_DEBUG			2
+# define FLAG_TIME			4
 
 # define ROOM_MID			0
 # define ROOM_START			1
@@ -54,6 +56,7 @@ typedef struct	s_path_comb
 {
 	t_path	**paths;
 	int		count;
+	int		last_free_idx;
 	int		steps;
 }				t_path_comb;
 
@@ -67,7 +70,6 @@ typedef struct	s_room
 	int		weight;
 	t_list	*neighbors;
 	t_dlist	*paths;
-	bool	processed_paths[10000];
 }				t_room;
 
 typedef struct	s_farm
@@ -106,7 +108,7 @@ void		dijkstra_algo(t_farm *farm);
 t_path_comb	*find_unique_paths(t_farm *farm, int count);
 
 bool		find_comb(
-	t_dlist *paths, t_path_comb *result, int cur_path, int need_path);
+	t_dlist *paths, t_path_comb *result, t_node *cur_path_node, int need_path);
 int			find_best_comb_paths(t_path_comb **path_combs, int ants_count);
 void		let_ants_to_paths(t_farm *farm, t_path_comb *path_comb);
 void		make_step(t_farm *farm);

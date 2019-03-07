@@ -6,7 +6,7 @@
 /*   By: rschuppe <rschuppe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/20 19:11:32 by rschuppe          #+#    #+#             */
-/*   Updated: 2019/03/06 22:10:31 by rschuppe         ###   ########.fr       */
+/*   Updated: 2019/03/07 19:11:32 by rschuppe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,8 @@ inline static void	add_path_room(t_room *room, t_path *path)
 static void		send_path_to_neighbors(t_farm *farm, t_room *room,
 	t_path *path, t_pqueue *pqueue, int old_priority)
 {
+	#pragma unused (old_priority)
+	
 	bool	opu;
 	t_path	*path_copy;
 	t_list	*neighbor_lst;
@@ -69,7 +71,7 @@ static void		send_path_to_neighbors(t_farm *farm, t_room *room,
 				ft_dlst_push_back(LIST(neighbor->paths->tail, t_path*),
 					ft_create_node_ptr(neighbor));
 			pq_insert(pqueue, neighbor, neighbor->types & ROOM_END ?
-				0 : old_priority + neighbor->weight);
+				0 : neighbor->weight);
 		}
 		neighbor_lst = neighbor_lst->next;
 	}
@@ -79,24 +81,21 @@ static void		send_path_to_neighbors(t_farm *farm, t_room *room,
 static void	enter_room(
 	t_farm *farm, t_room *room, int old_priority, t_pqueue *pqueue)
 {
-	int		i;
 	t_node	*path_lst;
+	t_node	*next;
 	t_path	*path;
 
-	i = 0;
+	// ft_printf("enter_room %s, priority: %d\n", room->name, old_priority);
 	path_lst = room->paths->head;
 	while (path_lst)
 	{
-		if (!room->processed_paths[i])
-		{
-			path = LIST(path_lst, t_path*);
-			if (!(room->types & ROOM_START))
-				ft_dlst_push_back(path, ft_create_node_ptr(room));
-			send_path_to_neighbors(farm, room, path, pqueue, old_priority);
-			room->processed_paths[i] = true;
-		}
-		i++;
-		path_lst = path_lst->next;
+		path = LIST(path_lst, t_path*);
+		if (!(room->types & ROOM_START))
+			ft_dlst_push_back(path, ft_create_node_ptr(room));
+		send_path_to_neighbors(farm, room, path, pqueue, old_priority);
+		next = path_lst->next;
+		ft_dlst_remove_node(room->paths, path_lst, NULL);
+		path_lst = next;
 	}
 }
 
@@ -106,10 +105,13 @@ static int	find_and_check_comb(
 	int comb;
 
 	comb = farm->cur_comb;
-	if (find_comb(room->paths, &paths_combs[comb], 0, comb + 1))
+	// ft_printf("\n\n");
+	ft_printf("find_and_check_comb pathes: %d, need = %d\n", room->paths->size, comb + 1);
+	if (find_comb(room->paths, &paths_combs[comb], room->paths->head, comb + 1))
 	{
 		paths_combs[comb].steps =
 			get_steps_for_comb(&paths_combs[comb], farm->ants_count);
+		ft_printf("complete %d/%d comb, steps: %d\n", comb + 1, count, paths_combs[comb].steps);
 		return ((farm->cur_comb > 0
 			&& paths_combs[comb - 1].steps < paths_combs[comb].steps)
 			|| ++farm->cur_comb == count);
@@ -134,6 +136,7 @@ t_path_comb	*find_unique_paths(t_farm *farm, int count)
 	{
 		if (room == farm->rooms[farm->count_rooms - 1])
 		{
+			// ft_printf("find end\n");
 			if (find_and_check_comb(farm, room, paths_combs, count))
 				break ;
 		}
