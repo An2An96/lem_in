@@ -6,7 +6,7 @@
 /*   By: wballaba <wballaba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/02 17:22:46 by wballaba          #+#    #+#             */
-/*   Updated: 2019/03/06 19:09:07 by wballaba         ###   ########.fr       */
+/*   Updated: 2019/03/07 18:43:25 by wballaba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,20 +31,13 @@ static void	read_step_ant(t_vfarm *vfarm, char *res)
 	room_name = ft_strdup(res + i);
 	room = find_node_by_name(vfarm->farm->rooms, room_name);
 	room->ant_num = ant_nbr;
-	if (room->type == ROOM_END)
-	{
-		move_ant(vfarm->ant[ant_nbr - 1], room->x, room->y, ROOM_END);
-		vfarm->farm->finished_ants++;
-	}
-	else
-		move_ant(vfarm->ant[ant_nbr - 1], room->x, room->y, ROOM_MID);
+	move_ant(vfarm->ant[ant_nbr - 1], room, vfarm);
 	free(room_name);
 }
 
 static int	read_line(t_vfarm *vfarm, char *line)
 {
 	int		i;
-	int		j;
 	char	**res;
 
 	i = -1;

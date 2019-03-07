@@ -6,7 +6,7 @@
 /*   By: wballaba <wballaba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/04 14:27:33 by wballaba          #+#    #+#             */
-/*   Updated: 2019/03/06 20:04:41 by wballaba         ###   ########.fr       */
+/*   Updated: 2019/03/07 18:42:15 by wballaba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ static void	draw_edge(t_vfarm *vfarm, int n_room)
 		room = vfarm->farm->rooms[*(int*)child->content];
 		data.x2 = room->x * vfarm->abs_x + vfarm->indent_x;
 		data.y2 = room->y * vfarm->abs_y + vfarm->indent_y;
-		data.line_width = 1;
+		data.line_width = 2;
 		data.img = vfarm->image;
 		ft_draw_line(vfarm->visual, &data, COLOR_EDGE);
 		child = child->next;
@@ -105,9 +105,12 @@ void		create_farm_image(t_vfarm *vfarm)
 		data.img = vfarm->image;
 		data.x = vfarm->farm->rooms[n_room]->x * vfarm->abs_x + vfarm->indent_x;
 		data.y = vfarm->farm->rooms[n_room]->y * vfarm->abs_y + vfarm->indent_y;
-		data.line_width = 1;
+		data.line_width = 2;
 		data.radius = NODE_RADIUS;
-		ft_draw_circle(vfarm->visual, &data, COLOR_NODE);
+		if (n_room == 0 || n_room == vfarm->farm->count_rooms - 1)
+			ft_draw_circle(vfarm->visual, &data, COLOR_START);
+		else
+			ft_draw_circle(vfarm->visual, &data, COLOR_EDGE);
 		draw_edge(vfarm, n_room);
 		n_room++;
 	}

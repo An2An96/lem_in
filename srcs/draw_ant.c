@@ -6,7 +6,7 @@
 /*   By: wballaba <wballaba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/05 15:15:25 by wballaba          #+#    #+#             */
-/*   Updated: 2019/03/06 20:00:44 by wballaba         ###   ########.fr       */
+/*   Updated: 2019/03/07 18:40:47 by wballaba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,10 +25,10 @@ void		get_arr_ant(t_vfarm *vfarm)
 	while (i < vfarm->farm->ants_count)
 	{
 		vfarm->ant[i] = (t_ant*)ft_memalloc(sizeof(t_ant));
-		vfarm->ant[i]->x = vfarm->farm->rooms[0]->x;
-		vfarm->ant[i]->y = vfarm->farm->rooms[0]->y;
-		vfarm->ant[i]->x2 = vfarm->farm->rooms[0]->x;
-		vfarm->ant[i]->y2 = vfarm->farm->rooms[0]->y;
+		vfarm->ant[i]->x = vfarm->farm->rooms[0]->x * vfarm->abs_x;
+		vfarm->ant[i]->y = vfarm->farm->rooms[0]->y * vfarm->abs_y;
+		vfarm->ant[i]->x2 = vfarm->farm->rooms[0]->x * vfarm->abs_x;
+		vfarm->ant[i]->y2 = vfarm->farm->rooms[0]->y * vfarm->abs_y;
 		vfarm->ant[i]->drawing = STOP_DRAW;
 		i++;
 	}
@@ -38,18 +38,21 @@ void		get_arr_ant(t_vfarm *vfarm)
 **	нахождение координат и тракектории передвижения муравьев
 */
 
-void		move_ant(t_ant *ant, int x, int y, int type_room)
+void		move_ant(t_ant *ant, t_room *room, t_vfarm *vfarm)
 {
 	double	side[3];
 
-	if (type_room == ROOM_END)
+	if (room->type == ROOM_END)
+	{
 		ant->drawing = LAST_DRAW;
+		vfarm->farm->finished_ants++;
+	}
 	else
 		ant->drawing = DRAWING;
 	ant->x = ant->x2;
 	ant->y = ant->y2;
-	ant->x2 = x;
-	ant->y2 = y;
+	ant->x2 = room->x * vfarm->abs_x;
+	ant->y2 = room->y * vfarm->abs_y;
 	side[1] = ant->y2 - ant->y;
 	side[2] = ant->x2 - ant->x;
 	side[0] = sqrt(pow(side[1], 2) + pow(side[2], 2));
