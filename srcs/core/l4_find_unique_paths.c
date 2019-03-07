@@ -6,7 +6,7 @@
 /*   By: rschuppe <rschuppe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/20 19:11:32 by rschuppe          #+#    #+#             */
-/*   Updated: 2019/03/07 19:11:32 by rschuppe         ###   ########.fr       */
+/*   Updated: 2019/03/07 19:38:49 by rschuppe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,11 +47,8 @@ inline static void	add_path_room(t_room *room, t_path *path)
 	ft_dlst_push_back(room->paths, ft_create_node_ptr(path));
 }
 
-static void		send_path_to_neighbors(t_farm *farm, t_room *room,
-	t_path *path, t_pqueue *pqueue, int old_priority)
+static void		send_path_to_neighbors(t_farm *farm, t_room *room, t_path *path, t_dlist *queue)
 {
-	#pragma unused (old_priority)
-	
 	bool	opu;
 	t_path	*path_copy;
 	t_list	*neighbor_lst;
@@ -70,16 +67,17 @@ static void		send_path_to_neighbors(t_farm *farm, t_room *room,
 			if (neighbor->types & ROOM_END)
 				ft_dlst_push_back(LIST(neighbor->paths->tail, t_path*),
 					ft_create_node_ptr(neighbor));
-			pq_insert(pqueue, neighbor, neighbor->types & ROOM_END ?
-				0 : neighbor->weight);
+			if (neighbor->types & ROOM_END)
+				ft_dlst_push_back(queue, ft_create_node_ptr(neighbor));
+			else
+				ft_dlst_push_front(queue, ft_create_node_ptr(neighbor));
 		}
 		neighbor_lst = neighbor_lst->next;
 	}
 	ft_dlst_del(&path_copy, NULL);
 }
 
-static void	enter_room(
-	t_farm *farm, t_room *room, int old_priority, t_pqueue *pqueue)
+static void	enter_room(t_farm *farm, t_room *room, t_dlist *queue)
 {
 	t_node	*path_lst;
 	t_node	*next;
@@ -92,7 +90,7 @@ static void	enter_room(
 		path = LIST(path_lst, t_path*);
 		if (!(room->types & ROOM_START))
 			ft_dlst_push_back(path, ft_create_node_ptr(room));
-		send_path_to_neighbors(farm, room, path, pqueue, old_priority);
+		send_path_to_neighbors(farm, room, path, queue);
 		next = path_lst->next;
 		ft_dlst_remove_node(room->paths, path_lst, NULL);
 		path_lst = next;
@@ -105,7 +103,6 @@ static int	find_and_check_comb(
 	int comb;
 
 	comb = farm->cur_comb;
-	// ft_printf("\n\n");
 	ft_printf("find_and_check_comb pathes: %d, need = %d\n", room->paths->size, comb + 1);
 	if (find_comb(room->paths, &paths_combs[comb], room->paths->head, comb + 1))
 	{
@@ -121,19 +118,19 @@ static int	find_and_check_comb(
 
 t_path_comb	*find_unique_paths(t_farm *farm, int count)
 {
-	t_pqueue	*pqueue;
+	t_dlist		*queue;
 	t_room		*room;
 	t_path		*path;
-	int			priority;
 	t_path_comb	*paths_combs;
 
+	SECURE_MALLOC(queue = ft_dlst_create());
 	paths_combs = allocate_mem_for_paths_combs(count);
-	SECURE_MALLOC(pqueue = pq_init(farm->count_rooms * 10, true));
 	path = create_way(farm, NULL);
 	ft_dlst_push_front(farm->rooms[0]->paths, ft_create_node_ptr(path));
-	pq_insert(pqueue, farm->rooms[0], 0);
-	while ((room = (t_room*)pq_extract_ex(pqueue, &priority)))
+	ft_dlst_push_front(queue, ft_create_node_ptr(farm->rooms[0]));
+	while ((room = LIST(queue->tail, t_room*)))
 	{
+		ft_dlst_remove_node(queue, queue->tail, NULL);
 		if (room == farm->rooms[farm->count_rooms - 1])
 		{
 			// ft_printf("find end\n");
@@ -141,8 +138,8 @@ t_path_comb	*find_unique_paths(t_farm *farm, int count)
 				break ;
 		}
 		else
-			enter_room(farm, room, priority, pqueue);
+			enter_room(farm, room, queue);
 	}
-	pq_delete(&pqueue, NULL);
+	ft_dlst_del(&queue, NULL);
 	return (paths_combs);
 }

@@ -15,7 +15,7 @@ SRCS_DIR = ./srcs
 LIBS = libft libftprintf libdraw
 
 SRC_MAIN_DIR =		/core
-SRC_MAIN =			main.c	debug.c	dijkstra_algo.c	show_map_config.c \
+SRC_MAIN =			main.c	debug.c	show_map_config.c \
 					get_paths_diff.c paths_utils.c find_comb.c \
 					l4_find_unique_paths.c l5_find_best_comb_paths.c \
 					l6_let_ants_to_paths.c

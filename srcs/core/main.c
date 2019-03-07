@@ -6,7 +6,7 @@
 /*   By: rschuppe <rschuppe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/18 14:17:13 by rschuppe          #+#    #+#             */
-/*   Updated: 2019/03/07 19:09:50 by rschuppe         ###   ########.fr       */
+/*   Updated: 2019/03/07 19:46:00 by rschuppe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,8 +94,6 @@ void		test_dfs(t_farm *farm)
 	show_path(path);
 }
 
-
-
 int			main(int argc, char **argv)
 {
 	int			fd;
@@ -105,39 +103,33 @@ int			main(int argc, char **argv)
 	clock_t		begin;
 	clock_t		end;
 
-	// begin = clock();
 	SECURE_MALLOC(farm = (t_farm*)ft_memalloc(sizeof(t_farm)));
 	filename = read_args(argc, argv, &farm->flags);
+	IS_FLAG(FLAG_TIME) && (begin = clock());
 	(fd = filename ? open(filename, O_RDONLY) : 0) == -1
 		&& throw_error(STR_ERROR_SYS, strerror(errno));
 	read_farm_map(fd, farm);
-	// end = clock();
-	// ft_printf("read farm time: %f\n", (double)(end - begin) / CLOCKS_PER_SEC);
+	IS_FLAG(FLAG_TIME) && (end = clock());
+	IS_FLAG(FLAG_TIME) && SHOW_DELAY("Read farm delay");
 	IS_FLAG(FLAG_DEBUG) && debug_show_rooms(farm);
 	if (!(farm->rooms[0]->types == (ROOM_START | ROOM_END)))
 	{
-		// IS_FLAG(FLAG_TIME) && (begin = clock());
-		// dijkstra_algo(farm);
-		// IS_FLAG(FLAG_TIME) && (end = clock());
-		// IS_FLAG(FLAG_TIME) && ft_printf("set weights rooms time: %f\n", (double)(end - begin) / CLOCKS_PER_SEC);
-		// IS_FLAG(FLAG_DEBUG) && debug_show_weights(farm);
-
 		// test_dfs(farm);
 
 		IS_FLAG(FLAG_TIME) && (begin = clock());
 		paths_combs = find_unique_paths(farm,
 			MIN(farm->start_edges, farm->finish_edges));
 		IS_FLAG(FLAG_TIME) && (end = clock());
-		IS_FLAG(FLAG_TIME) && ft_printf("find pathes time: %f\n", (double)(end - begin) / CLOCKS_PER_SEC);
+		IS_FLAG(FLAG_TIME) && SHOW_DELAY("Find pathes delay");
 		IS_FLAG(FLAG_DEBUG) && debug_show_paths(paths_combs);
 		IS_FLAG(FLAG_TIME) && (begin = clock());
 		let_ants_to_paths(farm, choose_best_comb_paths(paths_combs));
 		IS_FLAG(FLAG_TIME) && (end = clock());
-		IS_FLAG(FLAG_TIME) && ft_printf("let ants time: %f\n", (double)(end - begin) / CLOCKS_PER_SEC);
+		IS_FLAG(FLAG_TIME) && SHOW_DELAY("Let ants delay");
 		IS_FLAG(FLAG_TIME) && (begin = clock());
 		clear_paths_comb(paths_combs);
 		IS_FLAG(FLAG_TIME) && (end = clock());
-		IS_FLAG(FLAG_TIME) && ft_printf("clear time: %f\n", (double)(end - begin) / CLOCKS_PER_SEC);
+		IS_FLAG(FLAG_TIME) && SHOW_DELAY("Clear memory delay");
 	}
 	clear_farm(farm);
 	return (EXIT_SUCCESS);

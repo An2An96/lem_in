@@ -6,7 +6,7 @@
 /*   By: rschuppe <rschuppe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/18 14:47:13 by rschuppe          #+#    #+#             */
-/*   Updated: 2019/03/07 19:10:13 by rschuppe         ###   ########.fr       */
+/*   Updated: 2019/03/07 19:50:30 by rschuppe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,10 @@
 # include "libft.h"
 # include "ft_printf.h"
 
+# define COLOR_CYAN			"\x1b[36m"
+# define COLOR_ERROR		"\x1b[1;31m"
+# define COLOR_NONE			"\x1b[0m"
+
 # define FLAG_VISUALISE		1
 # define FLAG_DEBUG			2
 # define FLAG_TIME			4
@@ -35,8 +39,9 @@
 # define IS_FLAG(f)			(farm->flags & f)
 # define SECURE_MALLOC(a)	!(a) && throw_error(MEMORY_ERR)		
 
-# define COLOR_ERROR		"\x1b[1;31m"
-# define COLOR_NONE			"\x1b[0m"
+# define DELAY				(double)(end - begin) / CLOCKS_PER_SEC
+# define DELAY_MESSAGE		
+# define SHOW_DELAY(str)	ft_printf("\x1b[47m\x1b[30m%s: \x1b[1m%f\x1b[0m\x1b[49m\x1b[0m\n", str, DELAY)
 
 # define STR_ERROR_SYS		COLOR_ERROR"[System Error]: "COLOR_NONE
 # define STR_ERROR_VALID	COLOR_ERROR"[Validation Error]: "COLOR_NONE
