@@ -6,7 +6,7 @@
 /*   By: wballaba <wballaba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/02 17:22:46 by wballaba          #+#    #+#             */
-/*   Updated: 2019/03/08 16:45:06 by wballaba         ###   ########.fr       */
+/*   Updated: 2019/03/08 20:26:18 by wballaba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,10 @@ static int	lem_in_draw(int key, t_vfarm *vfarm)
 			draw_run_ant(vfarm);
 		}
 	}
+	else if (key == KEY_W || key == KEY_S || key == KEY_A || key == KEY_D ||
+		key == KEY_UP || key == KEY_DOWN || key == KEY_LEFT || key == KEY_RIGHT
+		|| key == KEY_Q || key == KEY_E)
+		move_farm(key, vfarm);
 	return (0);
 }
 

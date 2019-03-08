@@ -6,7 +6,7 @@
 /*   By: wballaba <wballaba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/06 14:05:53 by wballaba          #+#    #+#             */
-/*   Updated: 2019/03/08 16:38:38 by wballaba         ###   ########.fr       */
+/*   Updated: 2019/03/08 20:20:56 by wballaba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,17 @@
 
 # include "lem_in.h"
 # include "draw.h"
+
+# define KEY_UP				126
+# define KEY_DOWN			125
+# define KEY_RIGHT			123
+# define KEY_LEFT			124
+# define KEY_Q				12
+# define KEY_W				13
+# define KEY_E				14
+# define KEY_S				1
+# define KEY_A				0
+# define KEY_D				2
 
 # define STOP_DRAW			0
 # define DRAWING			1
@@ -45,6 +56,14 @@ typedef struct	s_ant
 	int		drawing;
 }				t_ant;
 
+typedef struct	s_val
+{
+	double		max_x;
+	double		max_y;
+	double		min_x;
+	double		min_y;
+}				t_val;
+
 typedef struct	s_visual_farm
 {
 	int			fd;
@@ -52,6 +71,7 @@ typedef struct	s_visual_farm
 	t_img		*image;
 	t_farm		*farm;
 	t_ant		**ant;
+	t_val		*val;
 	double		abs_x;
 	double		abs_y;
 	double		indent_x;
@@ -61,13 +81,6 @@ typedef struct	s_visual_farm
 	int			count_line;
 }				t_vfarm;
 
-typedef struct	s_val
-{
-	double		max_x;
-	double		max_y;
-	double		min_x;
-	double		min_y;
-}				t_val;
 
 /*
 **	Visualisation
@@ -83,6 +96,7 @@ void			move_ant(t_ant *ant, t_room *room, t_vfarm *vfarm);
 void			draw_run_ant(t_vfarm *vfarm);
 void			get_abs_val(t_farm *farm, t_vfarm *vfarm);
 int				draw_ants(t_vfarm *vfarm);
+void			move_farm(int key, t_vfarm *vfarm);
 
 int				ft_close(void);
 int				ft_key_press_esc_close(int key);

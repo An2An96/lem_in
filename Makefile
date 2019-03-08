@@ -22,7 +22,7 @@ SRC_MAIN =		main.c				debug.c				show_map_config.c \
 
 SRC_VISUAL_DIR =	/visual
 SRC_VISUAL =	main.c				draw_farm.c			draw_ant.c \
-				animation_ant.c		draw_utils.c
+				animation_ant.c		draw_utils.c		moove_farm.c
 
 COMMON_SRC =	read_args.c			throw_error.c		find_node_by_name.c \
 				utils.c				l1_read_farm_map.c	read_farm_map_2.c \
