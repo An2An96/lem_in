@@ -6,7 +6,7 @@
 /*   By: rschuppe <rschuppe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/06 12:36:09 by rschuppe          #+#    #+#             */
-/*   Updated: 2019/03/06 21:20:55 by rschuppe         ###   ########.fr       */
+/*   Updated: 2019/03/08 16:22:37 by rschuppe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,9 +19,9 @@ inline static void	show_rooms(t_room **rooms, int count_rooms)
 	i = 0;
 	while (i < count_rooms)
 	{
-		if (i == 0)
+		if (rooms[i]->types & ROOM_START)
 			write(1, "##start\n", 8);
-		else if (i == count_rooms - 1)
+		if (rooms[i]->types & ROOM_END)
 			write(1, "##end\n", 6);
 		ft_putstr(rooms[i]->name);
 		write(1, " ", 1);

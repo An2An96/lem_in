@@ -6,7 +6,7 @@
 /*   By: rschuppe <rschuppe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/20 19:11:32 by rschuppe          #+#    #+#             */
-/*   Updated: 2019/03/08 14:58:06 by rschuppe         ###   ########.fr       */
+/*   Updated: 2019/03/08 18:59:57 by rschuppe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,10 @@ static void			send_path_to_neighbors(
 			ft_dlst_push_back(LIST(neighbor->paths->tail, t_path*),
 				ft_create_node_ptr(neighbor));
 		if (neighbor->types & ROOM_END)
+		{
+			check_intersections(farm);
 			ft_dlst_push_back(queue, ft_create_node_ptr(neighbor));
+		}
 		else
 			ft_dlst_push_front(queue, ft_create_node_ptr(neighbor));
 	}
@@ -69,14 +72,29 @@ static void			enter_room(t_farm *farm, t_room *room, t_dlist *queue)
 static int			find_and_check_comb(
 	t_farm *farm, t_room *room, t_path_comb *paths_combs, int count)
 {
+	// START_DELAY;
 	int comb;
 
+	// if (room->paths->size >= 40)
+	// 	return (1);
 	comb = farm->cur_comb;
 	IS_FLAG(FLAG_DEBUG)
 		&& ft_printf("[find_and_check_comb] pathes: %d, need = %d\n",
 			room->paths->size, comb + 1);
-	if (find_comb(room->paths, &paths_combs[comb], room->paths->head, comb + 1))
+
+
+	t_stack *result = ft_stack_new(comb + 1);
+
+	if (find_comb(farm, room->paths, result, room->paths->head, comb + 1))
 	{
+		int i = 0;
+		while (i < result->len)
+		{
+			paths_combs[comb].paths[i] = ft_dlst_get(room->paths, result->head[i]);
+			i++;
+		}
+		ft_stack_delete(result);
+
 		paths_combs[comb].steps =
 			get_steps_for_comb(&paths_combs[comb], farm->ants_count);
 		IS_FLAG(FLAG_DEBUG)
@@ -84,8 +102,9 @@ static int			find_and_check_comb(
 				comb + 1, count, paths_combs[comb].steps);
 		return ((farm->cur_comb > 0
 			&& paths_combs[comb - 1].steps < paths_combs[comb].steps)
-			|| ++farm->cur_comb == count);
+			|| ++farm->cur_comb == count || farm->cur_comb >= 8);
 	}
+	// END_DELAY("find_comb complete");
 	return (0);
 }
 

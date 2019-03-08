@@ -6,7 +6,7 @@
 /*   By: rschuppe <rschuppe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/18 14:47:13 by rschuppe          #+#    #+#             */
-/*   Updated: 2019/03/08 15:12:58 by rschuppe         ###   ########.fr       */
+/*   Updated: 2019/03/08 18:50:21 by rschuppe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,6 @@
 # define STR_ERROR_PATH		COLOR_ERROR"[Path Error]: "COLOR_NONE
 
 # define MEMORY_ERR			STR_ERROR_SYS, "Not enough memory"
-# define ERR_NOT_EXIST_ROOM	"Attempt to create edge for a non-existent room"
 # define ERR_MAP_INVALID	STR_ERROR_VALID, "Map contains insufficient data"
 
 /*
@@ -105,7 +104,8 @@ typedef struct	s_farm
 	int			start_edges;
 	int			finish_edges;
 	int			cur_comb;
-	t_list		*ways;
+	bool		**intersections;
+	size_t		intersections_size;
 }				t_farm;
 
 /*
@@ -130,7 +130,8 @@ t_room			**create_sort_room_arr(t_list **rooms_head, int count_rooms);
 
 t_path_comb		*find_unique_paths(t_farm *farm, int count);
 bool			find_comb(
-	t_dlist *paths, t_path_comb *result, t_node *cur_path_node, int need_path);
+	t_farm *farm, t_dlist *paths, t_stack *result, t_node *cur_path_node, int need_path);
+int				check_intersections(t_farm *farm);
 int				find_best_comb_paths(t_path_comb **path_combs, int ants_count);
 int				get_steps_for_comb(t_path_comb *path_combs, int ants_count);
 t_path_comb		*choose_best_comb_paths(t_path_comb *path_combs);

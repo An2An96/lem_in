@@ -6,7 +6,7 @@
 /*   By: rschuppe <rschuppe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/18 14:17:13 by rschuppe          #+#    #+#             */
-/*   Updated: 2019/03/08 14:30:34 by rschuppe         ###   ########.fr       */
+/*   Updated: 2019/03/08 18:52:01 by rschuppe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,8 @@ void	start_algo(t_farm *farm)
 		clear_paths_comb(paths_combs);
 		END_DELAY("Clear memory delay");
 	}
+	else
+		show_map_config(farm);
 }
 
 int		main(int argc, char **argv)
@@ -74,6 +76,15 @@ int		main(int argc, char **argv)
 	t_farm		*farm;
 
 	SECURE_MALLOC(farm = (t_farm*)ft_memalloc(sizeof(t_farm)));
+	
+	SECURE_MALLOC(farm->intersections = (bool**)malloc(2000 * sizeof(bool*)));
+	int i = 0;
+	while (i < 2000)
+	{
+		SECURE_MALLOC(farm->intersections[i] = (bool*)malloc(2000 * sizeof(bool)));
+		i++;
+	}
+
 	filename = read_args(argc, argv, &farm->flags);
 	START_DELAY;
 	(fd = filename ? open(filename, O_RDONLY) : 0) == -1

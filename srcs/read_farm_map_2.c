@@ -6,7 +6,7 @@
 /*   By: rschuppe <rschuppe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/08 13:34:37 by rschuppe          #+#    #+#             */
-/*   Updated: 2019/03/08 15:12:16 by rschuppe         ###   ########.fr       */
+/*   Updated: 2019/03/08 16:30:43 by rschuppe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,8 @@ int		add_edge(t_farm *farm, char *parent_name, char *child_name)
 		farm->start_edges++;
 	if (parent == farm->count_rooms - 1 || child == farm->count_rooms - 1)
 		farm->finish_edges++;
+	IS_FLAG(FLAG_DEBUG) && ft_printf("add_edge %s[%d] - %s[%d]\n",
+		parent_name, parent, child_name, child);
 	el = ft_lstnew((void*)&child, sizeof(child));
 	ft_lstpush(&farm->rooms[parent]->neighbors, el);
 	el = ft_lstnew((void*)&parent, sizeof(child));

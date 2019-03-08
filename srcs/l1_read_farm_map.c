@@ -6,7 +6,7 @@
 /*   By: rschuppe <rschuppe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/19 16:47:35 by rschuppe          #+#    #+#             */
-/*   Updated: 2019/03/08 15:26:02 by rschuppe         ###   ########.fr       */
+/*   Updated: 2019/03/08 16:38:36 by rschuppe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ static int			parse_room_line(
 {
 	char			**res;
 	t_room			*room;
-	bool			check;
+	int				check;
 
 	if (!ft_strcmp(line, "##start"))
 		*room_type |= ROOM_START;
@@ -29,11 +29,12 @@ static int			parse_room_line(
 		check = (res[0] && res[1] && res[2] && !res[3]);
 		if (check)
 		{
+			check += (*room_type == (ROOM_START | ROOM_END));
 			room = create_room(res[0], res[1], res[2], *room_type);
 			ft_lstadd(rooms, ft_lstnew(room, sizeof(t_room)));
 			free(room);
-			*room_type = 0;
 			(*count_rooms)++;
+			*room_type = 0;
 		}
 		free_split_result(res);
 		return (check);
@@ -55,9 +56,7 @@ inline static int	read_links(t_farm *farm, char *line)
 
 	res = ft_strsplit(line, '-');
 	check = (res[0] && res[1] && !res[2]);
-	if (check)
-		!add_edge(farm, res[0], res[1])
-			&& throw_error(STR_ERROR_VALID, ERR_NOT_EXIST_ROOM);
+	check && (check = add_edge(farm, res[0], res[1]));
 	free_split_result(res);
 	return (check);
 }
@@ -66,8 +65,12 @@ inline static int	read_room(
 	t_farm *farm, char *line, int8_t *read_status, t_list **rooms)
 {
 	static int8_t	room_type;
+	int				result;
 
-	if (!parse_room_line(line, rooms, &farm->count_rooms, &room_type))
+	result = parse_room_line(line, rooms, &farm->count_rooms, &room_type);
+	if (result == 2)
+		return (0);
+	else if (!result)
 	{
 		if (!*rooms)
 			throw_error(STR_ERROR_VALID, "Invalid map");
@@ -75,7 +78,6 @@ inline static int	read_room(
 			throw_error(STR_ERROR_VALID, "Command (##) was not applied");
 		*read_status = 2;
 		farm->rooms = create_sort_room_arr(rooms, farm->count_rooms);
-		read_links(farm, line);
 	}
 	return (1);
 }
@@ -98,7 +100,9 @@ t_farm				*read_farm_map(int fd, t_farm *farm)
 				read_ants_count(farm, line);
 			else
 			{
-				(r_status == 1) && read_room(farm, line, &r_status, &rooms);
+				if (r_status == 1)
+					if (!read_room(farm, line, &r_status, &rooms))
+						break ;
 				if (r_status == 2)
 					if (!read_links(farm, line))
 						break ;

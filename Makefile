@@ -33,7 +33,7 @@ OBJS_MAIN += $(addprefix $(OBJS_DIR)/,$(COMMON_SRC:%.c=%.o))
 OBJS_VISUAL += $(addprefix $(OBJS_DIR)/$(SRC_VISUAL_DIR)/,$(SRC_VISUAL:%.c=%.o))
 OBJS_VISUAL += $(addprefix $(OBJS_DIR)/,$(COMMON_SRC:%.c=%.o))
 
-FLAGS += -Wall -Wextra -Werror
+#FLAGS += -Wall -Wextra -Werror
 FLAGS += -g
 FLAGS += -I$(INCS_DIR)
 FLAGS += $(foreach lib,$(LIBS),-I$(LIBS_DIR)/$(lib)/includes)
