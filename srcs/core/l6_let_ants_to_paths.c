@@ -6,7 +6,7 @@
 /*   By: rschuppe <rschuppe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/20 19:25:43 by rschuppe          #+#    #+#             */
-/*   Updated: 2019/03/07 19:11:40 by rschuppe         ###   ########.fr       */
+/*   Updated: 2019/03/08 14:30:05 by rschuppe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,11 @@ void				let_ants_to_paths(t_farm *farm, t_path_comb *path_comb)
 	int	nbr_path;
 
 	!path_comb && throw_error(STR_ERROR_PATH, "No way to the finish");
-	IS_FLAG(FLAG_DEBUG) && show_comb(path_comb);
+	if (IS_FLAG(FLAG_DEBUG))
+	{
+		ft_printf("Best paths comb:\n");
+		debug_show_comb(path_comb);
+	}
 	show_map_config(farm);
 	nbr_ants = 0;
 	while (farm->finished_ants < farm->ants_count)

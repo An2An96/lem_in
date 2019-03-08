@@ -6,7 +6,7 @@
 /*   By: rschuppe <rschuppe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/06 18:50:53 by rschuppe          #+#    #+#             */
-/*   Updated: 2019/03/06 22:17:32 by rschuppe         ###   ########.fr       */
+/*   Updated: 2019/03/08 12:22:09 by rschuppe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,24 @@ int			find_cycle(t_path *path, t_room *room)
 		}
 	}
 	return (false);
+}
+
+t_path_comb	*allocate_mem_for_paths_combs(int count)
+{
+	int			i;
+	t_path_comb	*paths_combs;
+
+	i = 0;
+	SECURE_MALLOC(paths_combs =
+		(t_path_comb*)ft_memalloc((count + 1) * sizeof(t_path_comb)));
+	while (i < count)
+	{
+		SECURE_MALLOC(paths_combs[i].paths =
+			(t_path**)ft_memalloc((i + 1 + 1) * sizeof(t_path*)));
+		paths_combs[i].count = i + 1;
+		i++;
+	}
+	return (paths_combs);
 }
 
 t_path		*make_path_copy(t_path *path)

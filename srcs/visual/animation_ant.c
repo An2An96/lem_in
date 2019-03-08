@@ -6,7 +6,7 @@
 /*   By: rschuppe <rschuppe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/06 19:56:19 by wballaba          #+#    #+#             */
-/*   Updated: 2019/03/06 22:15:17 by rschuppe         ###   ########.fr       */
+/*   Updated: 2019/03/08 12:29:01 by rschuppe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,32 +15,32 @@
 static void	animation1(t_vfarm *vfarm, t_ant *ant, int step)
 {
 	mlx_string_put(vfarm->visual->mlx_ptr, vfarm->visual->win_ptr,
-		round(ant->x + step * ant->cos_a) * vfarm->abs_x + vfarm->indent_x - 14,
-		round(ant->y + step * ant->sin_a) * vfarm->abs_y + vfarm->indent_y - 23,
+		round(ant->x + step * ant->cos_a) + vfarm->indent_x - 14,
+		round(ant->y + step * ant->sin_a) + vfarm->indent_y - 23,
 		COLOR_ANT, "\\o/");
 	mlx_string_put(vfarm->visual->mlx_ptr, vfarm->visual->win_ptr,
-		round(ant->x + step * ant->cos_a) * vfarm->abs_x + vfarm->indent_x - 14,
-		round(ant->y + step * ant->sin_a) * vfarm->abs_y + vfarm->indent_y - 11,
+		round(ant->x + step * ant->cos_a) + vfarm->indent_x - 14,
+		round(ant->y + step * ant->sin_a) + vfarm->indent_y - 11,
 		COLOR_ANT, "-0-");
 	mlx_string_put(vfarm->visual->mlx_ptr, vfarm->visual->win_ptr,
-		round(ant->x + step * ant->cos_a) * vfarm->abs_x + vfarm->indent_x - 14,
-		round(ant->y + step * ant->sin_a) * vfarm->abs_y + vfarm->indent_y,
+		round(ant->x + step * ant->cos_a) + vfarm->indent_x - 14,
+		round(ant->y + step * ant->sin_a) + vfarm->indent_y,
 		COLOR_ANT, "/'\\ ");
 }
 
 static void	animation2(t_vfarm *vfarm, t_ant *ant, int step)
 {
 	mlx_string_put(vfarm->visual->mlx_ptr, vfarm->visual->win_ptr,
-		round(ant->x + step * ant->cos_a) * vfarm->abs_x + vfarm->indent_x - 14,
-		round(ant->y + step * ant->sin_a) * vfarm->abs_y + vfarm->indent_y - 23,
+		round(ant->x + step * ant->cos_a) + vfarm->indent_x - 14,
+		round(ant->y + step * ant->sin_a) + vfarm->indent_y - 23,
 		COLOR_ANT, "_o_");
 	mlx_string_put(vfarm->visual->mlx_ptr, vfarm->visual->win_ptr,
-		round(ant->x + step * ant->cos_a) * vfarm->abs_x + vfarm->indent_x - 14,
-		round(ant->y + step * ant->sin_a) * vfarm->abs_y + vfarm->indent_y - 11,
+		round(ant->x + step * ant->cos_a) + vfarm->indent_x - 14,
+		round(ant->y + step * ant->sin_a) + vfarm->indent_y - 11,
 		COLOR_ANT, ">0<");
 	mlx_string_put(vfarm->visual->mlx_ptr, vfarm->visual->win_ptr,
-		round(ant->x + step * ant->cos_a) * vfarm->abs_x + vfarm->indent_x - 14,
-		round(ant->y + step * ant->sin_a) * vfarm->abs_y + vfarm->indent_y,
+		round(ant->x + step * ant->cos_a) + vfarm->indent_x - 14,
+		round(ant->y + step * ant->sin_a) + vfarm->indent_y,
 		COLOR_ANT, " ' ");
 }
 
@@ -89,7 +89,7 @@ int			draw_ants(t_vfarm *vfarm)
 				draw_one_ant(vfarm, vfarm->ant[ant_nbr - 1], vfarm->step);
 			ant_nbr++;
 		}
-		vfarm->step++;
+		vfarm->step += SPEED_ANIMATION;
 	}
 	return (0);
 }

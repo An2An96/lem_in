@@ -6,7 +6,7 @@
 /*   By: rschuppe <rschuppe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/06 14:05:53 by wballaba          #+#    #+#             */
-/*   Updated: 2019/03/06 22:19:14 by rschuppe         ###   ########.fr       */
+/*   Updated: 2019/03/08 14:34:45 by rschuppe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,10 @@
 # define COLOR_BG2			0x6f3292
 # define COLOR_EDGE			0xD0006E
 # define COLOR_NODE			COLOR_EDGE
+# define COLOR_START		0xFF00FF
 # define COLOR_ANT			0xFFFFFF
+
+# define SPEED_ANIMATION	4
 
 int g_fd;
 
@@ -41,7 +44,6 @@ typedef struct	s_ant
 	double	sin_a;
 	double	cos_a;
 	double	length;
-	int		step;
 	int		drawing;
 }				t_ant;
 
@@ -78,7 +80,7 @@ void			visual_farm(t_vfarm	*vfarm);
 void			create_farm_image(t_vfarm *vfarm);
 void			find_path_ant(t_vfarm *vfarm);
 void			get_arr_ant(t_vfarm *vfarm);
-void			move_ant(t_ant	*ant, int x, int y, int type_room);
+void			move_ant(t_ant *ant, t_room *room, t_vfarm *vfarm);
 void			draw_run_ant(t_vfarm *vfarm);
 void			get_abs_val(t_farm *farm, t_vfarm *vfarm);
 int				draw_ants(t_vfarm *vfarm);

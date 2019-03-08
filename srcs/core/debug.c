@@ -6,7 +6,7 @@
 /*   By: rschuppe <rschuppe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/06 20:20:50 by rschuppe          #+#    #+#             */
-/*   Updated: 2019/03/06 20:28:01 by rschuppe         ###   ########.fr       */
+/*   Updated: 2019/03/08 14:32:19 by rschuppe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,21 +25,32 @@ int	debug_show_rooms(t_farm *farm)
 	return (1);
 }
 
-int	debug_show_weights(t_farm *farm)
+int	debug_show_path(t_path *path)
 {
-	int i;
+	t_node	*cur;
 
-	i = 0;
-	while (i < farm->count_rooms)
+	cur = path->head;
+	while (cur)
 	{
-		ft_printf("[DEBUG]: room %s (%d) weight: %d\n",
-			farm->rooms[i]->name, i, farm->rooms[i]->weight);
-		i++;
+		ft_printf("%s%s",
+			cur != path->head ? " -> " : "", ((t_room*)cur->content)->name);
+		cur = cur->next;
 	}
+	ft_printf("\n");
 	return (1);
 }
 
-int	debug_show_paths(t_path_comb *paths_combs)
+int	debug_show_comb(t_path_comb *path_comb)
+{
+	int i;
+
+	i = -1;
+	while (path_comb->paths[++i])
+		debug_show_path(path_comb->paths[i]);
+	return (1);
+}
+
+int	debug_show_paths_combs(t_path_comb *paths_combs)
 {
 	int i;
 	int j;
@@ -50,11 +61,7 @@ int	debug_show_paths(t_path_comb *paths_combs)
 		ft_printf("[DEBUG]: %d comb (%d paths, %d steps):\n",
 			i, paths_combs[i].count, paths_combs[i].steps);
 		j = 0;
-		while (paths_combs[i].paths[j])
-		{
-			show_path(paths_combs[i].paths[j]);
-			j++;
-		}
+		debug_show_comb(&paths_combs[i]);
 		i++;
 	}
 	return (1);

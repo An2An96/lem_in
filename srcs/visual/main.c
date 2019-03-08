@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   visualiser.c                                       :+:      :+:    :+:   */
+/*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rschuppe <rschuppe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/02 17:22:46 by wballaba          #+#    #+#             */
-/*   Updated: 2019/03/06 22:19:35 by rschuppe         ###   ########.fr       */
+/*   Updated: 2019/03/08 12:39:00 by rschuppe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,13 +29,7 @@ static void	read_step_ant(t_vfarm *vfarm, char *res)
 	room = find_node_by_name(
 		vfarm->farm->rooms, vfarm->farm->count_rooms, room_name);
 	room->ant_num = ant_nbr;
-	if (room->types & ROOM_END)
-	{
-		move_ant(vfarm->ant[ant_nbr - 1], room->x, room->y, ROOM_END);
-		vfarm->farm->finished_ants++;
-	}
-	else
-		move_ant(vfarm->ant[ant_nbr - 1], room->x, room->y, ROOM_MID);
+	move_ant(vfarm->ant[ant_nbr - 1], room, vfarm);
 	free(room_name);
 }
 
@@ -111,15 +105,10 @@ int			main(int argc, char **argv)
 
 	SECURE_MALLOC(farm = (t_farm*)ft_memalloc(sizeof(t_farm)));
 	filename = read_args(argc, argv, &farm->flags);
-	if (filename)
-	{
-		if ((fd = open(filename, O_RDONLY)) == -1)
-			exit(-1);
-	}
-	else
-		fd = 0;
-	g_fd = fd;
+	(fd = filename ? open(filename, O_RDONLY) : 0) == -1
+		&& throw_error(STR_ERROR_SYS, strerror(errno));
 	read_farm_map(fd, farm);
+	g_fd = fd;
 	start_visual(farm);
 	return (0);
 }

@@ -6,12 +6,12 @@
 /*   By: rschuppe <rschuppe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/18 14:47:13 by rschuppe          #+#    #+#             */
-/*   Updated: 2019/03/07 19:50:30 by rschuppe         ###   ########.fr       */
+/*   Updated: 2019/03/08 15:12:58 by rschuppe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef LEM_IH_H
-# define LEM_IH_H
+#ifndef LEM_IN_H
+# define LEM_IN_H
 
 # include <stdint.h>
 # include <limits.h>
@@ -22,9 +22,13 @@
 # include "libft.h"
 # include "ft_printf.h"
 
+# define COLOR_BLACK		"\x1b[30m"
 # define COLOR_CYAN			"\x1b[36m"
 # define COLOR_ERROR		"\x1b[1;31m"
 # define COLOR_NONE			"\x1b[0m"
+
+# define BG_COLOR_WHITE		"\x1b[47m"
+# define BG_COLOR_NONE		"\x1b[49m"
 
 # define FLAG_VISUALISE		1
 # define FLAG_DEBUG			2
@@ -35,21 +39,35 @@
 # define ROOM_END			2
 
 # define LIST(el, type)		((type)el->content)
-
 # define IS_FLAG(f)			(farm->flags & f)
-# define SECURE_MALLOC(a)	!(a) && throw_error(MEMORY_ERR)		
+# define SECURE_MALLOC(a)	!(a) && throw_error(MEMORY_ERR)
 
-# define DELAY				(double)(end - begin) / CLOCKS_PER_SEC
-# define DELAY_MESSAGE		
-# define SHOW_DELAY(str)	ft_printf("\x1b[47m\x1b[30m%s: \x1b[1m%f\x1b[0m\x1b[49m\x1b[0m\n", str, DELAY)
+# define DELAY				(double)(g_end - g_begin) / CLOCKS_PER_SEC
+# define DELAY_STYLES		BG_COLOR_WHITE COLOR_BLACK
+# define CLEAR_STYLES		COLOR_NONE BG_COLOR_NONE
+# define DELAY_MESSAGE		DELAY_STYLES "%-30s %f" CLEAR_STYLES "\n"
+# define SHOW_DELAY(str)	ft_printf(DELAY_MESSAGE, str, DELAY)
+
+# define START_DELAY		IS_FLAG(FLAG_TIME) && (g_begin = clock())
+# define _END_DELAY(str)	((g_end = clock()) && SHOW_DELAY(str))
+# define END_DELAY(str)		IS_FLAG(FLAG_TIME) && _END_DELAY(str)
 
 # define STR_ERROR_SYS		COLOR_ERROR"[System Error]: "COLOR_NONE
 # define STR_ERROR_VALID	COLOR_ERROR"[Validation Error]: "COLOR_NONE
 # define STR_ERROR_PATH		COLOR_ERROR"[Path Error]: "COLOR_NONE
 
 # define MEMORY_ERR			STR_ERROR_SYS, "Not enough memory"
+# define ERR_NOT_EXIST_ROOM	"Attempt to create edge for a non-existent room"
+# define ERR_MAP_INVALID	STR_ERROR_VALID, "Map contains insufficient data"
 
-typedef struct s_dlist	t_path;
+/*
+**	Для обработки флага -t - замеряющего время выполнения блоков программы
+*/
+
+clock_t		g_begin;
+clock_t		g_end;
+
+typedef struct s_dlist		t_path;
 
 typedef struct	s_args
 {
@@ -94,56 +112,59 @@ typedef struct	s_farm
 **	**********
 */
 
-int			throw_error(const char *title, const char *err);
-char		*read_args(int argc, char **argv, int *flags);
+int				throw_error(const char *title, const char *err);
+char			*read_args(int argc, char **argv, int *flags);
 
 /*
 **	Read farm
 */
 
-t_farm		*read_farm_map();
-t_room		**create_sort_room_arr(t_list *rooms_head, int count_rooms);
+t_farm			*read_farm_map();
+t_room			*create_room(char *name, char *x, char *y, int8_t type);
+int				add_edge(t_farm *farm, char *parent_name, char *child_name);
+t_room			**create_sort_room_arr(t_list **rooms_head, int count_rooms);
 
 /*
 **	Algorithm
 */
 
-void		dijkstra_algo(t_farm *farm);
-
-t_path_comb	*find_unique_paths(t_farm *farm, int count);
-
-bool		find_comb(
+t_path_comb		*find_unique_paths(t_farm *farm, int count);
+bool			find_comb(
 	t_dlist *paths, t_path_comb *result, t_node *cur_path_node, int need_path);
-int			find_best_comb_paths(t_path_comb **path_combs, int ants_count);
-void		let_ants_to_paths(t_farm *farm, t_path_comb *path_comb);
-void		make_step(t_farm *farm);
+int				find_best_comb_paths(t_path_comb **path_combs, int ants_count);
+int				get_steps_for_comb(t_path_comb *path_combs, int ants_count);
+t_path_comb		*choose_best_comb_paths(t_path_comb *path_combs);
+void			let_ants_to_paths(t_farm *farm, t_path_comb *path_comb);
+void			show_map_config(t_farm *farm);
 
-int			get_steps_for_comb(t_path_comb *path_combs, int ants_count);
-t_path_comb	*choose_best_comb_paths(t_path_comb *path_combs);
+/*
+**	Paths functions
+*/
 
-void		show_map_config(t_farm *farm);
-int			find_cycle(t_path *path, t_room *room);
-t_path		*make_path_copy(t_path *path);
+int				find_cycle(t_path *path, t_room *room);
+t_path_comb		*allocate_mem_for_paths_combs(int count);
+t_path			*make_path_copy(t_path *path);
 
 /*
 **	Utils functions
 */
 
-t_room		*find_node_by_name(t_room **rooms, int count_rooms, char *name);
-int			find_node_index_by_name(t_room **rooms, int count_rooms, char *name);
-int			get_paths_diff(t_path_comb *path_comb, int path_idx);
-void		free_lst(void *content, size_t content_size);
-void		free_split_result(char **res);
-int			show_path(t_path *path);
-int			show_comb(t_path_comb *path_comb);
-int			min_atoi(const char *str);
+t_room			*find_node_by_name(t_room **rooms, int count_rooms, char *name);
+int				find_node_idx_by_name(
+	t_room **rooms, int count_rooms, char *name);
+int				get_paths_diff(t_path_comb *path_comb, int path_idx);
+void			free_lst(void *content, size_t content_size);
+void			free_paths(void *content, size_t content_size);
+void			free_split_result(char **res);
+int				min_atoi(const char *str, const char *error);
 
 /*
 **	Debug functions
 */
 
-int			debug_show_rooms(t_farm *farm);
-int			debug_show_weights(t_farm *farm);
-int			debug_show_paths(t_path_comb *paths_combs);
+int				debug_show_rooms(t_farm *farm);
+int				debug_show_path(t_path *path);
+int				debug_show_comb(t_path_comb *path_comb);
+int				debug_show_paths_combs(t_path_comb *paths_combs);
 
 #endif

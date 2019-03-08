@@ -6,12 +6,11 @@
 /*   By: rschuppe <rschuppe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/25 21:47:32 by rschuppe          #+#    #+#             */
-/*   Updated: 2019/03/06 22:19:42 by rschuppe         ###   ########.fr       */
+/*   Updated: 2019/03/08 15:12:30 by rschuppe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lem_in.h"
-#define KEY_ESC	53
 
 void	free_lst(void *content, size_t content_size)
 {
@@ -19,17 +18,11 @@ void	free_lst(void *content, size_t content_size)
 	content_size = 0;
 }
 
-int		ft_close(void)
+void	free_paths(void *content, size_t content_size)
 {
-	exit(-1);
-	return (0);
-}
-
-int	ft_key_press_esc_close(int key)
-{
-	if (key == KEY_ESC)
-		ft_close();
-	return (0);
+	ft_dlst_del((t_path**)&content, NULL);
+	free(content);
+	content_size = 0;
 }
 
 void	free_split_result(char **res)
@@ -42,33 +35,7 @@ void	free_split_result(char **res)
 	free(res);
 }
 
-int		show_path(t_path *path)
-{
-	t_node	*cur;
-
-	cur = path->head;
-	while (cur)
-	{
-		ft_printf("%s%s",
-			cur != path->head ? " -> " : "", ((t_room*)cur->content)->name);
-		cur = cur->next;
-	}
-	ft_printf("\n");
-	return (1);
-}
-
-int		show_comb(t_path_comb *path_comb)
-{
-	int i;
-
-	write(1, "Best paths comb:\n", 17);
-	i = -1;
-	while (path_comb->paths[++i])
-		show_path(path_comb->paths[i]);
-	return (1);
-}
-
-int		min_atoi(const char *str)
+int		min_atoi(const char *str, const char *error)
 {
 	char	negative;
 	int		result;
@@ -86,10 +53,10 @@ int		min_atoi(const char *str)
 	while (str[i])
 	{
 		if (!ft_isdigit(str[i]))
-			throw_error(STR_ERROR_VALID, "Invalid coordinates of the room");
+			throw_error(STR_ERROR_VALID, error);
 		result = (result * 10) + (str[i] - '0');
 		if (result < 0)
-			throw_error(STR_ERROR_VALID, "Coordinates out of range type int");
+			throw_error(STR_ERROR_VALID, error);
 		i++;
 	}
 	return ((int)result * negative);
