@@ -6,7 +6,7 @@
 /*   By: wballaba <wballaba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/02 17:22:46 by wballaba          #+#    #+#             */
-/*   Updated: 2019/03/08 16:18:01 by wballaba         ###   ########.fr       */
+/*   Updated: 2019/03/08 16:45:06 by wballaba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,8 @@ static int	lem_in_draw(int key, t_vfarm *vfarm)
 	{
 		if (get_next_line(vfarm->fd, &line) == 1)
 		{
+			if (vfarm->farm->flags & FLAG_PRINT)
+				ft_printf("%s\n", line);
 			if (read_line(vfarm, line))
 			{
 				free(line);

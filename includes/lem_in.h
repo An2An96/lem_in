@@ -6,7 +6,7 @@
 /*   By: wballaba <wballaba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/18 14:47:13 by rschuppe          #+#    #+#             */
-/*   Updated: 2019/03/08 16:15:42 by wballaba         ###   ########.fr       */
+/*   Updated: 2019/03/08 16:35:45 by wballaba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@
 # define BG_COLOR_WHITE		"\x1b[47m"
 # define BG_COLOR_NONE		"\x1b[49m"
 
-# define FLAG_VISUALISE		1
+# define FLAG_PRINT			1
 # define FLAG_DEBUG			2
 # define FLAG_TIME			4
 
