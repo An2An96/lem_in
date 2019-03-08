@@ -1,0 +1,3 @@
+#!/bin/sh
+
+valgrind --leak-check=full ./lem-in -f maps/1.map &> leaks_log

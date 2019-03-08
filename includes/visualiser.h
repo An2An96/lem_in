@@ -6,7 +6,7 @@
 /*   By: wballaba <wballaba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/06 14:05:53 by wballaba          #+#    #+#             */
-/*   Updated: 2019/03/07 18:40:38 by wballaba         ###   ########.fr       */
+/*   Updated: 2019/03/08 16:03:12 by wballaba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 # define VISUALISER_H
 
 # include "lem_in.h"
+# include "draw.h"
 
 # define STOP_DRAW			0
 # define DRAWING			1
@@ -46,6 +47,7 @@ typedef struct	s_ant
 
 typedef struct	s_visual_farm
 {
+	int			fd;
 	t_mlx		*visual;
 	t_img		*image;
 	t_farm		*farm;
@@ -83,6 +85,6 @@ void			get_abs_val(t_farm *farm, t_vfarm *vfarm);
 int				draw_ants(t_vfarm *vfarm);
 
 int				ft_close(void);
-int				ft_key_press_esc_close(int key, void *param);
+int				ft_key_press_esc_close(int key);
 
 #endif

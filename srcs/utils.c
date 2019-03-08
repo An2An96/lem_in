@@ -6,26 +6,23 @@
 /*   By: wballaba <wballaba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/25 21:47:32 by rschuppe          #+#    #+#             */
-/*   Updated: 2019/03/06 21:14:22 by wballaba         ###   ########.fr       */
+/*   Updated: 2019/03/08 16:11:57 by wballaba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lem_in.h"
 
-int		ft_close(void)
+void	free_lst(void *content, size_t content_size)
 {
-	exit(-1);
-	return (0);
+	free(content);
+	content_size = 0;
 }
 
-int ft_key_press_esc_close(int key, void *param)
+void	free_paths(void *content, size_t content_size)
 {
-	if (key == KEY_ESC)
-	{
-		ft_close();
-		param = NULL;
-	}
-	return (0);
+	ft_dlst_del((t_path**)&content, NULL);
+	free(content);
+	content_size = 0;
 }
 
 void	free_split_result(char **res)
@@ -38,17 +35,29 @@ void	free_split_result(char **res)
 	free(res);
 }
 
-void	show_path(t_farm *farm, t_path *path)
+int		min_atoi(const char *str, const char *error)
 {
-	(void)farm;
-	t_node	*cur;
+	char	negative;
+	int		result;
+	int		i;
 
-	cur = path->head;
-	ft_printf("%s", farm->rooms[0]->name);
-	while (cur)
+	i = 0;
+	if (str[i] == '-' || str[i] == '+')
 	{
-		ft_printf("%s%s", cur != path->head ? " -> " : "",  ((t_room*)cur->content)->name);
-		cur = cur->next;
+		negative = 1 - (2 * (str[i] == '-'));
+		i++;
 	}
-	ft_printf("\n");
+	else
+		negative = 1;
+	result = 0;
+	while (str[i])
+	{
+		if (!ft_isdigit(str[i]))
+			throw_error(STR_ERROR_VALID, error);
+		result = (result * 10) + (str[i] - '0');
+		if (result < 0)
+			throw_error(STR_ERROR_VALID, error);
+		i++;
+	}
+	return ((int)result * negative);
 }

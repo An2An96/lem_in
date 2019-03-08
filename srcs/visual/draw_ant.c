@@ -6,7 +6,7 @@
 /*   By: wballaba <wballaba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/05 15:15:25 by wballaba          #+#    #+#             */
-/*   Updated: 2019/03/07 18:40:47 by wballaba         ###   ########.fr       */
+/*   Updated: 2019/03/08 16:01:30 by wballaba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ void		move_ant(t_ant *ant, t_room *room, t_vfarm *vfarm)
 {
 	double	side[3];
 
-	if (room->type == ROOM_END)
+	if (room->types == ROOM_END)
 	{
 		ant->drawing = LAST_DRAW;
 		vfarm->farm->finished_ants++;

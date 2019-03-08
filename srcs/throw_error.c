@@ -1,41 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   sort_paths_by_length.c                             :+:      :+:    :+:   */
+/*   throw_error.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rschuppe <rschuppe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/02/26 10:21:51 by rschuppe          #+#    #+#             */
-/*   Updated: 2019/02/26 10:22:03 by rschuppe         ###   ########.fr       */
+/*   Created: 2019/03/06 21:17:39 by rschuppe          #+#    #+#             */
+/*   Updated: 2019/03/06 21:18:05 by rschuppe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lem_in.h"
 
-void	sort_paths_by_length(t_path **paths)
+int	throw_error(const char *title, const char *err)
 {
-
-	int i;
-	int j;
-	int min_idx;
-	t_path *tmp;
-
-	i = 0;
-	while (paths[i])
-	{
-		min_idx = i;
-		j = min_idx;
-		while (paths[++j])
-			if (paths[j]->size < paths[min_idx]->size)
-				min_idx = j;
-		tmp = paths[min_idx];
-		j = min_idx - i;
-		while (j)
-		{
-			paths[i + j] = paths[i + j - 1];
-			j--;
-		}
-		paths[i] = tmp;
-		i++;
-	}
+	if (title)
+		ft_putstr_fd(title, 2);
+	ft_putstr_fd(err, 2);
+	write(2, "\n", 1);
+	exit(EXIT_FAILURE);
+	return (1);
 }

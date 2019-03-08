@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   visualiser.c                                       :+:      :+:    :+:   */
+/*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: wballaba <wballaba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/02 17:22:46 by wballaba          #+#    #+#             */
-/*   Updated: 2019/03/07 18:43:25 by wballaba         ###   ########.fr       */
+/*   Updated: 2019/03/08 16:18:01 by wballaba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,15 +21,13 @@ static void	read_step_ant(t_vfarm *vfarm, char *res)
 
 	i = 1;
 	if ((ant_nbr = ft_atoi(res + i)) > vfarm->farm->ants_count)
-	{
-		ft_printf("Error: число муравьев больше заявленного\n");
-		ft_close();
-	}
+		throw_error(STR_ERROR_VALID, "The number ants is greater than stated");
 	while (ft_isdigit(res[i]))
 		i++;
 	i++;
 	room_name = ft_strdup(res + i);
-	room = find_node_by_name(vfarm->farm->rooms, room_name);
+	room = find_node_by_name(
+		vfarm->farm->rooms, vfarm->farm->count_rooms, room_name);
 	room->ant_num = ant_nbr;
 	move_ant(vfarm->ant[ant_nbr - 1], room, vfarm);
 	free(room_name);
@@ -60,9 +58,8 @@ static int	lem_in_draw(int key, t_vfarm *vfarm)
 
 	if (key == KEY_SPACE)
 	{
-		if (get_next_line(g_fd, &line) == 1)
+		if (get_next_line(vfarm->fd, &line) == 1)
 		{
-			ft_printf("%s\n", line);
 			if (read_line(vfarm, line))
 			{
 				free(line);
@@ -79,12 +76,13 @@ static int	lem_in_draw(int key, t_vfarm *vfarm)
 	return (0);
 }
 
-static int	start_visual(t_farm *farm)
+static int	start_visual(int fd, t_farm *farm)
 {
 	t_vfarm	*vfarm;
 
 	if (!(vfarm = (t_vfarm *)ft_memalloc(sizeof(t_vfarm))))
 		return (0);
+	vfarm->fd = fd;
 	vfarm->visual = ft_create_window(WIN_SIZE, WIN_SIZE, "KK");
 	vfarm->farm = farm;
 	vfarm->count_line = 0;
@@ -103,19 +101,13 @@ int			main(int argc, char **argv)
 {
 	int		fd;
 	t_farm	*farm;
-	t_args	*args;
+	char	*filename;
 
-	args = read_args(argc, argv);
-	if (args->filename)
-	{
-		if ((fd = open(args->filename, O_RDONLY)) == -1)
-			exit(-1);
-	}
-	else
-		fd = 0;
-	g_fd = fd;
-	if (!(farm = read_farm_map(g_fd)))
-		exit(-1);
-	start_visual(farm);
+	SECURE_MALLOC(farm = (t_farm*)ft_memalloc(sizeof(t_farm)));
+	filename = read_args(argc, argv, &farm->flags);
+	(fd = filename ? open(filename, O_RDONLY) : 0) == -1
+		&& throw_error(STR_ERROR_SYS, strerror(errno));
+	read_farm_map(fd, farm);
+	start_visual(fd, farm);
 	return (0);
 }

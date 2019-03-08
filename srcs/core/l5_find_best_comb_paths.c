@@ -6,14 +6,13 @@
 /*   By: rschuppe <rschuppe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/20 19:21:05 by rschuppe          #+#    #+#             */
-/*   Updated: 2019/02/25 17:10:38 by rschuppe         ###   ########.fr       */
+/*   Updated: 2019/03/06 22:18:26 by rschuppe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lem_in.h"
 
-static int	get_steps_for_comb(
-	t_path **path_combs, int path_counts, int ants_count)
+int			get_steps_for_comb(t_path_comb *path_combs, int ants_count)
 {
 	int path_idx;
 	int steps;
@@ -23,7 +22,7 @@ static int	get_steps_for_comb(
 
 	steps = 0;
 	rest_ants = 0;
-	path_idx = path_counts - 1;
+	path_idx = path_combs->count - 1;
 	while (path_idx >= 0)
 	{
 		sum = get_paths_diff(path_combs, path_idx);
@@ -32,7 +31,7 @@ static int	get_steps_for_comb(
 		rest_ants += res * (path_idx + 1);
 		path_idx--;
 	}
-	steps += path_combs[0]->size - 1;
+	steps += path_combs->paths[0]->size - 1;
 	return (steps);
 }
 
@@ -40,25 +39,25 @@ static int	get_steps_for_comb(
 **	Выбор оптимальной комбинации путей для заданного числа муравьев
 */
 
-int			find_best_comb_paths(t_path ***path_combs, int ants_count)
+t_path_comb	*choose_best_comb_paths(t_path_comb *path_combs)
 {
 	int cur_comb;
-	int cur_steps;
 	int best_comb;
 	int best_steps;
 
+	best_comb = -1;
 	cur_comb = 0;
-	best_steps = INT_MAX;
-	while (path_combs[cur_comb])
+	SET_MAX(best_steps);
+	if (!path_combs[cur_comb].steps)
+		return (NULL);
+	while (path_combs[cur_comb].steps)
 	{
-		cur_steps =
-			get_steps_for_comb(path_combs[cur_comb], cur_comb + 1, ants_count);
-		if (cur_steps < best_steps)
+		if (path_combs[cur_comb].steps < best_steps)
 		{
-			best_steps = cur_steps;
+			best_steps = path_combs[cur_comb].steps;
 			best_comb = cur_comb;
 		}
 		cur_comb++;
 	}
-	return (best_comb);
+	return (&path_combs[best_comb]);
 }

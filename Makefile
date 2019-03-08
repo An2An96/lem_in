@@ -14,18 +14,26 @@ SRCS_DIR = ./srcs
 
 LIBS = libft libftprintf libdraw
 
-SRC_MAIN =		main.c dijkstra_algo.c \
-				find_node_by_name.c get_paths_diff.c sort_paths_by_length.c utils.c \
-				l1_read_farm_map.c l2_create_sort_room_arr.c \
-				l4_find_unique_paths.c l5_find_best_comb_paths.c l6_let_ants_to_paths.c
+SRC_MAIN_DIR =		/core
+SRC_MAIN =		main.c				debug.c				show_map_config.c \
+				get_paths_diff.c	paths_utils.c		find_comb.c \
+				l4_find_unique_paths.c	l5_find_best_comb_paths.c \
+				l6_let_ants_to_paths.c
 
-SRC_VISUAL =	visualiser.c l1_read_farm_map.c l2_create_sort_room_arr.c find_node_by_name.c \
-				utils.c draw_farm.c draw_ant.c animation_ant.c 
+SRC_VISUAL_DIR =	/visual
+SRC_VISUAL =	main.c				draw_farm.c			draw_ant.c \
+				animation_ant.c		draw_utils.c
 
-OBJS_MAIN = $(addprefix $(OBJS_DIR)/,$(SRC_MAIN:%.c=%.o))
-OBJS_VISUAL = $(addprefix $(OBJS_DIR)/,$(SRC_VISUAL:%.c=%.o))
+COMMON_SRC =	read_args.c			throw_error.c		find_node_by_name.c \
+				utils.c				l1_read_farm_map.c	read_farm_map_2.c \
+				l2_create_sort_room_arr.c
 
-# FLAGS += -Wall -Wextra -Werror
+OBJS_MAIN += $(addprefix $(OBJS_DIR)/$(SRC_MAIN_DIR)/,$(SRC_MAIN:%.c=%.o))
+OBJS_MAIN += $(addprefix $(OBJS_DIR)/,$(COMMON_SRC:%.c=%.o))
+OBJS_VISUAL += $(addprefix $(OBJS_DIR)/$(SRC_VISUAL_DIR)/,$(SRC_VISUAL:%.c=%.o))
+OBJS_VISUAL += $(addprefix $(OBJS_DIR)/,$(COMMON_SRC:%.c=%.o))
+
+FLAGS += -Wall -Wextra -Werror
 FLAGS += -g
 FLAGS += -I$(INCS_DIR)
 FLAGS += $(foreach lib,$(LIBS),-I$(LIBS_DIR)/$(lib)/includes)
@@ -40,11 +48,12 @@ VISUAL_FLAGS += -framework OpenGL -framework AppKit
 all: $(LIBS) $(LEMIN) $(VISUAL)
 
 $(LIBS):
-#@echo "$(YELLOW_COLOR)Make $@...$(NO_COLOR)"
 	@$(MAKE) -C $(LIBS_DIR)/$@
 
 $(OBJS_DIR):
 	@mkdir -p $@
+	@mkdir -p $@/$(SRC_MAIN_DIR)
+	@mkdir -p $@/$(SRC_VISUAL_DIR)
 
 $(OBJS_DIR)/%.o: $(SRCS_DIR)/%.c | $(OBJS_DIR)
 	@gcc $(FLAGS) -c $< -o $@

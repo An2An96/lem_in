@@ -1,28 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_paths_diff.c                                   :+:      :+:    :+:   */
+/*   draw_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rschuppe <rschuppe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/02/22 20:24:56 by wballaba          #+#    #+#             */
-/*   Updated: 2019/02/25 17:10:01 by rschuppe         ###   ########.fr       */
+/*   Created: 2019/03/08 12:39:25 by rschuppe          #+#    #+#             */
+/*   Updated: 2019/03/08 12:45:34 by rschuppe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "lem_in.h"
+#include "visualiser.h"
 
-int	get_paths_diff(t_path **paths, int path_idx)
+inline int	ft_close(void)
 {
-	int i;
-	int sum;
+	exit(EXIT_SUCCESS);
+	return (0);
+}
 
-	i = 0;
-	sum = 0;
-	while (i < path_idx)
-	{
-		sum += paths[path_idx]->size - paths[i]->size;
-		i++;
-	}
-	return (sum);
+int			ft_key_press_esc_close(int key)
+{
+	if (key == KEY_ESC)
+		ft_close();
+	return (0);
 }

@@ -6,13 +6,13 @@
 /*   By: rschuppe <rschuppe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/20 18:56:25 by rschuppe          #+#    #+#             */
-/*   Updated: 2019/02/25 19:01:13 by rschuppe         ###   ########.fr       */
+/*   Updated: 2019/03/08 13:53:09 by rschuppe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lem_in.h"
 
-static void	insert_item(t_room **rooms, t_room *room, int count_rooms)
+static void			insert_item(t_room **rooms, t_room *room, int count_rooms)
 {
 	int i;
 	int inserted;
@@ -38,27 +38,61 @@ static void	insert_item(t_room **rooms, t_room *room, int count_rooms)
 		rooms[1] = room;
 }
 
+static int			append_room_in_arr(
+	t_room **room_arr, int count_rooms, t_room *room)
+{
+	if (room->types)
+	{
+		if (room->types & ROOM_START)
+			room_arr[0] = room;
+		if (room->types & ROOM_END)
+			room_arr[count_rooms - 1] = room;
+	}
+	else
+		insert_item(room_arr, room, count_rooms);
+	return (room->types);
+}
+
+inline static void	check_duplicate_start_end(
+	bool *find_start, bool *find_end, int room_types)
+{
+	if (*find_start)
+		(room_types & ROOM_START)
+			&& throw_error(STR_ERROR_VALID, "Duplicate start");
+	else
+		*find_start = room_types & ROOM_START;
+	if (*find_end)
+		(room_types & ROOM_END)
+			&& throw_error(STR_ERROR_VALID, "Duplicate end");
+	else
+		*find_end = room_types & ROOM_END;
+}
+
 /*
 **	Создает массив вершин (комнат) сортируя по имени на этапе заполнения
 */
 
-t_room		**create_sort_room_arr(t_list *rooms_head, int count_rooms)
+t_room				**create_sort_room_arr(t_list **rooms_head, int count_rooms)
 {
 	t_list	*cur;
 	t_room	**rooms;
+	bool	find_start;
+	bool	find_end;
+	int		room_types;
 
-	if (!(rooms = (t_room**)ft_memalloc((count_rooms + 1) * sizeof(t_room*))))
-		exit(-1);
-	cur = rooms_head;
+	find_start = false;
+	find_end = false;
+	SECURE_MALLOC(rooms =
+		(t_room**)ft_memalloc((count_rooms + 1) * sizeof(t_room*)));
+	cur = *rooms_head;
 	while (cur)
 	{
-		if (((t_room*)(cur->content))->type == ROOM_START)
-			rooms[0] = (t_room*)(cur->content);
-		else if (((t_room*)(cur->content))->type == ROOM_END)
-			rooms[count_rooms - 1] = (t_room*)(cur->content);
-		else
-			insert_item(rooms, (t_room*)(cur->content), count_rooms);
+		room_types = append_room_in_arr(rooms, count_rooms, LIST(cur, t_room*));
+		check_duplicate_start_end(&find_start, &find_end, room_types);
 		cur = cur->next;
 	}
+	!find_start && throw_error(STR_ERROR_VALID, "No start");
+	!find_end && throw_error(STR_ERROR_VALID, "No end");
+	ft_lstdel(rooms_head, NULL);
 	return (rooms);
 }
