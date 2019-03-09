@@ -6,7 +6,7 @@
 /*   By: rschuppe <rschuppe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/19 16:47:35 by rschuppe          #+#    #+#             */
-/*   Updated: 2019/03/09 16:34:49 by rschuppe         ###   ########.fr       */
+/*   Updated: 2019/03/09 16:54:14 by rschuppe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,19 +78,19 @@ inline static int	read_room(
 static int			read_farm_map_helper(
 	t_farm *farm, char *line, t_list **rooms, int8_t *read_status)
 {
-	if (read_status == 0)
+	if (*read_status == 0)
 	{
 		if ((farm->ants_count =
 			min_atoi(line, STR_ERROR_VALID, "Invalid ants count")) <= 0)
 			throw_error(STR_ERROR_VALID, "Invalid ants count");
-		read_status++;
+		(*read_status)++;
 	}
 	else
 	{
-		if (read_status == 1)
-			if (!read_room(farm, line, &read_status, rooms))
+		if (*read_status == 1)
+			if (!read_room(farm, line, read_status, rooms))
 				return (0);
-		if (read_status == 2)
+		if (*read_status == 2)
 			if (!read_links(farm, line))
 				return (0);
 	}

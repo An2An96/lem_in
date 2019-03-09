@@ -6,7 +6,7 @@
 /*   By: rschuppe <rschuppe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/06 21:07:21 by rschuppe          #+#    #+#             */
-/*   Updated: 2019/03/09 14:11:23 by rschuppe         ###   ########.fr       */
+/*   Updated: 2019/03/09 16:48:07 by rschuppe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,8 @@ char	*read_args(int argc, char **argv, int *flags, int *max_paths)
 	filename = NULL;
 	while (i < argc)
 	{
-		if (!ft_strcmp(argv[i], "-v"))
-			*flags |= FLAG_VISUALISE;
+		if (!ft_strcmp(argv[i], "-p"))
+			*flags |= FLAG_PRINT;
 		else if (!ft_strcmp(argv[i], "-d"))
 			*flags |= FLAG_DEBUG;
 		else if (!ft_strcmp(argv[i], "-t"))

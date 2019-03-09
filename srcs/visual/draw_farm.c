@@ -6,7 +6,7 @@
 /*   By: rschuppe <rschuppe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/04 14:27:33 by wballaba          #+#    #+#             */
-/*   Updated: 2019/03/08 12:45:13 by rschuppe         ###   ########.fr       */
+/*   Updated: 2019/03/09 16:52:02 by rschuppe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,24 +17,26 @@
 **  фермы в окне
 */
 
-static void	assignment_val(t_vfarm *vfarm, t_val *val)
+static void	assignment_val(t_vfarm *vfarm)
 {
-	if ((val->max_x - val->min_x))
-		vfarm->abs_x = VISUAL_SIZE / (val->max_x - val->min_x);
+	if ((vfarm->val->max_x - vfarm->val->min_x))
+		vfarm->abs_x = VISUAL_SIZE / (vfarm->val->max_x - vfarm->val->min_x);
 	else
 		vfarm->abs_x = 1;
-	if ((val->max_y - val->min_y))
-		vfarm->abs_y = VISUAL_SIZE / (val->max_y - val->min_y);
+	if ((vfarm->val->max_y - vfarm->val->min_y))
+		vfarm->abs_y = VISUAL_SIZE / (vfarm->val->max_y - vfarm->val->min_y);
 	else
 		vfarm->abs_y = 1;
-	if (val->min_x != val->max_x)
-		vfarm->indent_x = -val->min_x * vfarm->abs_x +
-			((WIN_SIZE - (val->max_x - val->min_x) * vfarm->abs_x) / 2);
+	if (vfarm->val->min_x != vfarm->val->max_x)
+		vfarm->indent_x = -vfarm->val->min_x * vfarm->abs_x +
+			((WIN_SIZE - (vfarm->val->max_x - vfarm->val->min_x) *
+			vfarm->abs_x) / 2);
 	else
 		vfarm->indent_x = WIN_SIZE / 2;
-	if (val->min_y != val->max_y)
-		vfarm->indent_y = -val->min_y * vfarm->abs_y +
-			((WIN_SIZE - (val->max_y - val->min_y) * vfarm->abs_y) / 2);
+	if (vfarm->val->min_y != vfarm->val->max_y)
+		vfarm->indent_y = -vfarm->val->min_y * vfarm->abs_y +
+			((WIN_SIZE - (vfarm->val->max_y - vfarm->val->min_y) *
+			vfarm->abs_y) / 2);
 	else
 		vfarm->indent_y = WIN_SIZE / 2;
 }
@@ -42,22 +44,22 @@ static void	assignment_val(t_vfarm *vfarm, t_val *val)
 void		get_abs_val(t_farm *farm, t_vfarm *vfarm)
 {
 	int		n_room;
-	t_val	val;
 
+	vfarm->val = (t_val*)ft_memalloc(sizeof(t_val));
 	n_room = 0;
-	val.max_x = farm->rooms[n_room]->x;
-	val.max_y = farm->rooms[n_room]->y;
-	val.min_x = val.max_x;
-	val.min_y = val.max_y;
+	vfarm->val->max_x = farm->rooms[n_room]->x;
+	vfarm->val->max_y = farm->rooms[n_room]->y;
+	vfarm->val->min_x = vfarm->val->max_x;
+	vfarm->val->min_y = vfarm->val->max_y;
 	while (farm->rooms[n_room])
 	{
-		val.max_x = MAX(val.max_x, farm->rooms[n_room]->x);
-		val.min_x = MIN(val.min_x, farm->rooms[n_room]->x);
-		val.max_y = MAX(val.max_y, farm->rooms[n_room]->y);
-		val.min_y = MIN(val.min_y, farm->rooms[n_room]->y);
+		vfarm->val->max_x = MAX(vfarm->val->max_x, farm->rooms[n_room]->x);
+		vfarm->val->min_x = MIN(vfarm->val->min_x, farm->rooms[n_room]->x);
+		vfarm->val->max_y = MAX(vfarm->val->max_y, farm->rooms[n_room]->y);
+		vfarm->val->min_y = MIN(vfarm->val->min_y, farm->rooms[n_room]->y);
 		n_room++;
 	}
-	assignment_val(vfarm, &val);
+	assignment_val(vfarm);
 }
 
 /*
@@ -80,7 +82,7 @@ static void	draw_edge(t_vfarm *vfarm, int n_room)
 		data.y2 = room->y * vfarm->abs_y + vfarm->indent_y;
 		data.line_width = 2;
 		data.img = vfarm->image;
-		ft_draw_line(vfarm->visual, &data, COLOR_EDGE);
+		ft_draw_line(vfarm->visual, &data, COLOR_EDGE, WIN_SIZE);
 		child = child->next;
 	}
 }
@@ -94,25 +96,24 @@ void		create_farm_image(t_vfarm *vfarm)
 	t_params	data;
 	int			n_room;
 
-	n_room = 0;
 	vfarm->image = ft_create_image(vfarm->visual, WIN_SIZE, WIN_SIZE);
 	data.width = WIN_SIZE;
 	data.height = WIN_SIZE;
 	data.img = vfarm->image;
 	ft_draw_bg_gradient(vfarm->visual, &data, COLOR_BG1, COLOR_BG2);
-	while (vfarm->farm->rooms[n_room])
+	n_room = -1;
+	while (vfarm->farm->rooms[++n_room])
 	{
 		data.img = vfarm->image;
 		data.x = vfarm->farm->rooms[n_room]->x * vfarm->abs_x + vfarm->indent_x;
 		data.y = vfarm->farm->rooms[n_room]->y * vfarm->abs_y + vfarm->indent_y;
-		data.line_width = 2;
+		data.line_width = LINE_WIDTH;
 		data.radius = NODE_RADIUS;
-		if (n_room == 0 || n_room == vfarm->farm->count_rooms - 1)
-			ft_draw_circle(vfarm->visual, &data, COLOR_START);
-		else
-			ft_draw_circle(vfarm->visual, &data, COLOR_EDGE);
 		draw_edge(vfarm, n_room);
-		n_room++;
+		if (n_room == 0 || n_room == vfarm->farm->count_rooms - 1)
+			ft_draw_circle(vfarm->visual, &data, COLOR_START, WIN_SIZE);
+		else
+			ft_draw_circle(vfarm->visual, &data, COLOR_EDGE, WIN_SIZE);
 	}
 }
 

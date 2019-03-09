@@ -6,7 +6,7 @@
 /*   By: rschuppe <rschuppe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/18 14:47:13 by rschuppe          #+#    #+#             */
-/*   Updated: 2019/03/09 16:07:20 by rschuppe         ###   ########.fr       */
+/*   Updated: 2019/03/09 16:46:22 by rschuppe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 # define LEM_IN_H
 
 # include <stdint.h>
+# include <stdbool.h>
 # include <limits.h>
 # include <string.h>
 # include <errno.h>
@@ -30,7 +31,15 @@
 # define BG_COLOR_WHITE		"\x1b[47m"
 # define BG_COLOR_NONE		"\x1b[49m"
 
-# define FLAG_VISUALISE		1
+# define COLOR_BLACK		"\x1b[30m"
+# define COLOR_CYAN			"\x1b[36m"
+# define COLOR_ERROR		"\x1b[1;31m"
+# define COLOR_NONE			"\x1b[0m"
+
+# define BG_COLOR_WHITE		"\x1b[47m"
+# define BG_COLOR_NONE		"\x1b[49m"
+
+# define FLAG_PRINT			1
 # define FLAG_DEBUG			2
 # define FLAG_TIME			4
 
