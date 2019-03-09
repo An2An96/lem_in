@@ -6,7 +6,7 @@
 /*   By: wballaba <wballaba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/05 15:15:25 by wballaba          #+#    #+#             */
-/*   Updated: 2019/03/08 19:55:13 by wballaba         ###   ########.fr       */
+/*   Updated: 2019/03/09 15:54:24 by wballaba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ void		move_ant(t_ant *ant, t_room *room, t_vfarm *vfarm)
 **	отрисовка движения одного муравья
 */
 
-static	int	end_ant_path(int key, t_vfarm *vfarm)
+int			end_ant_path(int key, t_vfarm *vfarm)
 {
 	int	i;
 
@@ -85,14 +85,11 @@ static	int	end_ant_path(int key, t_vfarm *vfarm)
 }
 
 /*
-**	loop для отрисовки муравьев
+**	обнуление значений для loop для отрисовки муравьев
 */
 
 void		draw_run_ant(t_vfarm *vfarm)
 {
 	vfarm->step = 0;
 	vfarm->count_func = 1;
-	mlx_hook(vfarm->visual->win_ptr, 2, 1L << 17, end_ant_path, vfarm);
-	mlx_loop_hook(vfarm->visual->mlx_ptr, draw_ants, vfarm);
-	mlx_loop(vfarm->visual->mlx_ptr);
 }

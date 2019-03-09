@@ -6,7 +6,7 @@
 /*   By: wballaba <wballaba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/04 14:27:33 by wballaba          #+#    #+#             */
-/*   Updated: 2019/03/08 19:47:50 by wballaba         ###   ########.fr       */
+/*   Updated: 2019/03/09 15:57:05 by wballaba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,6 @@ void		get_abs_val(t_farm *farm, t_vfarm *vfarm)
 	int		n_room;
 
 	vfarm->val = (t_val*)ft_memalloc(sizeof(t_val));
-
 	n_room = 0;
 	vfarm->val->max_x = farm->rooms[n_room]->x;
 	vfarm->val->max_y = farm->rooms[n_room]->y;
@@ -74,7 +73,6 @@ static void	draw_edge(t_vfarm *vfarm, int n_room)
 	t_room		*room;
 
 	child = vfarm->farm->rooms[n_room]->neighbors;
-
 	data.x = vfarm->farm->rooms[n_room]->x * vfarm->abs_x + vfarm->indent_x;
 	data.y = vfarm->farm->rooms[n_room]->y * vfarm->abs_y + vfarm->indent_y;
 	while (child)
@@ -84,8 +82,7 @@ static void	draw_edge(t_vfarm *vfarm, int n_room)
 		data.y2 = room->y * vfarm->abs_y + vfarm->indent_y;
 		data.line_width = 2;
 		data.img = vfarm->image;
-		// if (data.x2 + 10 < WIN_SIZE && data.y2 + 10 < WIN_SIZE && data.x2 - 10 > 0 && data.y2 - 10 > 0)
-			ft_draw_line(vfarm->visual, &data, COLOR_EDGE, WIN_SIZE);
+		ft_draw_line(vfarm->visual, &data, COLOR_EDGE, WIN_SIZE);
 		child = child->next;
 	}
 }
@@ -110,7 +107,7 @@ void		create_farm_image(t_vfarm *vfarm)
 		data.img = vfarm->image;
 		data.x = vfarm->farm->rooms[n_room]->x * vfarm->abs_x + vfarm->indent_x;
 		data.y = vfarm->farm->rooms[n_room]->y * vfarm->abs_y + vfarm->indent_y;
-		data.line_width = 2;
+		data.line_width = LINE_WIDTH;
 		data.radius = NODE_RADIUS;
 		draw_edge(vfarm, n_room);
 		if (n_room == 0 || n_room == vfarm->farm->count_rooms - 1)

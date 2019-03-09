@@ -6,7 +6,7 @@
 /*   By: wballaba <wballaba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/06 14:05:53 by wballaba          #+#    #+#             */
-/*   Updated: 2019/03/08 20:20:56 by wballaba         ###   ########.fr       */
+/*   Updated: 2019/03/09 16:21:25 by wballaba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@
 # define WIN_SIZE			1250.0
 # define VISUAL_SIZE		1070.0
 # define NODE_RADIUS		17
+# define LINE_WIDTH			2
 
 # define COLOR_BG1			0x111237
 # define COLOR_BG2			0x6f3292
@@ -81,7 +82,6 @@ typedef struct	s_visual_farm
 	int			count_line;
 }				t_vfarm;
 
-
 /*
 **	Visualisation
 */
@@ -97,8 +97,11 @@ void			draw_run_ant(t_vfarm *vfarm);
 void			get_abs_val(t_farm *farm, t_vfarm *vfarm);
 int				draw_ants(t_vfarm *vfarm);
 void			move_farm(int key, t_vfarm *vfarm);
+void			zoom_farm(int key, t_vfarm *vfarm);
 
 int				ft_close(void);
 int				ft_key_press_esc_close(int key);
+
+int				end_ant_path(int key, t_vfarm *vfarm);
 
 #endif

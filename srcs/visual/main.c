@@ -6,7 +6,7 @@
 /*   By: wballaba <wballaba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/02 17:22:46 by wballaba          #+#    #+#             */
-/*   Updated: 2019/03/08 20:26:18 by wballaba         ###   ########.fr       */
+/*   Updated: 2019/03/09 15:50:32 by wballaba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,23 +62,17 @@ static int	lem_in_draw(int key, t_vfarm *vfarm)
 		{
 			if (vfarm->farm->flags & FLAG_PRINT)
 				ft_printf("%s\n", line);
-			if (read_line(vfarm, line))
-			{
-				free(line);
-				mlx_destroy_window(vfarm->visual->mlx_ptr,
-					vfarm->visual->win_ptr);
-				exit(0);
-			}
-			if (line)
-				free(line);
+			read_line(vfarm, line);
+			free(line);
 			visual_farm(vfarm);
 			draw_run_ant(vfarm);
 		}
 	}
 	else if (key == KEY_W || key == KEY_S || key == KEY_A || key == KEY_D ||
-		key == KEY_UP || key == KEY_DOWN || key == KEY_LEFT || key == KEY_RIGHT
-		|| key == KEY_Q || key == KEY_E)
+		key == KEY_UP || key == KEY_DOWN || key == KEY_LEFT || key == KEY_RIGHT)
 		move_farm(key, vfarm);
+	else if (key == KEY_Q || key == KEY_E)
+		zoom_farm(key, vfarm);
 	return (0);
 }
 
@@ -97,7 +91,9 @@ static int	start_visual(int fd, t_farm *farm)
 	create_farm_image(vfarm);
 	visual_farm(vfarm);
 	mlx_hook(vfarm->visual->win_ptr, 2, 1L << 17, ft_key_press_esc_close, NULL);
+	mlx_hook(vfarm->visual->win_ptr, 2, 1L << 17, end_ant_path, vfarm);
 	mlx_hook(vfarm->visual->win_ptr, 17, 1L << 17, ft_close, NULL);
+	mlx_loop_hook(vfarm->visual->mlx_ptr, draw_ants, vfarm);
 	mlx_key_hook(vfarm->visual->win_ptr, lem_in_draw, vfarm);
 	mlx_loop(vfarm->visual->mlx_ptr);
 	return (0);
