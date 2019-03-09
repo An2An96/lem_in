@@ -73,7 +73,8 @@ clean:
 	@echo "$(DANGER_COLOR)Object files cleared$(NO_COLOR)"
 
 fclean: clean
-	@rm -f $(NAME)
+	@rm -f $(LEMIN)
+	@rm -f $(VISUAL)
 	@echo "$(DANGER_COLOR)Build cleared$(NO_COLOR)"
 
 re: fclean all
