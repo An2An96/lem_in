@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   l4_find_unique_paths.c                             :+:      :+:    :+:   */
+/*   find_unique_paths.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rschuppe <rschuppe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/20 19:11:32 by rschuppe          #+#    #+#             */
-/*   Updated: 2019/03/09 16:50:04 by rschuppe         ###   ########.fr       */
+/*   Updated: 2019/03/09 21:14:01 by rschuppe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,7 @@ static void			enter_room(t_farm *farm, t_room *room, t_dlist *queue)
 	t_node	*next;
 	t_path	*path;
 
+	// ft_printf("enter room %s\n", room->name);
 	path_lst = room->paths->head;
 	while (path_lst)
 	{

@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   moove_farm.c                                       :+:      :+:    :+:   */
+/*   move_farm.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rschuppe <rschuppe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/08 17:10:11 by wballaba          #+#    #+#             */
-/*   Updated: 2019/03/09 17:02:47 by rschuppe         ###   ########.fr       */
+/*   Updated: 2019/03/09 18:43:48 by rschuppe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,6 @@ void		coord_ant(t_ant *ant, t_room *room, t_vfarm *vfarm)
 void		zoom_farm(int key, t_vfarm *vfarm)
 {
 	int	n_room;
-	int i;
 
 	n_room = -1;
 	if (key == KEY_E)
@@ -82,10 +81,8 @@ void		zoom_farm(int key, t_vfarm *vfarm)
 		if (vfarm->ant[vfarm->farm->rooms[n_room]->ant_num - 1])
 			coord_ant(vfarm->ant[vfarm->farm->rooms[n_room]->ant_num - 1],
 			vfarm->farm->rooms[n_room], vfarm);
-	
 	create_farm_image(vfarm);
 	visual_farm(vfarm);
-	// draw_run_ant(vfarm);
 }
 
 void		move_farm(int key, t_vfarm *vfarm)
@@ -108,5 +105,4 @@ void		move_farm(int key, t_vfarm *vfarm)
 		vfarm->indent_x -= WIN_SIZE / 2;
 	create_farm_image(vfarm);
 	visual_farm(vfarm);
-	// draw_run_ant(vfarm);
 }

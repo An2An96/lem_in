@@ -6,7 +6,7 @@
 /*   By: rschuppe <rschuppe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/02 17:22:46 by wballaba          #+#    #+#             */
-/*   Updated: 2019/03/09 16:59:29 by rschuppe         ###   ########.fr       */
+/*   Updated: 2019/03/09 20:07:08 by rschuppe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ static int	read_line(t_vfarm *vfarm, char *line)
 	return (0);
 }
 
-static int	lem_in_draw(int key, t_vfarm *vfarm)
+static int	draw_press_key(int key, t_vfarm *vfarm)
 {
 	char	*line;
 
@@ -73,6 +73,8 @@ static int	lem_in_draw(int key, t_vfarm *vfarm)
 		move_farm(key, vfarm);
 	else if (key == KEY_Q || key == KEY_E)
 		zoom_farm(key, vfarm);
+	else if (key == KEY_ESC)
+		ft_close();
 	return (0);
 }
 
@@ -83,7 +85,7 @@ static int	start_visual(int fd, t_farm *farm)
 	if (!(vfarm = (t_vfarm *)ft_memalloc(sizeof(t_vfarm))))
 		return (0);
 	vfarm->fd = fd;
-	vfarm->visual = ft_create_window(WIN_SIZE, WIN_SIZE, "KK");
+	vfarm->visual = ft_create_window(WIN_SIZE, WIN_SIZE, "Lem-in Visualiser");
 	vfarm->farm = farm;
 	vfarm->count_line = 0;
 	get_abs_val(farm, vfarm);
@@ -91,11 +93,10 @@ static int	start_visual(int fd, t_farm *farm)
 	create_farm_image(vfarm);
 	visual_farm(vfarm);
 	mlx_do_key_autorepeaton(vfarm->visual->mlx_ptr);
-	mlx_hook(vfarm->visual->win_ptr, 2, 1L << 17, ft_key_press_esc_close, NULL);
-	mlx_hook(vfarm->visual->win_ptr, 2, 1L << 17, end_ant_path, vfarm);
 	mlx_hook(vfarm->visual->win_ptr, 17, 1L << 17, ft_close, NULL);
+	mlx_hook(vfarm->visual->win_ptr, 2, 1L << 17, end_ant_path, vfarm);
 	mlx_loop_hook(vfarm->visual->mlx_ptr, draw_ants, vfarm);
-	mlx_key_hook(vfarm->visual->win_ptr, lem_in_draw, vfarm);
+	mlx_key_hook(vfarm->visual->win_ptr, draw_press_key, vfarm);
 	mlx_loop(vfarm->visual->mlx_ptr);
 	return (0);
 }

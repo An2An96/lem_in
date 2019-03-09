@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   l6_let_ants_to_paths.c                             :+:      :+:    :+:   */
+/*   let_ants_to_paths.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rschuppe <rschuppe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/20 19:25:43 by rschuppe          #+#    #+#             */
-/*   Updated: 2019/03/09 16:49:31 by rschuppe         ###   ########.fr       */
+/*   Updated: 2019/03/09 19:55:30 by rschuppe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,10 +68,10 @@ static void			choose_path_and_start(
 				break ;
 		}
 		room = LIST(path_comb->paths[path_idx]->head, t_room*);
-		if (room->types & ROOM_END)
-			farm->finished_ants++;
+		(room->types & ROOM_END) && farm->finished_ants++;
 		room->ant_num = ++(*nbr_ants);
 		show_ant_pos(room);
+		(room->types & ROOM_END) && (room->ant_num = 0);
 		path_idx++;
 	}
 }

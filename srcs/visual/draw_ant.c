@@ -6,7 +6,7 @@
 /*   By: rschuppe <rschuppe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/05 15:15:25 by wballaba          #+#    #+#             */
-/*   Updated: 2019/03/09 16:51:24 by rschuppe         ###   ########.fr       */
+/*   Updated: 2019/03/09 20:07:05 by rschuppe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,10 +61,6 @@ void		move_ant(t_ant *ant, t_room *room, t_vfarm *vfarm)
 	ant->length = side[0];
 }
 
-/*
-**	отрисовка движения одного муравья
-*/
-
 int			end_ant_path(int key, t_vfarm *vfarm)
 {
 	int	i;
@@ -79,8 +75,6 @@ int			end_ant_path(int key, t_vfarm *vfarm)
 			i++;
 		}
 	}
-	if (key == KEY_ESC)
-		ft_close();
 	return (0);
 }
 

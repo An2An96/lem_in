@@ -6,7 +6,7 @@
 /*   By: rschuppe <rschuppe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/09 15:02:21 by rschuppe          #+#    #+#             */
-/*   Updated: 2019/03/09 16:12:27 by rschuppe         ###   ########.fr       */
+/*   Updated: 2019/03/09 21:14:14 by rschuppe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ static bool	find_intersection(t_path *first, t_path *second)
 	return (false);
 }
 
-static void	extend_matrix(t_farm *farm, int size)
+static void	extend_matrix(t_farm *farm, size_t size)
 {
 	size_t	i;
 	bool	**new_matrix;
@@ -67,8 +67,11 @@ static void	check_intersections_helper(
 	j = 0;
 	while (paths)
 	{
-		farm->intersections[path_idx][j] =
-			find_intersection(LIST(path, t_path*), LIST(paths, t_path*));
+		if (LIST(path, t_path*) == LIST(paths, t_path*))
+			farm->intersections[path_idx][j] = true;
+		else
+			farm->intersections[path_idx][j] =
+				find_intersection(LIST(path, t_path*), LIST(paths, t_path*));
 		farm->intersections[j][path_idx] = farm->intersections[path_idx][j];
 		paths = paths->next;
 		j++;
@@ -79,7 +82,6 @@ void		check_intersections(t_farm *farm)
 {
 	t_dlist	*paths;
 	t_node	*path;
-	t_node	*cur;
 	size_t	i;
 
 	paths = farm->rooms[farm->count_rooms - 1]->paths;

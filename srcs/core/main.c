@@ -6,7 +6,7 @@
 /*   By: rschuppe <rschuppe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/18 14:17:13 by rschuppe          #+#    #+#             */
-/*   Updated: 2019/03/09 16:50:51 by rschuppe         ###   ########.fr       */
+/*   Updated: 2019/03/09 19:55:34 by rschuppe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,21 +30,22 @@ static void		clear_paths_comb(t_path_comb *paths_combs)
 
 static void		clear_farm(t_farm *farm)
 {
-	int		i;
+	size_t	i;
 
 	if (farm)
 	{
-		i = -1;
-		while (++i < farm->intersections_size)
-			free(farm->intersections[i]);
+		i = 0;
+		while (i < farm->intersections_size)
+			free(farm->intersections[i++]);
 		free(farm->intersections);
-		i = -1;
-		while (++i < farm->count_rooms)
+		i = 0;
+		while ((int)i < farm->count_rooms)
 		{
 			free(farm->rooms[i]->name);
 			ft_lstdel(&farm->rooms[i]->neighbors, free_lst);
 			ft_dlst_del(&farm->rooms[i]->paths, free_paths);
 			free(farm->rooms[i]);
+			i++;
 		}
 		free(farm->rooms);
 		free(farm);
@@ -76,7 +77,7 @@ static void		start_algo(t_farm *farm)
 
 static t_farm	*create_farm(void)
 {
-	int		i;
+	size_t	i;
 	t_farm	*farm;
 
 	SECURE_MALLOC(farm = (t_farm*)ft_memalloc(sizeof(t_farm)));

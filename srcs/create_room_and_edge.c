@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   read_farm_map_2.c                                  :+:      :+:    :+:   */
+/*   create_room_and_edge.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rschuppe <rschuppe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/08 13:34:37 by rschuppe          #+#    #+#             */
-/*   Updated: 2019/03/09 16:47:42 by rschuppe         ###   ########.fr       */
+/*   Updated: 2019/03/09 18:12:58 by rschuppe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ t_room	*create_room(char *name, char *x, char *y, int8_t type)
 	return (room);
 }
 
-int		add_edge(t_farm *farm, char *parent_name, char *child_name)
+int		create_edge(t_farm *farm, char *parent_name, char *child_name)
 {
 	int		parent;
 	int		child;

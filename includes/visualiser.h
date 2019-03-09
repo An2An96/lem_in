@@ -6,7 +6,7 @@
 /*   By: rschuppe <rschuppe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/06 14:05:53 by wballaba          #+#    #+#             */
-/*   Updated: 2019/03/09 17:08:46 by rschuppe         ###   ########.fr       */
+/*   Updated: 2019/03/09 20:06:30 by rschuppe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,10 +98,7 @@ void			get_abs_val(t_farm *farm, t_vfarm *vfarm);
 int				draw_ants(t_vfarm *vfarm);
 void			move_farm(int key, t_vfarm *vfarm);
 void			zoom_farm(int key, t_vfarm *vfarm);
-
-int				ft_close(void);
-int				ft_key_press_esc_close(int key);
-
 int				end_ant_path(int key, t_vfarm *vfarm);
+int				ft_close(void);
 
 #endif

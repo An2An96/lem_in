@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   l1_read_farm_map.c                                 :+:      :+:    :+:   */
+/*   read_farm_map.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rschuppe <rschuppe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/19 16:47:35 by rschuppe          #+#    #+#             */
-/*   Updated: 2019/03/09 16:54:14 by rschuppe         ###   ########.fr       */
+/*   Updated: 2019/03/09 19:31:11 by rschuppe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,27 +19,27 @@ static int			parse_room_line(
 	t_room			*room;
 	int				check;
 
-	if (!ft_strcmp(line, "##start"))
-		*room_type |= ROOM_START;
-	else if (!ft_strcmp(line, "##end"))
-		*room_type |= ROOM_END;
-	else
+	if (line[0] == '#' && line[1] == '#')
 	{
-		res = ft_strsplit(line, ' ');
-		check = (res[0] && res[1] && res[2] && !res[3]);
-		if (check)
-		{
-			check += (*room_type == (ROOM_START | ROOM_END));
-			room = create_room(res[0], res[1], res[2], *room_type);
-			ft_lstadd(rooms, ft_lstnew(room, sizeof(t_room)));
-			free(room);
-			(*count_rooms)++;
-			*room_type = 0;
-		}
-		free_split_result(res);
-		return (check);
+		if (!ft_strcmp(line, "##start"))
+			*room_type |= ROOM_START;
+		else if (!ft_strcmp(line, "##end"))
+			*room_type |= ROOM_END;
+		return (1);
 	}
-	return (1);
+	res = ft_strsplit(line, ' ');
+	check = (res[0] && res[1] && res[2] && !res[3]);
+	if (check)
+	{
+		check += (*room_type == (ROOM_START | ROOM_END));
+		room = create_room(res[0], res[1], res[2], *room_type);
+		ft_lstadd(rooms, ft_lstnew(room, sizeof(t_room)));
+		free(room);
+		(*count_rooms)++;
+		*room_type = 0;
+	}
+	free_split_result(res);
+	return (check);
 }
 
 inline static int	read_links(t_farm *farm, char *line)
@@ -47,9 +47,17 @@ inline static int	read_links(t_farm *farm, char *line)
 	char	**res;
 	bool	check;
 
+	if (line[0] == '#' && line[1] == '#')
+	{
+		if (!ft_strcmp(line, "##start"))
+			throw_error(STR_ERROR_VALID, "Invalid use of command ##start");
+		else if (!ft_strcmp(line, "##end"))
+			throw_error(STR_ERROR_VALID, "Invalid use of command ##end");
+		return (1);
+	}
 	res = ft_strsplit(line, '-');
 	check = (res[0] && res[1] && !res[2]);
-	check && (check = add_edge(farm, res[0], res[1]));
+	check && (check = create_edge(farm, res[0], res[1]));
 	free_split_result(res);
 	return (check);
 }
@@ -80,20 +88,28 @@ static int			read_farm_map_helper(
 {
 	if (*read_status == 0)
 	{
-		if ((farm->ants_count =
-			min_atoi(line, STR_ERROR_VALID, "Invalid ants count")) <= 0)
-			throw_error(STR_ERROR_VALID, "Invalid ants count");
-		(*read_status)++;
+		if (line[0] == '#' && line[1] == '#')
+		{
+			if (!ft_strcmp(line, "##start"))
+				throw_error(STR_ERROR_VALID, "Invalid use of command ##start");
+			else if (!ft_strcmp(line, "##end"))
+				throw_error(STR_ERROR_VALID, "Invalid use of command ##end");
+		}
+		else
+		{
+			if ((farm->ants_count =
+				min_atoi(line, STR_ERROR_VALID, "Invalid ants count")) <= 0)
+				throw_error(STR_ERROR_VALID, "Invalid ants count");
+			(*read_status)++;
+		}
+		return (1);
 	}
-	else
-	{
-		if (*read_status == 1)
-			if (!read_room(farm, line, read_status, rooms))
-				return (0);
-		if (*read_status == 2)
-			if (!read_links(farm, line))
-				return (0);
-	}
+	if (*read_status == 1)
+		if (!read_room(farm, line, read_status, rooms))
+			return (0);
+	if (*read_status == 2)
+		if (!read_links(farm, line))
+			return (0);
 	return (1);
 }
 

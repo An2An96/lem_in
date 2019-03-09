@@ -6,7 +6,7 @@
 /*   By: rschuppe <rschuppe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/18 14:47:13 by rschuppe          #+#    #+#             */
-/*   Updated: 2019/03/09 16:46:22 by rschuppe         ###   ########.fr       */
+/*   Updated: 2019/03/09 18:12:42 by rschuppe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,7 +133,7 @@ char			*read_args(int argc, char **argv, int *flags, int *max_paths);
 
 t_farm			*read_farm_map();
 t_room			*create_room(char *name, char *x, char *y, int8_t type);
-int				add_edge(t_farm *farm, char *parent_name, char *child_name);
+int				create_edge(t_farm *farm, char *parent_name, char *child_name);
 t_room			**create_sort_room_arr(t_list **rooms_head, int count_rooms);
 
 /*

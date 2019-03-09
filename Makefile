@@ -17,24 +17,24 @@ LIBS = libft libftprintf libdraw
 SRC_MAIN_DIR =		/core
 SRC_MAIN =		main.c				debug.c				show_map_config.c \
 				get_paths_diff.c	paths_utils.c		find_comb.c \
-				l4_find_unique_paths.c	l5_find_best_comb_paths.c \
-				l6_let_ants_to_paths.c	check_intersections.c
+				find_unique_paths.c	find_best_comb_paths.c \
+				let_ants_to_paths.c	check_intersections.c
 
 SRC_VISUAL_DIR =	/visual
 SRC_VISUAL =	main.c				draw_farm.c			draw_ant.c \
-				animation_ant.c		draw_utils.c		move_farm.c
+				animation_ant.c		ft_close.c			move_farm.c
 
 COMMON_SRC =	read_args.c			throw_error.c		find_node_by_name.c \
-				utils.c				l1_read_farm_map.c	read_farm_map_2.c \
-				l2_create_sort_room_arr.c
+				utils.c				read_farm_map.c		create_room_and_edge.c \
+				create_sort_room_arr.c
 
 OBJS_MAIN += $(addprefix $(OBJS_DIR)/$(SRC_MAIN_DIR)/,$(SRC_MAIN:%.c=%.o))
 OBJS_MAIN += $(addprefix $(OBJS_DIR)/,$(COMMON_SRC:%.c=%.o))
 OBJS_VISUAL += $(addprefix $(OBJS_DIR)/$(SRC_VISUAL_DIR)/,$(SRC_VISUAL:%.c=%.o))
 OBJS_VISUAL += $(addprefix $(OBJS_DIR)/,$(COMMON_SRC:%.c=%.o))
 
-#FLAGS += -Wall -Wextra -Werror
-#FLAGS += -g
+FLAGS += -Wall -Wextra -Werror
+FLAGS += -g
 FLAGS += -O2
 FLAGS += -I$(INCS_DIR)
 FLAGS += $(foreach lib,$(LIBS),-I$(LIBS_DIR)/$(lib)/includes)
