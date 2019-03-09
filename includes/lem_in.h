@@ -6,7 +6,7 @@
 /*   By: rschuppe <rschuppe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/18 14:47:13 by rschuppe          #+#    #+#             */
-/*   Updated: 2019/03/08 18:50:21 by rschuppe         ###   ########.fr       */
+/*   Updated: 2019/03/09 16:07:20 by rschuppe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,7 @@
 # define END_DELAY(str)		IS_FLAG(FLAG_TIME) && _END_DELAY(str)
 
 # define STR_ERROR_SYS		COLOR_ERROR"[System Error]: "COLOR_NONE
+# define STR_ERROR_ARGS		COLOR_ERROR"[Arguments Error]: "COLOR_NONE
 # define STR_ERROR_VALID	COLOR_ERROR"[Validation Error]: "COLOR_NONE
 # define STR_ERROR_PATH		COLOR_ERROR"[Path Error]: "COLOR_NONE
 
@@ -96,6 +97,7 @@ typedef struct	s_room
 
 typedef struct	s_farm
 {
+	int			max_paths;
 	int			flags;
 	t_room		**rooms;
 	int			count_rooms;
@@ -106,6 +108,7 @@ typedef struct	s_farm
 	int			cur_comb;
 	bool		**intersections;
 	size_t		intersections_size;
+	size_t		intersections_length;
 }				t_farm;
 
 /*
@@ -113,7 +116,7 @@ typedef struct	s_farm
 */
 
 int				throw_error(const char *title, const char *err);
-char			*read_args(int argc, char **argv, int *flags);
+char			*read_args(int argc, char **argv, int *flags, int *max_paths);
 
 /*
 **	Read farm
@@ -130,12 +133,12 @@ t_room			**create_sort_room_arr(t_list **rooms_head, int count_rooms);
 
 t_path_comb		*find_unique_paths(t_farm *farm, int count);
 bool			find_comb(
-	t_farm *farm, t_dlist *paths, t_stack *result, t_node *cur_path_node, int need_path);
-int				check_intersections(t_farm *farm);
+	t_farm *farm, t_stack *result, t_node *cur_path_node, int need_path);
+void			check_intersections(t_farm *farm);
 int				find_best_comb_paths(t_path_comb **path_combs, int ants_count);
 int				get_steps_for_comb(t_path_comb *path_combs, int ants_count);
 t_path_comb		*choose_best_comb_paths(t_path_comb *path_combs);
-void			let_ants_to_paths(t_farm *farm, t_path_comb *path_comb);
+int				let_ants_to_paths(t_farm *farm, t_path_comb *path_comb);
 void			show_map_config(t_farm *farm);
 
 /*
@@ -157,7 +160,8 @@ int				get_paths_diff(t_path_comb *path_comb, int path_idx);
 void			free_lst(void *content, size_t content_size);
 void			free_paths(void *content, size_t content_size);
 void			free_split_result(char **res);
-int				min_atoi(const char *str, const char *error);
+int				min_atoi(
+	const char *str, const char *error_title, const char *error);
 
 /*
 **	Debug functions
@@ -167,5 +171,6 @@ int				debug_show_rooms(t_farm *farm);
 int				debug_show_path(t_path *path);
 int				debug_show_comb(t_path_comb *path_comb);
 int				debug_show_paths_combs(t_path_comb *paths_combs);
+int				debug_show_matrix(bool **matrix, int size);
 
 #endif

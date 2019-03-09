@@ -6,7 +6,7 @@
 /*   By: rschuppe <rschuppe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/25 21:47:32 by rschuppe          #+#    #+#             */
-/*   Updated: 2019/03/08 15:12:30 by rschuppe         ###   ########.fr       */
+/*   Updated: 2019/03/09 15:57:41 by rschuppe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ void	free_split_result(char **res)
 	free(res);
 }
 
-int		min_atoi(const char *str, const char *error)
+int		min_atoi(const char *str, const char *error_title, const char *error)
 {
 	char	negative;
 	int		result;
@@ -53,10 +53,10 @@ int		min_atoi(const char *str, const char *error)
 	while (str[i])
 	{
 		if (!ft_isdigit(str[i]))
-			throw_error(STR_ERROR_VALID, error);
+			throw_error(error_title, error);
 		result = (result * 10) + (str[i] - '0');
 		if (result < 0)
-			throw_error(STR_ERROR_VALID, error);
+			throw_error(error_title, error);
 		i++;
 	}
 	return ((int)result * negative);

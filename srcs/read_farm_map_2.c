@@ -6,7 +6,7 @@
 /*   By: rschuppe <rschuppe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/08 13:34:37 by rschuppe          #+#    #+#             */
-/*   Updated: 2019/03/08 16:30:43 by rschuppe         ###   ########.fr       */
+/*   Updated: 2019/03/09 14:25:16 by rschuppe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,8 @@ t_room	*create_room(char *name, char *x, char *y, int8_t type)
 	SECURE_MALLOC(room = (t_room*)ft_memalloc(sizeof(t_room)));
 	SECURE_MALLOC(room->name = ft_strdup(name));
 	SECURE_MALLOC(room->paths = ft_dlst_create());
-	room->x = min_atoi(x, "Invalid coordinates of the room");
-	room->y = min_atoi(y, "Invalid coordinates of the room");
+	room->x = min_atoi(x, STR_ERROR_VALID, "Invalid coordinates of the room");
+	room->y = min_atoi(y, STR_ERROR_VALID, "Invalid coordinates of the room");
 	room->types = type;
 	room->weight = -1;
 	return (room);

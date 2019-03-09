@@ -6,18 +6,25 @@
 /*   By: rschuppe <rschuppe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/20 19:11:32 by rschuppe          #+#    #+#             */
-/*   Updated: 2019/03/08 18:59:57 by rschuppe         ###   ########.fr       */
+/*   Updated: 2019/03/09 16:23:35 by rschuppe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lem_in.h"
 
-inline static void	add_path_room(t_room *room, t_path *path)
+inline static void	add_room_in_queue(
+	t_farm *farm, t_dlist *queue, t_room *neighbor)
 {
-	ft_dlst_push_back(room->paths, ft_create_node_ptr(path));
+	if (neighbor->types & ROOM_END)
+	{
+		check_intersections(farm);
+		ft_dlst_push_back(queue, ft_create_node_ptr(neighbor));
+	}
+	else
+		ft_dlst_push_front(queue, ft_create_node_ptr(neighbor));
 }
 
-static void			send_path_to_neighbors(
+static bool			send_path_to_neighbors(
 	t_farm *farm, t_room *room, t_path *path, t_dlist *queue)
 {
 	bool	opu;
@@ -34,20 +41,16 @@ static void			send_path_to_neighbors(
 		neighbor_lst = neighbor_lst->next;
 		if (neighbor->types & ROOM_START || find_cycle(path_copy, neighbor))
 			continue ;
-		add_path_room(neighbor, !opu ? path : make_path_copy(path_copy));
+		ft_dlst_push_back(neighbor->paths,
+			ft_create_node_ptr(!opu ? path : make_path_copy(path_copy)));
 		opu = true;
 		if (neighbor->types & ROOM_END)
 			ft_dlst_push_back(LIST(neighbor->paths->tail, t_path*),
 				ft_create_node_ptr(neighbor));
-		if (neighbor->types & ROOM_END)
-		{
-			check_intersections(farm);
-			ft_dlst_push_back(queue, ft_create_node_ptr(neighbor));
-		}
-		else
-			ft_dlst_push_front(queue, ft_create_node_ptr(neighbor));
+		add_room_in_queue(farm, queue, neighbor);
 	}
 	ft_dlst_del(&path_copy, NULL);
+	return (opu);
 }
 
 static void			enter_room(t_farm *farm, t_room *room, t_dlist *queue)
@@ -62,9 +65,10 @@ static void			enter_room(t_farm *farm, t_room *room, t_dlist *queue)
 		path = LIST(path_lst, t_path*);
 		if (!(room->types & ROOM_START))
 			ft_dlst_push_back(path, ft_create_node_ptr(room));
-		send_path_to_neighbors(farm, room, path, queue);
 		next = path_lst->next;
-		ft_dlst_remove_node(room->paths, path_lst, NULL);
+		ft_dlst_remove_node(room->paths, path_lst,
+			send_path_to_neighbors(farm, room, path, queue)
+			? NULL : free_paths);
 		path_lst = next;
 	}
 }
@@ -72,39 +76,30 @@ static void			enter_room(t_farm *farm, t_room *room, t_dlist *queue)
 static int			find_and_check_comb(
 	t_farm *farm, t_room *room, t_path_comb *paths_combs, int count)
 {
-	// START_DELAY;
-	int comb;
+	int		i;
+	int		comb;
+	t_stack *result;
 
-	// if (room->paths->size >= 40)
-	// 	return (1);
 	comb = farm->cur_comb;
-	IS_FLAG(FLAG_DEBUG)
-		&& ft_printf("[find_and_check_comb] pathes: %d, need = %d\n",
-			room->paths->size, comb + 1);
-
-
-	t_stack *result = ft_stack_new(comb + 1);
-
-	if (find_comb(farm, room->paths, result, room->paths->head, comb + 1))
+	SECURE_MALLOC(result = ft_stack_new(comb + 1));
+	if (find_comb(farm, result, room->paths->head, comb + 1))
 	{
-		int i = 0;
-		while (i < result->len)
-		{
-			paths_combs[comb].paths[i] = ft_dlst_get(room->paths, result->head[i]);
-			i++;
-		}
+		i = -1;
+		while (++i < result->len)
+			paths_combs[comb].paths[i] =
+				ft_dlst_get(room->paths, result->head[result->len - i - 1]);
 		ft_stack_delete(result);
-
 		paths_combs[comb].steps =
 			get_steps_for_comb(&paths_combs[comb], farm->ants_count);
 		IS_FLAG(FLAG_DEBUG)
-			&& ft_printf("complete %d/%d comb, steps: %d\n",
+			&& ft_printf("[DEBUG]: Complete %d/%d comb, steps: %d\n",
 				comb + 1, count, paths_combs[comb].steps);
 		return ((farm->cur_comb > 0
 			&& paths_combs[comb - 1].steps < paths_combs[comb].steps)
-			|| ++farm->cur_comb == count || farm->cur_comb >= 8);
+			|| ++farm->cur_comb == count || farm->cur_comb >= farm->max_paths);
 	}
-	// END_DELAY("find_comb complete");
+	else
+		ft_stack_delete(result);
 	return (0);
 }
 

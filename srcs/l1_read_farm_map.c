@@ -6,7 +6,7 @@
 /*   By: rschuppe <rschuppe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/19 16:47:35 by rschuppe          #+#    #+#             */
-/*   Updated: 2019/03/08 16:38:36 by rschuppe         ###   ########.fr       */
+/*   Updated: 2019/03/09 16:34:49 by rschuppe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,13 +39,6 @@ static int			parse_room_line(
 		free_split_result(res);
 		return (check);
 	}
-	return (1);
-}
-
-inline static int	read_ants_count(t_farm *farm, char *line)
-{
-	if ((farm->ants_count = min_atoi(line, "Invalid ants count")) <= 0)
-		throw_error(STR_ERROR_VALID, "Invalid ants count");
 	return (1);
 }
 
@@ -82,35 +75,46 @@ inline static int	read_room(
 	return (1);
 }
 
+static int			read_farm_map_helper(
+	t_farm *farm, char *line, t_list **rooms, int8_t *read_status)
+{
+	if (read_status == 0)
+	{
+		if ((farm->ants_count =
+			min_atoi(line, STR_ERROR_VALID, "Invalid ants count")) <= 0)
+			throw_error(STR_ERROR_VALID, "Invalid ants count");
+		read_status++;
+	}
+	else
+	{
+		if (read_status == 1)
+			if (!read_room(farm, line, &read_status, rooms))
+				return (0);
+		if (read_status == 2)
+			if (!read_links(farm, line))
+				return (0);
+	}
+	return (1);
+}
+
 t_farm				*read_farm_map(int fd, t_farm *farm)
 {
 	char	*line;
-	int8_t	r_status;
+	int8_t	read_status;
 	t_list	*rooms;
 
 	rooms = NULL;
-	r_status = 0;
+	read_status = 0;
 	while (get_next_line(fd, &line))
 	{
 		if (!ft_strlen(line))
 			break ;
 		if (line[0] != '#' || line[1] == '#')
-		{
-			if (r_status == 0 && ++r_status)
-				read_ants_count(farm, line);
-			else
-			{
-				if (r_status == 1)
-					if (!read_room(farm, line, &r_status, &rooms))
-						break ;
-				if (r_status == 2)
-					if (!read_links(farm, line))
-						break ;
-			}
-		}
+			if (!read_farm_map_helper(farm, line, &rooms, &read_status))
+				break ;
 		free(line);
 	}
-	r_status < 1 && throw_error(ERR_MAP_INVALID);
+	read_status < 1 && throw_error(ERR_MAP_INVALID);
 	if (!farm->rooms && rooms)
 		farm->rooms = create_sort_room_arr(&rooms, farm->count_rooms);
 	return (farm);

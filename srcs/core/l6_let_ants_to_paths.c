@@ -6,7 +6,7 @@
 /*   By: rschuppe <rschuppe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/20 19:25:43 by rschuppe          #+#    #+#             */
-/*   Updated: 2019/03/08 14:30:05 by rschuppe         ###   ########.fr       */
+/*   Updated: 2019/03/09 15:21:19 by rschuppe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ static void			choose_path_and_start(
 	}
 }
 
-void				let_ants_to_paths(t_farm *farm, t_path_comb *path_comb)
+int					let_ants_to_paths(t_farm *farm, t_path_comb *path_comb)
 {
 	int	nbr_ants;
 	int	nbr_path;
@@ -102,4 +102,5 @@ void				let_ants_to_paths(t_farm *farm, t_path_comb *path_comb)
 			choose_path_and_start(farm, path_comb, &nbr_ants);
 		write(1, "\n", 1);
 	}
+	return (1);
 }
